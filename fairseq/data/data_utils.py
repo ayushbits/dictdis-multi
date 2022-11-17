@@ -115,6 +115,8 @@ def collate_tokens(
                 sep_pos = mx[0]
                 if sep_pos < len(v):
                     v_src=v[:sep_pos]
+                    print("V:", v)
+                    print("V_src",v_src)
                     # v_cons=v[sep_pos:]                
                     copy_tensor(v[:sep_pos], res[i][:len(v_src)])
                     # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])               
@@ -174,147 +176,147 @@ def collate_tokens(
 
         return res
            
-def collate_tokens(
-    values,
-    key,
-    pad_idx,
-    eos_idx=None,
-    left_pad=False,
-    move_eos_to_beginning=False,
-    pad_to_length=None,
-    pad_to_multiple=1,
-    pad_to_bsz=None,
-    consnmt=False, sep_idx=4,isep_idx=5,
-):
-    """Convert a list of 1d tensors into a padded 2d tensor."""
+# def collate_tokens(
+#     values,
+#     key,
+#     pad_idx,
+#     eos_idx=None,
+#     left_pad=False,
+#     move_eos_to_beginning=False,
+#     pad_to_length=None,
+#     pad_to_multiple=1,
+#     pad_to_bsz=None,
+#     consnmt=False, sep_idx=4,isep_idx=5,
+# ):
+#     """Convert a list of 1d tensors into a padded 2d tensor."""
     
-    def get_sep_posi(value):
-        mx=(value==sep_idx).nonzero()
-        # return len(value) if len(mx)==0 else mx[0]
-        return [len(value)] if len(mx)==0 else mx
+#     def get_sep_posi(value):
+#         mx=(value==sep_idx).nonzero()
+#         # return len(value) if len(mx)==0 else mx[0]
+#         return [len(value)] if len(mx)==0 else mx
 
-    def get_isep_posi(value):
-        mx=(value==isep_idx).nonzero()
-        return len(value) if len(mx)==0 else mx[-1]
+#     def get_isep_posi(value):
+#         mx=(value==isep_idx).nonzero()
+#         return len(value) if len(mx)==0 else mx[-1]
 
-    def copy_tensor(src, dst):
-        assert dst.numel() == src.numel()
-        if move_eos_to_beginning:
-            assert src[-1] == eos_idx
-            dst[0] = eos_idx
-            dst[1:] = src[:-1]
-        else:
-            dst.copy_(src)
+#     def copy_tensor(src, dst):
+#         assert dst.numel() == src.numel()
+#         if move_eos_to_beginning:
+#             assert src[-1] == eos_idx
+#             dst[0] = eos_idx
+#             dst[1:] = src[:-1]
+#         else:
+#             dst.copy_(src)
 
-    if not consnmt:
-        src_size = max(v.size(0) for v in values)
-        cons_size = 0
-    else:
-        # src_size = max(get_sep_posi(v) for v in values) 
-        # cons_size = max(len(v)-get_sep_posi(v) for v in values)
-        max_src_size = 0
-        max_sub_cons_size = 0
-        max_cons = 0
-        for v in values:
-            mx = get_sep_posi(v)
-            mix = get_isep_posi(v)
-            cons_len = len(mx)
-            max_cons = max(max_cons, cons_len)
-            max_src_size = max(max_src_size,mx[0])
-            if(cons_len != 0):
-                for i in range(cons_len-1):
-                    max_sub_cons_size = max(max_sub_cons_size,mx[i+1]-mx[i])
-            max_sub_cons_size = max(max_sub_cons_size,mix-mx[-1]+1) #changed
+#     if not consnmt:
+#         src_size = max(v.size(0) for v in values)
+#         cons_size = 0
+#     else:
+#         # src_size = max(get_sep_posi(v) for v in values) 
+#         # cons_size = max(len(v)-get_sep_posi(v) for v in values)
+#         max_src_size = 0
+#         max_sub_cons_size = 0
+#         max_cons = 0
+#         for v in values:
+#             mx = get_sep_posi(v)
+#             mix = get_isep_posi(v)
+#             cons_len = len(mx)
+#             max_cons = max(max_cons, cons_len)
+#             max_src_size = max(max_src_size,mx[0])
+#             if(cons_len != 0):
+#                 for i in range(cons_len-1):
+#                     max_sub_cons_size = max(max_sub_cons_size,mx[i+1]-mx[i])
+#             max_sub_cons_size = max(max_sub_cons_size,mix-mx[-1]+1) #changed
 
-        src_size = max_src_size
-        sub_cons_size = max_sub_cons_size
-        cons_size = (max_cons * sub_cons_size) + max_cons + 1 #changed
+#         src_size = max_src_size
+#         sub_cons_size = max_sub_cons_size
+#         cons_size = (max_cons * sub_cons_size) + max_cons + 1 #changed
 
 
-    if key == 'source':
+#     if key == 'source':
     
-        res = values[0].new(len(values), src_size+cons_size).fill_(pad_idx)
-        res_fanout_1 = values[0].new(len(values), src_size+cons_size).fill_(0)
-        res_fanout_n = values[0].new(len(values), src_size+cons_size).fill_(0)  
+#         res = values[0].new(len(values), src_size+cons_size).fill_(pad_idx)
+#         res_fanout_1 = values[0].new(len(values), src_size+cons_size).fill_(0)
+#         res_fanout_n = values[0].new(len(values), src_size+cons_size).fill_(0)  
 
-        def check(p):
-            if(((p==5).nonzero()).numel()):
-                x = p >isep_idx
-                flag =2
-            else:
-                x = p >pad_idx
-                flag = 1
+#         def check(p):
+#             if(((p==5).nonzero()).numel()):
+#                 x = p >isep_idx
+#                 flag =2
+#             else:
+#                 x = p >pad_idx
+#                 flag = 1
             
-            return x, flag
+#             return x, flag
 
-        for i, v in enumerate(values):       
-            if consnmt and cons_size > 0:
-                # sep_pos = get_sep_posi(v)
-                cons_pos = src_size
-                mx = get_sep_posi(v)
-                mix = get_isep_posi(v)
-                cons_len = len(mx)
-                sep_pos = mx[0]
-                if sep_pos < len(v):
-                    v_src=v[:sep_pos]
-                    # v_cons=v[sep_pos:]                
-                    copy_tensor(v[:sep_pos], res[i][:len(v_src)])
-                    # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])               
-                    for pos in range(cons_len-1):
-                        # v_sub_cons = v[mx[pos]:mx[pos+1]]
-                        if(pos==cons_len-1):
-                            copy_tensor(v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) + 2])
-                            x,flag = check(v[mx[pos]+1:])
-                            if(flag == 1):
-                                copy_tensor(x, res_fanout_1[i][cons_pos+1:cons_pos+x.shape[0]+1])
-                            else:
-                                copy_tensor(x, res_fanout_n[i][cons_pos+1:cons_pos+x.shape[0]+1])
-                        else:
-                            copy_tensor(v[mx[pos]:mx[pos+1]], res[i][cons_pos:cons_pos + (mx[pos+1]-mx[pos])])
-                            x,flag = check(v[mx[pos]+1:mx[pos+1]])
-                            if(flag == 1):
-                                copy_tensor(x, res_fanout_1[i][cons_pos+1:cons_pos + (mx[pos+1]-mx[pos])])
-                            else:
-                                copy_tensor(x, res_fanout_n[i][cons_pos+1:cons_pos + (mx[pos+1]-mx[pos])])
-                        cons_pos = cons_pos + sub_cons_size
-                else:
-                    copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
-            else:
-                copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
+#         for i, v in enumerate(values):       
+#             if consnmt and cons_size > 0:
+#                 # sep_pos = get_sep_posi(v)
+#                 cons_pos = src_size
+#                 mx = get_sep_posi(v)
+#                 mix = get_isep_posi(v)
+#                 cons_len = len(mx)
+#                 sep_pos = mx[0]
+#                 if sep_pos < len(v):
+#                     v_src=v[:sep_pos]
+#                     # v_cons=v[sep_pos:]                
+#                     copy_tensor(v[:sep_pos], res[i][:len(v_src)])
+#                     # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])               
+#                     for pos in range(cons_len-1):
+#                         # v_sub_cons = v[mx[pos]:mx[pos+1]]
+#                         if(pos==cons_len-1):
+#                             copy_tensor(v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) + 2])
+#                             x,flag = check(v[mx[pos]+1:])
+#                             if(flag == 1):
+#                                 copy_tensor(x, res_fanout_1[i][cons_pos+1:cons_pos+x.shape[0]+1])
+#                             else:
+#                                 copy_tensor(x, res_fanout_n[i][cons_pos+1:cons_pos+x.shape[0]+1])
+#                         else:
+#                             copy_tensor(v[mx[pos]:mx[pos+1]], res[i][cons_pos:cons_pos + (mx[pos+1]-mx[pos])])
+#                             x,flag = check(v[mx[pos]+1:mx[pos+1]])
+#                             if(flag == 1):
+#                                 copy_tensor(x, res_fanout_1[i][cons_pos+1:cons_pos + (mx[pos+1]-mx[pos])])
+#                             else:
+#                                 copy_tensor(x, res_fanout_n[i][cons_pos+1:cons_pos + (mx[pos+1]-mx[pos])])
+#                         cons_pos = cons_pos + sub_cons_size
+#                 else:
+#                     copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
+#             else:
+#                 copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
 
-        res_fanout_1 = res_fanout_1 >0
-        res_fanout_n = res_fanout_n >0
+#         res_fanout_1 = res_fanout_1 >0
+#         res_fanout_n = res_fanout_n >0
 
-        return res,res_fanout_1,res_fanout_n
+#         return res,res_fanout_1,res_fanout_n
     
-    else:
-        res = values[0].new(len(values), src_size+cons_size).fill_(pad_idx)
-        for i, v in enumerate(values):       
-            if consnmt and cons_size > 0:
-                # sep_pos = get_sep_posi(v)
-                cons_pos = src_size
-                mx = get_sep_posi(v)
-                mix = get_isep_posi(v)
-                cons_len = len(mx)
-                sep_pos = mx[0]
-                if sep_pos < len(v):
-                    v_src=v[:sep_pos]
-                    # v_cons=v[sep_pos:]                
-                    copy_tensor(v[:sep_pos], res[i][:len(v_src)])
-                    # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])               
-                    for pos in range(cons_len-1):
-                        # v_sub_cons = v[mx[pos]:mx[pos+1]]
-                        if(pos==cons_len-1):
-                            copy_tensor(v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) + 2])
-                        else:
-                            copy_tensor(v[mx[pos]:mx[pos+1]], res[i][cons_pos:cons_pos + (mx[pos+1]-mx[pos])])
-                        cons_pos = cons_pos + sub_cons_size
-                else:
-                    copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
-            else:
-                copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
+#     else:
+#         res = values[0].new(len(values), src_size+cons_size).fill_(pad_idx)
+#         for i, v in enumerate(values):       
+#             if consnmt and cons_size > 0:
+#                 # sep_pos = get_sep_posi(v)
+#                 cons_pos = src_size
+#                 mx = get_sep_posi(v)
+#                 mix = get_isep_posi(v)
+#                 cons_len = len(mx)
+#                 sep_pos = mx[0]
+#                 if sep_pos < len(v):
+#                     v_src=v[:sep_pos]
+#                     # v_cons=v[sep_pos:]                
+#                     copy_tensor(v[:sep_pos], res[i][:len(v_src)])
+#                     # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])               
+#                     for pos in range(cons_len-1):
+#                         # v_sub_cons = v[mx[pos]:mx[pos+1]]
+#                         if(pos==cons_len-1):
+#                             copy_tensor(v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) + 2])
+#                         else:
+#                             copy_tensor(v[mx[pos]:mx[pos+1]], res[i][cons_pos:cons_pos + (mx[pos+1]-mx[pos])])
+#                         cons_pos = cons_pos + sub_cons_size
+#                 else:
+#                     copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
+#             else:
+#                 copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
 
-        return res
+#         return res
 
 # def collate_tokens(
 #     values,
