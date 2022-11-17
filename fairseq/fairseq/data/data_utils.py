@@ -45,6 +45,7 @@ def collate_tokens(
     consnmt=False, sep_idx=4,isep_idx=5,
 ):
     """Convert a list of 1d tensors into a padded 2d tensor."""
+    left_pad = False
     
     def get_sep_posi(value):
         mx=(value==sep_idx).nonzero()
@@ -56,6 +57,8 @@ def collate_tokens(
         return len(value) if len(mx)==0 else mx[-1]
 
     def copy_tensor(src, dst):
+        # print("inside copy: src, ",len(src))
+        # print("inside copy: dst, ",len(dst))
         assert dst.numel() == src.numel()
         if move_eos_to_beginning:
             assert src[-1] == eos_idx
@@ -115,8 +118,8 @@ def collate_tokens(
                 sep_pos = mx[0]
                 if sep_pos < len(v):
                     v_src=v[:sep_pos]
-                    print("V:", v)
-                    print("V_src",v_src)
+                    # print("V:", v)
+                    # print("V_src",v_src)
                     # v_cons=v[sep_pos:]                
                     copy_tensor(v[:sep_pos], res[i][:len(v_src)])
                     # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])               
@@ -138,6 +141,13 @@ def collate_tokens(
                                 copy_tensor(x, res_fanout_n[i][cons_pos+1:cons_pos + (mx[pos+1]-mx[pos])])
                         cons_pos = cons_pos + sub_cons_size
                 else:
+                    # print("V:", v)
+                    # v_src=v[:sep_pos]
+                    # print("V_src",v_src)
+                    # print("src size",src_size)
+                    # print("len of v",len(v))
+                    # print("leftpad",left_pad)
+                    # print("res",len(res[i]))
                     copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
             else:
                 copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
