@@ -1,37 +1,36 @@
-# bash complete_translate_pipeline.sh Data aerospace aerospace lexicalDict RBI.csv en hi 1 
-# bash complete_translate_pipeline.sh Data medical medical lexicalDict med.csv en hi 1 
 #!/bin/bash
-#echo `date`
-exp_dir=$1 #Dir containing model final_bin vocab etc.
-dataset=$2 #Dataset for inference
-infname=$3 #filename inside dataset folder (for eg aerospace dataset folder has aerospace.en as file. Here infname=aerospace and extension en is added using src_lang)
-glossaryDir=$4 #Dir where dictionaries are stored
-glossary=$5
-src_lang=$6
-tgt_lang=$7
-cons=$8 #Constraints: Expected -- 0/1 --> [1->'True',0->'False']
+echo `date`
+exp_dir='full_data/' #Dir containing model final_bin vocab etc.
+# exp_dir='../LecaDisambiguationExp-2/LecaExp2/Data' #Dir containing model final_bin vocab etc.
+#exp_dir='../../leca/Data' #Dir containing model final_bin vocab etc.
+#exp_dir='../../../udaan-deploy-flask/leca_model' #Dir containing model final_bin vocab etc.
+dataset='.' #Dataset for inference
+infname=$1 #filename inside dataset folder (for eg aerospace dataset folder has aerospace.en as file. Here infname=aerospace and extension en is added using src_lang)
+outfname=$2
+glossaryList=$3 #Dir where dictionaries are stored
+src_lang=$4
+tgt_lang=$5
+cons=$6 #Constraints: Expected -- 0/1 --> [1->'True',0->'False']
 
-pwd
-cd ..
-pwd
-
-datasetDir=$exp_dir/devtest/en-hi/$dataset #Given dataset construct full path where dataset resides.
+#datasetDir=$exp_dir/devtest/en-hi/$dataset #Given dataset construct full path where dataset resides.
+datasetDir=$dataset
 SRC_PREFIX='SRC'
 TGT_PREFIX='TGT'
-outputDir='constraint_decoding13' #name of output Dir inside datasetDir as defined above.
+outputDir='.' #name of output Dir inside datasetDir as defined above.
 # outputDir='sampleTest'
-mkdir -p $datasetDir/$outputDir
-glossaryPath=$exp_dir/$glossaryDir #construct full dict path
-
+# mkdir -p $datasetDir/$outputDir
+#glossaryPath=$exp_dir/$glossaryDir #construct full dict path
+#glossaryPath='../improved_leca/Data/lexicalDict' #$glossaryDir
+glossaryPath='full_data/lexicalDict'
 #`dirname $0`/env.sh
 SUBWORD_NMT_DIR='../../../subword-nmt'
 # model_dir=$exp_dir/align_model
 # data_bin_dir=$exp_dir/sub_align_binarised
 
 # model_dir=$exp_dir/align_model
+model_dir="/home/souvik/improved_leca/trial_v12/dictdis_multigpu/fairseq/checkpoints/"
+#$exp_dir/models
 # data_bin_dir=$exp_dir/align_binarised
-
-model_dir="/home/souvik/improved_leca/trial_v12/dictdis_multigpu/fairseq/checkpoints"
 data_bin_dir=$exp_dir/final_bin
 
 # Constraints retriever script
@@ -40,11 +39,54 @@ if [[ $constraints -eq 1 ]]
 then
 echo "########################################## Constraints File Processing ##########################################"
 # glossary='chemistryGlossary.csv,physicsGlossary.csv,mathGlossary.csv,itGlossary.csv,MechGlossary.csv' #specify which all dict is needed as string seperated by comma
-# glossary='NGMA_Dict.csv'
-#='chemistryGlossary.csv,physicsGlossary.csv,mathGlossary.csv,itGlossary.csv'
+echo 'glossary is ': $glossaryList
+# glossaryList = $glossaryList.split(',')
+glossary=""
+IFS=','
+read -a lst <<< "$glossaryList"
+len=${#lst[@]}
+j=0
+for i in ${lst[@]}
+do
+    j=$((j+1))
+    echo "$i"
+    glossary+="$i.csv"
+    if [[ $j -ne $len ]]
+    then
+        glossary+=';'
+    fi
+done
+# len=`ls ./$glossaryList | wc -l`
+# j=0
+# echo $len
+# for gloss in $glossaryList/*.csv; do
+#     j=$((j+1))
+#     glossName=$(basename $gloss)
+#     glossary+=$glossName
+#     if [[ $j -le 2 ]]; then
+#         glossary+=','
+#     else
+#         break 1
+#     fi
+# done
+echo "$glossary"
+# glossary='rbi.csv,it.csv'
+
+# print('glossary is ', glossary)
+# glossary='chemistryGlossary.csv,physicsGlossary.csv,mathGlossary.csv,itGlossary.csv'
+
+echo "Applying normalization and script conversion to test file"
+input_size=`python scripts/preprocess_translate.py $datasetDir/$infname $datasetDir/$outputDir/$infname.norm $src_lang true`
+echo "Number of sentences in input: $input_size"
+
+cp $datasetDir/$outputDir/$infname.norm $datasetDir/$outputDir/$infname
+
 echo "Retrieving Constraints"
 # python retriever_vdba.py $glossaryPath $glossary $datasetDir/$infname $src_lang $outputDir
-python scripts/create_constraints.py $glossaryPath $glossary $datasetDir/$infname.$src_lang $datasetDir/$infname.$tgt_lang $outputDir
+python scripts/create_constraints_inference.py $glossaryPath $glossary $datasetDir/$infname $outputDir/$infname.$tgt_lang $outputDir
+
+# echo "Retrieving Constraints"
+# python scripts/retriever_vdba.py $glossaryPath $glossary $datasetDir/$infname $outputDir
 
 echo "Applying normalization and script conversion to constraints"
 python scripts/preprocess_translate.py $datasetDir/$outputDir/$infname.constraints $datasetDir/$outputDir/$infname.constraints.norm $tgt_lang true
@@ -66,7 +108,7 @@ fi
 echo "########################################## Test File Processing ##########################################"
 
 echo "Applying normalization and script conversion to test file"
-input_size=`python scripts/preprocess_translate.py $datasetDir/$infname.$src_lang $datasetDir/$outputDir/$infname.norm $src_lang true`
+input_size=`python scripts/preprocess_translate.py $datasetDir/$infname $datasetDir/$outputDir/$infname.norm $src_lang true`
 echo "Number of sentences in input: $input_size"
 
 ### apply BPE to input file
@@ -96,13 +138,15 @@ else
 src_input_bpe_fname=$datasetDir/$outputDir/$infname.bpe
 fi
 
-tgt_output_fname=$datasetDir/$outputDir/$infname.predicted.$tgt_lang
+# tgt_output_fname=$datasetDir/$outputDir/$infname.predicted.$tgt_lang
+tgt_output_fname=$datasetDir/$outputDir/$outfname
 
+pwd
 
 echo "Translation Started"
 useptr='--use-ptrnet'
-#CUDA_VISIBLE_DEVICES=0 fairseq-interactive  $data_bin_dir \
-CUDA_VISIBLE_DEVICES=2 python fairseq_cli/interactive.py $data_bin_dir \
+# CUDA_VISIBLE_DEVICES=0 fairseq-interactive  $data_bin_dir \
+CUDA_VISIBLE_DEVICES=1 python fairseq_cli/interactive.py $data_bin_dir \
     -s $src_lang -t $tgt_lang \
     --path $model_dir/checkpoint_best.pt \
     --beam 5  --remove-bpe --quiet --consnmt $useptr \
@@ -120,9 +164,5 @@ python scripts/postprocess_translate.py $tgt_output_fname.log $tgt_output_fname 
 
 echo `date`
 echo "Translation completed"
-echo "Computing Bleu Score"
-bash scripts/compute_bleu.sh $tgt_output_fname $datasetDir/$infname.$tgt_lang $src_lang $tgt_lang
-
-#echo "Computing Disambiguation Accuracy"
-#python scripts/constraints_metrics.py $datasetDir/$infname.$src_lang $tgt_output_fname $datasetDir/$infname.$tgt_lang $glossaryPath $glossary 'English' 'Hindi'
-#echo "All Done"
+# echo "Computing Bleu Score"
+# bash compute_bleu.sh $tgt_output_fname $datasetDir/$infname.$tgt_lang $src_lang $tgt_lang

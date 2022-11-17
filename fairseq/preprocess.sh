@@ -10,7 +10,7 @@ mkdir -p $trainingData/processedData
 mkdir -p $trainingData/processedData/norm
 mkdir -p $trainingData/processedData/bpe
 
-SUBWORD_NMT_DIR='../../subword-nmt'
+SUBWORD_NMT_DIR='../../../subword-nmt'
 
 echo "########################################## Train File Processing ##########################################"
 

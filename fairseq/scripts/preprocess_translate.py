@@ -1,5 +1,5 @@
-INDIC_NLP_LIB_HOME = "/home/souvik/improved_leca/trial_v12/fairseq/indic_nlp_library"
-INDIC_NLP_RESOURCES = "/home/souvik/improved_leca/trial_v12/fairseq/indic_nlp_resources"
+INDIC_NLP_LIB_HOME = "/home/souvik/improved_leca/trial_v12/dictdis_multigpu/fairseq/indic_nlp_library"
+INDIC_NLP_RESOURCES = "/home/souvik/improved_leca/trial_v12/dictdis_multigpu/fairseq/indic_nlp_resources"
 import sys
 
 sys.path.append(r"{}".format(INDIC_NLP_LIB_HOME))

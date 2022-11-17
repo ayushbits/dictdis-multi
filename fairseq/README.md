@@ -20,13 +20,14 @@ git clone https://github.com/anoopkunchukuttan/indic_nlp_library.git
 - Check datadir (#109) and model variable
 - trained model will be stored in checkpoints/
 
+## Inference
+
+- bash translate_file.sh full_data/devtest/en-hi/testing/check.en pred-check.hi final-eng-hindi en hi 1
+- bash inference/compute_bleu.sh pred-med.hi full_data/devtest/en-hi/medical/medical.hi hi
+
 Please cite as:
 
 ``` bibtex
-@inproceedings{ott2019fairseq,
-  title = {fairseq: A Fast, Extensible Toolkit for Sequence Modeling},
-  author = {Myle Ott and Sergey Edunov and Alexei Baevski and Angela Fan and Sam Gross and Nathan Ng and David Grangier and Michael Auli},
-  booktitle = {Proceedings of NAACL-HLT 2019: Demonstrations},
-  year = {2019},
+
 }
 ```
