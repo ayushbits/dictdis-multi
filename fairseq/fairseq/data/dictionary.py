@@ -46,11 +46,11 @@ class Dictionary:
             for s in extra_special_symbols:
                 self.add_symbol(s)
         self.nspecial = len(self.symbols)
-        print('N special symbols: ', self.symbols)
-        print("sep",self.sep_index)
-        print("isep",self.isep_index)
-        print("pad",self.pad_index)
-        print("unk",self.unk_index)
+        # print('N special symbols: ', self.symbols)
+        # print("sep",self.sep_index)
+        # print("isep",self.isep_index)
+        # print("pad",self.pad_index)
+        # print("unk",self.unk_index)
 
     def __eq__(self, other):
         return self.indices == other.indices
@@ -470,7 +470,7 @@ class Dictionary:
             else:
                 idx = self.index(word) if (i < sep_idx or sep_idx < 0) else tgt_dict.index(word)
 
-                # print("word:",word," index:",idx)
+                print("word:",word," index:",idx)
             if consumer is not None:
                 consumer(word, idx)
             ids[i] = idx

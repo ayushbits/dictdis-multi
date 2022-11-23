@@ -338,7 +338,10 @@ class SequenceGenerator(nn.Module):
         else:
             original_batch_idxs = torch.arange(0, bsz).type_as(tokens)
 
+        # print("MAX LEN",max_len)
+
         for step in range(max_len + 1):  # one extra step for EOS marker
+            #print("step",step)
             # reorder decoder internal states based on the prev choice of beams
             if reorder_state is not None:
                 if batch_idxs is not None:
@@ -701,8 +704,8 @@ class SequenceGenerator(nn.Module):
         unique_seen: List[int] = torch.unique(seen).tolist()
 
         if self.match_source_len:
-            condition = step > torch.index_select(src_lengths, 0, unfin_idx)
-            eos_scores = torch.where(condition, torch.tensor(-math.inf), eos_scores)
+            condition = step > torch.index_select(src_lengths, 0, unfin_idx).to('cuda:0')
+            eos_scores = torch.where(condition, torch.tensor(-math.inf).to('cuda:0'), eos_scores)
         sent_list: List[int] = sent.tolist()
         for i in range(bbsz_idx.size()[0]):
             # An input sentence (among those in a batch) is finished when
@@ -839,6 +842,8 @@ class EnsembleModel(nn.Module):
                     decoder_out = model.decoder.forward(tokens, encoder_out=encoder_out)
                 else:
                     decoder_out = model.forward(tokens)
+
+            # print('decoder_out is ', decoder_out)
 
             attn: Optional[Tensor] = None
             decoder_len = len(decoder_out)

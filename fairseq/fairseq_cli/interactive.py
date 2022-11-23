@@ -56,11 +56,13 @@ def make_batches(lines, cfg, task, max_positions, encode_fn):
     def encode_fn_target(x):
         return encode_fn(x)
 
+    # cfg.generation.constraints: None
     if cfg.generation.constraints:
         # Strip (tab-delimited) contraints, if present, from input lines,
         # store them in batch_constraints
         batch_constraints = [list() for _ in lines]
         for i, line in enumerate(lines):
+            # print("LINE:",line)
             if "\t" in line:
                 lines[i], *batch_constraints[i] = line.split("\t")
 
@@ -85,7 +87,7 @@ def make_batches(lines, cfg, task, max_positions, encode_fn):
 
     itr = task.get_batch_iterator(
         dataset=task.build_dataset_for_inference(
-            tokens, lengths, constraints=constraints_tensor
+            tokens, lengths, constraints=constraints_tensor,
         ),
         max_tokens=cfg.dataset.max_tokens,
         max_sentences=cfg.dataset.batch_size,
@@ -95,6 +97,7 @@ def make_batches(lines, cfg, task, max_positions, encode_fn):
     for batch in itr:
         ids = batch["id"]
         src_tokens = batch["net_input"]["src_tokens"]
+        print('src tokens inside interactive ', src_tokens)
         src_lengths = batch["net_input"]["src_lengths"]
         constraints = batch.get("constraints", None)
 
@@ -228,10 +231,12 @@ def main(cfg: FairseqConfig):
                     "src_lengths": src_lengths,
                 },
             }
+            #print("sample",sample)
             translate_start_time = time.time()
             translations = task.inference_step(
                 generator, models, sample, constraints=constraints
             )
+            #print("Translation",translations)
             translate_time = time.time() - translate_start_time
             total_translate_time += translate_time
             list_constraints = [[] for _ in range(bsz)]

@@ -53,23 +53,20 @@ def postprocess(
         temp_testoutput = list(
             map(lambda x: (int(x[0].split("-")[1]), float(x[1]), x[2]), temp_testoutput)
         )
-        print('temptestout', temp_testoutput)
         for sid, score, hyp in temp_testoutput:
             consolidated_testoutput[sid] = (sid, score, hyp)
-            print('hypo is ', hyp)
         consolidated_testoutput = [x[2] for x in consolidated_testoutput]
 
     if lang == "en":
         en_detok = MosesDetokenizer(lang="en")
         with open(outfname, "w", encoding="utf-8") as outfile:
             for sent in consolidated_testoutput:
-                print('sent is ', sent)
                 outfile.write(en_detok.detokenize(sent.split(" ")) + "\n")
     else:
         xliterator = unicode_transliterate.UnicodeIndicTransliterator()
         with open(outfname, "w", encoding="utf-8") as outfile:
             for sent in consolidated_testoutput:
-                print('sent is ' , sent)
+                # print('sent is ' , sent)
                 if transliterate:
                     outstr = indic_detokenize.trivial_detokenize(
                         xliterator.transliterate(sent, common_lang, lang), lang

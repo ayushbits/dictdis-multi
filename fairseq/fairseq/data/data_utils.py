@@ -42,11 +42,12 @@ def collate_tokens(
     pad_to_length=None,
     pad_to_multiple=1,
     pad_to_bsz=None,
-    consnmt=False, sep_idx=4,isep_idx=5,
+    consnmt=True, sep_idx=4,isep_idx=5
 ):
     """Convert a list of 1d tensors into a padded 2d tensor."""
     left_pad = False
-    
+    # print('collate token in data utils lin 49')
+    eos_idx=2
     def get_sep_posi(value):
         mx=(value==sep_idx).nonzero()
         # return len(value) if len(mx)==0 else mx[0]
@@ -54,6 +55,10 @@ def collate_tokens(
 
     def get_isep_posi(value):
         mx=(value==isep_idx).nonzero()
+        return len(value) if len(mx)==0 else mx[-1]
+
+    def get_eos_posi(value):
+        mx=(value==eos_idx).nonzero()
         return len(value) if len(mx)==0 else mx[-1]
 
     def copy_tensor(src, dst):
@@ -77,24 +82,35 @@ def collate_tokens(
         max_sub_cons_size = 0
         max_cons = 0
         for v in values:
+            # print('v is ', v)
             mx = get_sep_posi(v)
             mix = get_isep_posi(v)
+            eos_pos = get_eos_posi(v)
+            # print('mx , mix ', mx, mix)
             cons_len = len(mx)
             max_cons = max(max_cons, cons_len)
+            # print('mx iinside values ', mx)
             max_src_size = max(max_src_size,mx[0])
-            if(cons_len != 0):
-                for i in range(cons_len-1):
-                    max_sub_cons_size = max(max_sub_cons_size,mx[i+1]-mx[i])
-            max_sub_cons_size = max(max_sub_cons_size,mix-mx[-1]+1) #changed
+            for i in range(cons_len-1):
+                max_sub_cons_size = max(max_sub_cons_size,mx[i+1]-mx[i]-1)
+            # max_sub_cons_size = max(max_sub_cons_size,mix-mx[-1]+1) #changed
+            max_sub_cons_size = max(max_sub_cons_size, eos_pos - mx[-1] -1)
 
         src_size = max_src_size
-        sub_cons_size = max_sub_cons_size
+        sub_cons_size = max_sub_cons_size  
+        # print('max-cons size ', max_cons)
+        # print('max sub cons size ', sub_cons_size)
         cons_size = (max_cons * sub_cons_size) + max_cons + 1 #changed
 
-
+        # print('subcons size is ', sub_cons_size)
     if key == 'source':
+
+        # print("INSIDE DATA UTILS")
+        # print("len values",len(values))
+        # print("src_size",src_size)
+        # print("cons_size",cons_size)
     
-        res = values[0].new(len(values), src_size+cons_size).fill_(pad_idx)
+        res = values[0].new(len(values), src_size+cons_size+2).fill_(pad_idx)
         res_fanout_1 = values[0].new(len(values), src_size+cons_size).fill_(0)
         res_fanout_n = values[0].new(len(values), src_size+cons_size).fill_(0)  
 
@@ -114,32 +130,53 @@ def collate_tokens(
                 cons_pos = src_size
                 mx = get_sep_posi(v)
                 mix = get_isep_posi(v)
+                eos_pos = get_eos_posi(v)
                 cons_len = len(mx)
                 sep_pos = mx[0]
+                # print('cons len is #133', cons_len)
+                # print('cons pos is ', cons_pos)
+                # print('mx,mix',mx,mix)
                 if sep_pos < len(v):
                     v_src=v[:sep_pos]
                     # print("V:", v)
                     # print("V_src",v_src)
-                    # v_cons=v[sep_pos:]                
-                    copy_tensor(v[:sep_pos], res[i][:len(v_src)])
+                    # v_cons=v[sep_pos:]    
+                    copy_tensor(v[:sep_pos], res[i][:len(v_src)]) # copying source english tokens
+                    res[i][len(v_src)] = 2            # append eos after completion of english tokens
                     # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])               
-                    for pos in range(cons_len-1):
+                    # if cons_len == 1: #condition added by ayush
+                    #     copy_tensor(v[sep_pos:len(v)-1], res[i][cons_pos:len(v)-1])
+                        # copy_tensor(v, res[i][:len(v)])
+                        # copy_tensor(v[sep_pos:], res[i][cons_pos:eos_pos])
+                    # if cons_len > 1:
+                    for pos in range(cons_len):
+                        # print('pos is ', pos)
                         # v_sub_cons = v[mx[pos]:mx[pos+1]]
                         if(pos==cons_len-1):
-                            copy_tensor(v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) + 2])
-                            x,flag = check(v[mx[pos]+1:])
-                            if(flag == 1):
-                                copy_tensor(x, res_fanout_1[i][cons_pos+1:cons_pos+x.shape[0]+1])
-                            else:
-                                copy_tensor(x, res_fanout_n[i][cons_pos+1:cons_pos+x.shape[0]+1])
+                            # print('v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) ',mx, pos, cons_pos, mix,eos_pos)
+                            # copy_tensor(v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) + 2])
+                            # print('len(v[mx[pos]:]' , len(v[mx[pos]:]))
+                            print('eos_pos - mx[pos] ', eos_pos - mx[pos])
+                            copy_tensor(v[mx[pos]:-1], res[i][mx[pos]+1:eos_pos+1])
+                            #added by ayush
+                            # print(len(v[mx[pos-1]:]))
+                            # print(len(res[i][cons_pos:mix + 2]))
+                            # copy_tensor(v[mx[pos-1]:], res[i][cons_pos:mix + 2])
+                            # Commented flag thing by ayush
+                            # x,flag = check(v[mx[pos-1]+1:])
+                            # if(flag == 1):
+                            #     copy_tensor(x, res_fanout_1[i][cons_pos+1:cons_pos+x.shape[0]+1])
+                            # else:
+                            #     copy_tensor(x, res_fanout_n[i][cons_pos+1:cons_pos+x.shape[0]+1])
                         else:
-                            copy_tensor(v[mx[pos]:mx[pos+1]], res[i][cons_pos:cons_pos + (mx[pos+1]-mx[pos])])
+                            # print('inside else , pos is ', pos)
+                            copy_tensor(v[mx[pos]:mx[pos+1]], res[i][cons_pos + 1:cons_pos + 1 + (mx[pos+1]-mx[pos])])
                             x,flag = check(v[mx[pos]+1:mx[pos+1]])
                             if(flag == 1):
                                 copy_tensor(x, res_fanout_1[i][cons_pos+1:cons_pos + (mx[pos+1]-mx[pos])])
                             else:
                                 copy_tensor(x, res_fanout_n[i][cons_pos+1:cons_pos + (mx[pos+1]-mx[pos])])
-                        cons_pos = cons_pos + sub_cons_size
+                        cons_pos = cons_pos + sub_cons_size + 1
                 else:
                     # print("V:", v)
                     # v_src=v[:sep_pos]
@@ -151,7 +188,7 @@ def collate_tokens(
                     copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
             else:
                 copy_tensor(v, res[i][src_size - len(v):] if left_pad else res[i][:len(v)])
-
+        #print('res is ', res)
         res_fanout_1 = res_fanout_1 >0
         res_fanout_n = res_fanout_n >0
 
@@ -171,10 +208,13 @@ def collate_tokens(
                     v_src=v[:sep_pos]
                     # v_cons=v[sep_pos:]                
                     copy_tensor(v[:sep_pos], res[i][:len(v_src)])
-                    # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])               
+                    # copy_tensor(v[sep_pos:], res[i][src_size:src_size+len(v_cons)])    
+                    if cons_len == 1: #condition added by ayush
+                        copy_tensor(v[sep_pos:len(v)-1], res[i][cons_pos:len(v)-1])           
                     for pos in range(cons_len-1):
                         # v_sub_cons = v[mx[pos]:mx[pos+1]]
                         if(pos==cons_len-1):
+                            # print('v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) ',mx, pos, cons_pos, mix)
                             copy_tensor(v[mx[pos]:], res[i][cons_pos:cons_pos + (mix - pos) + 2])
                         else:
                             copy_tensor(v[mx[pos]:mx[pos+1]], res[i][cons_pos:cons_pos + (mx[pos+1]-mx[pos])])
@@ -576,8 +616,8 @@ def load_indexed_dataset(
         if dataset_impl_k is None:
             dataset_impl_k = indexed_dataset.infer_dataset_impl(path_k)
         
-        print("impl",dataset_impl_k)
-        print("path_k",path_k)
+        # print("impl",dataset_impl_k)
+        # print("path_k",path_k)
         dataset = indexed_dataset.make_dataset(
             path_k,
             impl=dataset_impl_k or default,

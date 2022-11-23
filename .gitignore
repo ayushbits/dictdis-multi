@@ -5,10 +5,12 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.en*
+*.hi*
+inference/
 # C extensions
 *.so
-checkpoints/
+fairseq/checkpoints*/
 full_data/
 Data/
 indic_nlp_resources/

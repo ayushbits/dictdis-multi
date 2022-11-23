@@ -12,7 +12,7 @@ train_model(){
     #fseq=$workloc/5M_bin
 
 
-    modeldir=$workloc/model_enhi
+    modeldir=$workloc/model_enhi-2
     #modeldir=$workloc/models_alpha_5M
     #modeldir=$workloc/models_check_samantar_newfinal
     echo "This is model $modeldir"
@@ -41,7 +41,7 @@ train_model(){
         --label-smoothing 0.1 --dropout 0.3 --max-tokens 16384 --seed 1 \
         --stop-min-lr '1e-09' --lr-scheduler inverse_sqrt --weight-decay 0.0001 \
         --criterion label_smoothed_cross_entropy --max-update $MaxUpdates --exp-name "${modelname}-${src}-${tgt}" \
-        --warmup-updates 4000 --warmup-init-lr '1e-07' --keep-last-epochs 8 \
+        --warmup-updates 4000 --warmup-init-lr '1e-07' --keep-last-epochs 30 \
         --adam-betas '(0.9, 0.98)' --update-freq 2 \
         --tensorboard-logdir $modeldir/tensorboard --consnmt $useptr \
         --eval-bleu \
@@ -49,9 +49,16 @@ train_model(){
         --eval-bleu-detok moses \
         --eval-bleu-remove-bpe \
         --eval-bleu-print-samples \
-        --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
         2>&1 | tee   $modeldir/log.txt
 }
+
+
+# --eval-bleu \
+#         --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
+#         --eval-bleu-detok moses \
+#         --eval-bleu-remove-bpe \
+#         --eval-bleu-print-samples \
+#         --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
 
 get_test_BLEU(){
     src=$1

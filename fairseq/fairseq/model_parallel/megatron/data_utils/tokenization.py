@@ -533,7 +533,7 @@ def get_corpus_freq(dataset, filepath, filetype='tsv'):
     else:
         delimiter = ','
 
-    print("compute corpus frequency\n", flush=True)
+    # print("compute corpus frequency\n", flush=True)
 
     total_sentence_count = 0
     maxlen = 0
@@ -552,8 +552,8 @@ def get_corpus_freq(dataset, filepath, filetype='tsv'):
                         freqs[word] = 0
                     freqs[word] += 1
 
-    print("length of freqs before truncating " + str(len(freqs)), flush=True)
-    print("file path for freq " + str(filepath), flush=True)
+    # print("length of freqs before truncating " + str(len(freqs)), flush=True)
+    # print("file path for freq " + str(filepath), flush=True)
 
     freqs_sorted = {}
     counter=0

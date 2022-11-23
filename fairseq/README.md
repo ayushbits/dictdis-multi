@@ -22,8 +22,14 @@ git clone https://github.com/anoopkunchukuttan/indic_nlp_library.git
 
 ## Inference
 
-- bash translate_file.sh full_data/devtest/en-hi/testing/check.en pred-check.hi final-eng-hindi en hi 1
-- bash inference/compute_bleu.sh pred-med.hi full_data/devtest/en-hi/medical/medical.hi hi
+- Inside fairseq folder, Run
+- bash translate_file.sh <src_file>  <tgt_file> phy,math,chem,mech en hi 0/1
+- Go inside inference folder 
+- bash compute_bleu.sh <predicted_file> <tgt_file> en hi
+- python final_eval.py <src_file> <predicted_file> <tgt_file>  <comma_separated_lexicon>
+
+
+
 
 Please cite as:
 

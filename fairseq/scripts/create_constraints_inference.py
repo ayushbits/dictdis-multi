@@ -18,7 +18,7 @@ def numberOfLines(inputFile):
     return lines
 
 def create_dictionary(glossPath, glossaries):
-    glossaries = glossaries.split(',')
+    glossaries = glossaries.split(';')
     print(glossaries)
     dictionaries = {}
     print('gloss path is ', glossPath)

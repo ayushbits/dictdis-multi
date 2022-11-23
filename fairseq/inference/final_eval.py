@@ -4,7 +4,7 @@ import pandas as pd
 import re
 import csv
 import sys
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from tqdm import tqdm
 from flashtext import KeywordProcessor
 
@@ -190,8 +190,8 @@ if __name__ == "__main__":
     srcfile = sys.argv[1]
     tgtfile = sys.argv[2]
     gtfile = sys.argv[3]
-    glossPath = sys.argv[4]
-    glossary = sys.argv[5]
+    glossPath = '../full_data/lexicalDict' # sys.argv[4]
+    glossary = sys.argv[4]
     # directory_storage = sys.argv[6]
     # srcCol = sys.argv[6]
     # tgtCol = sys.argv[7]

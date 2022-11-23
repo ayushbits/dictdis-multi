@@ -61,7 +61,6 @@ class FairseqTask(object):
     This is necessary so that when loading checkpoints, we can properly
     recreate the task state after initializing the task instance.
     """
-
     @classmethod
     def add_args(cls, parser):
         """Add task-specific arguments to the parser."""
@@ -647,7 +646,7 @@ class FairseqTask(object):
             for src_str in lines
         ]
         lengths = [t.numel() for t in tokens]
-        # print('tokens are ', tokens)
+        # print('tokens line 650 fairseq task.py', tokens)
         return tokens, lengths
 
 

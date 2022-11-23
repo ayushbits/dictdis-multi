@@ -145,10 +145,10 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
         if self.output_projection is None:
             self.build_output_projection(cfg, dictionary, embed_tokens)
 
-        if self.use_ptrnet:  ## set to use pointer network
+        # if self.use_ptrnet:  ## set to use pointer network
             # self.beamsize = cfg.beam if hasattr(args,'beam') else 1
             #self.beamsize = cfg.beam 
-            self.ptrnet = PointerNet(cfg.encoder_embed_dim, cfg.decoder_embed_dim, len(self.dictionary))
+        self.ptrnet = PointerNet(cfg.encoder_embed_dim, cfg.decoder_embed_dim, len(self.dictionary))
 
     def build_output_projection(self, cfg, dictionary, embed_tokens):
         if cfg.adaptive_softmax_cutoff is not None:
@@ -382,18 +382,19 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
             # ggg = torch.tensor(requires_grad=True)
             # exit()
             src_tokens = encoder_out['src_tokens'][0] if enc is not None else None 
-            # print("KAAM ka HAI ye: ", src_tokens.shape)
+            # print("KAAM ka HAI ye: ", src_tokens)
             # print(encoder_out.keys())
-            #print("src token shape",src_tokens.shape)
+            # print("src token shape",src_tokens.shape)
             src_tokens = src_tokens.unsqueeze(1).expand(attn.size())
             #src_tokens = src_tokens[:,:,sep_tkn:]
 
-            #print("POST SLICE src token shape",src_tokens.shape)
+            # print("POST SLICE src token shape",src_tokens.shape)
             #print(src_tokens.shape)
             # print("ye bhi KAAM ka HAI ye: ", src_tokens.shape)
             #exit()
 
             src_masks = src_tokens.eq(self.eos_id) | src_tokens.eq(self.pad_id) | src_tokens.eq(self.sep_id) | src_tokens.eq(self.isep_id)
+            # print('src_masks', src_masks)
             src_embedding = encoder_out['src_embedding'][0]
             # if inference_step:
             #     a, b, c = src_embedding.shape
@@ -415,7 +416,7 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
 
             #dec_enc_attn = dec_enc_attn[:,:,sep_tkn:]
 
-            #print('dec_enc_attn',dec_enc_attn.shape)
+            # print('dec_enc_attn',dec_enc_attn)
 
             enc_hids = enc.transpose(0,1) ### srclen x bsz x hidsize  -> bsz x srclen x hidsize
             #enc_hids = enc_hids[:,sep_tkn:,:]
@@ -428,7 +429,9 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
 
             #src_masks = src_masks[:,:,sep_tkn:]
             #print("src mask shape",src_masks.shape)
-
+            # print('dec enc attention', dec_enc_attn)
+            # print('score ', scores)
+            # print('ctx is ', ctx)
             scores = scores.masked_fill(src_masks, float(1e-15))
             #print('scores shape')
             # print('It reached intra_normalisation')
@@ -440,9 +443,11 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
             dec_enc_attn = dec_enc_attn + scores
             # print('scores',scores.shape)
             dec_enc_attn = self.intra_normalization(encoder_out['cons_info'], dec_enc_attn)
+            # print('after normaliszaiton dec enc is ', dec_enc_attn)
             # 1/0
-            gate = self.ptrnet(ctx, inner_states[-1].transpose(0,1))
             
+            gate = self.ptrnet(ctx, inner_states[-1].transpose(0,1))
+            # print('gate is now ', gate)
             #src_tokens = src_tokens[:,:,sep_tkn:]
             #print("src-token shape",src_tokens.shape)
         else:
@@ -454,22 +459,69 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
 
         return x, {"attn": [attn], "inner_states": inner_states,'dec_enc_attn':dec_enc_attn, 'gate': gate, 'src_tokens': src_tokens}
 
+## Souvik's code for intra norm
     def intra_normalization(self, cons_info, scores):
         bsz,n_tgt,src_len = scores.shape
         # print('src-mask non zero',min(src_mask.nonzero()[:,2]))
         # print('cumsum',torch.cumsum((src_mask==True),dim=2))
         # 1/0
         # sep_position = min(src_mask.nonzero()[:,:,1])
-        temp_scores = torch.zeros(bsz,n_tgt,src_len).to('cuda')
+        #temp_scores = torch.zeros(bsz,n_tgt,src_len).to('cuda')
+        temp_scores = torch.zeros(bsz,n_tgt,src_len)
+        temp_scores = utils.move_to_cuda(temp_scores)
+        
         #temp_scores = torch.zeros(bsz,n_tgt,src_len)
+
         n_cons = cons_info['n_cons']
         sep_pos = cons_info['sep_pos']
         n_sub_cons = cons_info['n_sub_cons']
+        # print("INSIDE INTRA NORMALISATION n_cons",n_cons)
+        # print("INSIDE INTRA NORMALISATION sep_pos",sep_pos)
+        # print("INSIDE INTRA NORMALISATION n_sub_cons",n_sub_cons)
+        temp_scores[:,:,0:sep_pos] = F.normalize(scores[:,:,0:sep_pos],p=1,dim=2)
+
+        if n_sub_cons:
+            end_point = sep_pos + n_sub_cons
+        else:
+            _,_,end_point = scores.shape
+
         for i in range(n_cons):
-            temp_scores[:,:,sep_pos:sep_pos + n_sub_cons] = F.normalize(scores[:,:,sep_pos:sep_pos + n_sub_cons],p=1,dim=2)
+            # normalise only those contraits which have a non- zero dec-enc attn (in scores)
+
+            x = torch.count_nonzero(scores[:,:,sep_pos:end_point])
+            # print("counter for normalisation",x)
+            temp_scores[:,:,sep_pos:sep_pos + x ] = F.normalize(scores[:,:,sep_pos:sep_pos + x],p=1,dim=2)
             sep_pos += n_sub_cons
         scores = temp_scores
+
+        cons_info['sep_pos'] = sep_pos - (n_sub_cons*n_cons)
+
+        # print("SEP position debug",cons_info['sep_pos'])
         return scores
+    # def intra_normalization(self, cons_info, scores):
+    #     bsz,n_tgt,src_len = scores.shape
+    #     # print('src-mask non zero',min(src_mask.nonzero()[:,2]))
+    #     # print('cumsum',torch.cumsum((src_mask==True),dim=2))
+    #     # 1/0
+    #     # sep_position = min(src_mask.nonzero()[:,:,1])
+    #     temp_scores = torch.zeros(bsz,n_tgt,src_len).to('cuda:0')
+    #     #temp_scores = torch.zeros(bsz,n_tgt,src_len)
+    #     n_cons = cons_info['n_cons']
+    #     sep_pos = 0
+    #     sep_pos = cons_info['sep_pos']
+    #     n_sub_cons = cons_info['n_sub_cons']
+    #     print('n_sub_cons ', n_sub_cons)
+    #     print('sep_pos', sep_pos)
+    #     print('n_cons ', n_cons)
+        
+    #     for i in range(n_cons):
+    #         print('sep_pos ', sep_pos, ' for ',i)
+    #         temp_scores[:,:,sep_pos:sep_pos + n_sub_cons] = F.normalize(scores[:,:,sep_pos:sep_pos + n_sub_cons],p=1,dim=2)
+    #         sep_pos = sep_pos + n_sub_cons
+        
+    #     print('post sep_pos ', cons_info['sep_pos'])
+    #     scores = temp_scores
+    #     return scores
 
     def get_normalized_probs(self, net_output, log_probs, sample):
         """Get normalized probabilities (or log probs) from a net's output."""
@@ -485,6 +537,7 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
         
         gate = net_output[1]['gate'].float()
         dec_enc_attn = net_output[1]['dec_enc_attn'].float()
+        # print('dec enc attention ', dec_enc_attn)
         src_tokens = net_output[1]['src_tokens']    
         logits = F.softmax(logits, dim=-1)
 
@@ -505,8 +558,11 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
         # print("logits",logits.shape)
 
         # try:
+        # print('gate is ', gate)
+        # gate = 0.8
+        # print('logits ', logits.shape)
         logits = (gate * logits).scatter_add(2, src_tokens[:,:,sep_position:], (1-gate) * dec_enc_attn[:,:,sep_position:]) +1e-10
-
+        # print('logits are ', logits)
         # TODo
         # logits += (gate * logits).scatter_add(2, src_tokens[:,:,sep_tkn:] - 2d matrix aayega jisme fanout 1 ke indiex ho, w** dec_enc_attn[:,:,sep_tkn:]) + 1e-10
         # logits += (gate * logits).scatter_add(2, src_tokens[:,:,sep_tkn:] - 2d matrix aayega jisme fanout > 1 ke indiex ho, (1-w)* dec_enc_attn[:,:,sep_tkn:]) + 1e-10

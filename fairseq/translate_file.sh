@@ -149,7 +149,7 @@ useptr='--use-ptrnet'
 CUDA_VISIBLE_DEVICES=1 python fairseq_cli/interactive.py $data_bin_dir \
     -s $src_lang -t $tgt_lang \
     --path $model_dir/checkpoint_best.pt \
-    --beam 5  --remove-bpe --quiet --consnmt $useptr \
+    --beam 5  --remove-bpe --consnmt $useptr \
     --model-overrides "{'beam':5}" \
     --input $src_input_bpe_fname  >  $tgt_output_fname.log 2>&1
 

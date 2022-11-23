@@ -223,7 +223,7 @@ class TransformerEncoderBase(FairseqEncoder):
                   Only populated if *return_all_hiddens* is True.
         """
         # print(self.consnmt)
-        # print(src_tokens.view(-1))
+        # print('src_tokens.view(-1) ',src_tokens.view(-1))
         # print(torch.cuda.current_device())
         if not self.consnmt or (4 not in src_tokens.view(-1)):
             # print("########################## WHY IS IT ENTERING HERE ##################################")
@@ -262,7 +262,7 @@ class TransformerEncoderBase(FairseqEncoder):
             if self.consnmt and (self.seg_embed is not None):
                 x += self.seg_embed(torch.zeros_like(src_tokens))
         else:
-            print("########################## THIS IS PROBABLY OKAY ##################################")
+            # print("########################## THIS IS PROBABLY OKAY ##################################")
             # print('src_token',src_tokens.shape)
             # print(src_tokens)
             # print(src_tokens.shape)
@@ -283,6 +283,10 @@ class TransformerEncoderBase(FairseqEncoder):
             max_sep_pos = max(sep_id_indices[:,1])
             # print('max_sep_posi',max_sep_pos)
             n_sub_cons = 0
+            # if len(sep_id_indices) == 1:
+            #     n_sub_cons = 
+            # else
+            # print('sep id indices ', sep_id_indices)
             for i in range(len(sep_id_indices)-1):
                 if(sep_id_indices[i][0]==sep_id_indices[i+1][0]):
                     #print(i)
@@ -296,7 +300,10 @@ class TransformerEncoderBase(FairseqEncoder):
                 n_cons = (n_cons // n_sub_cons) + 1
             else:
                 n_cons += 1
-            print('n_cons', n_cons)
+            # print('n_cons', n_cons)
+
+            if n_cons == 1:
+                n_sub_cons = len((src_tokens== 5).nonzero())
             
             # print("ENCODER SIDE")
             # print(self.embed_tokens)
