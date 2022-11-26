@@ -799,7 +799,8 @@ class Trainer(object):
         for i, sample in enumerate(samples):  # delayed update loop
             sample, is_dummy_batch = self._prepare_sample(sample)
             # print(sample)
-
+            # if torch.isinf(sample) or torch.isnan(sample):
+            #     print(i, sample)
             def maybe_no_sync():
                 """
                 Whenever *samples* contains more than one mini-batch, we
@@ -976,6 +977,7 @@ class Trainer(object):
             with NanDetector(self.get_model()):
                 for _, sample in enumerate(samples):
                     sample, _ = self._prepare_sample(sample)
+                    print('sample inside nandetector ', sample)
                     self.task.train_step(
                         sample,
                         self.model,

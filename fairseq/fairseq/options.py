@@ -311,7 +311,7 @@ def add_preprocess_args(parser):
 
 def add_dataset_args(parser, train=False, gen=False):
     group = parser.add_argument_group("dataset_data_loading")
-    group.add_argument('--consnmt', action='store_true', help='use leca model: constrained nmt')
+    group.add_argument('--consnmt', action='store_true', help='use leca model: constrained nmt', default=True)
     group.add_argument('--exp-name', type=str, default='wmt16-en2de', metavar='N',
                        help='the name of the experiment.')
     parser.add_argument('--use-ptrnet', action='store_true',

@@ -470,7 +470,7 @@ class Dictionary:
             else:
                 idx = self.index(word) if (i < sep_idx or sep_idx < 0) else tgt_dict.index(word)
 
-                print("word:",word," index:",idx)
+                # print("word:",word," index:",idx)
             if consumer is not None:
                 consumer(word, idx)
             ids[i] = idx

@@ -332,26 +332,35 @@ class LanguagePairDataset(FairseqDataset):
         # EOS from end of src sentence if it exists. This is useful when we use
         # use existing datasets for opposite directions i.e., when we want to
         # use tgt_dataset as src_dataset and vice versa
-        if not self.consnmt or True:
+        # print('inside get item of language pair dataset.py')
+        if not self.consnmt:# or True: # since self.consnmt is not passed as an argument, we change this condition such that random constraints are generated 
+        # if self.consnmt: # condition changed by ayush    
             src_item = self.src[index]
         else:
             assert self.sep_idx not in self.src[index] 
 
             cons_tokens = self.cons[index]
-            cons_token = self.tgt_dict.string(cons_tokens)
-
+            # cons_token = self.tgt_dict.string(cons_tokens)
+            # print('cons target token ', cons_token)
             # BElow 2 lines added for inserting random constraints in 4% sentences
+            wentinside = False
             if(cons_tokens.shape==torch.Size([1])):
+                # print(' before  shape is ', cons_tokens)
                 cons_tokens = self.get_rand_cons(index)
+                # cons_token = self.src_dict.string(cons_tokens)
+                
+                wentinside = True
+                # print('cons target token ', cons_tokens, wentinside)
             if cons_tokens is not None:
                 assert self.src[index][-1].item() == self.src_dict.eos_index, 'No eos added in the src.'
-                src_items = self.src_dict.string(self.src[index])
-                #print("src items: ",src_items)
+                # src_items = self.src_dict.string(self.src[index])
+                # print("src items: ",src_items)
                 # src_items += cons_token
                 src_item=torch.cat((self.src[index][:-1],cons_tokens),dim=0)
                 
             else:
                 src_item = self.src[index]
+                # print('src index is' , src_item)
 
 
 
@@ -375,11 +384,17 @@ class LanguagePairDataset(FairseqDataset):
             if self.src[index][-1] == eos:
                 src_item = self.src[index][:-1]
 
+        # print('tgt_item ', tgt_item ) #, ' and went inside rand_cons ' , wentinside)
+        # print('src_item ', src_item )
+
+        # if torch.isnan(src_item) or torch.isinf(src_item):
+        #     print(index, src_item)
         example = {
             "id": index,
             "source": src_item,
             "target": tgt_item,
         }
+        
         if self.align_dataset is not None:
             example["alignment"] = self.align_dataset[index]
         if self.constraints is not None:
@@ -536,12 +551,17 @@ class LanguagePairDataset(FairseqDataset):
         # print("masked_seq :",masked_seq,len(masked_seq))
         if self.training:
             # cons_num=np.random.choice(5, 1, p=[0.4, 0.1, 0.2, 0.2, 0.1])  ## include zero constraints
-            cons_num= 1 #np.random.choice(5, 1, p=[0.4, 0.1, 0.2, 0.2, 0.1])  ## include zero constraints
+            cons_num=np.random.choice([1,2,3 ,4 ], 1, p=[0.4, 0.3, 0.2, 0.1])   ## include zero constraints by Ayush
         else:
             np.random.seed(test_seed)
             cons_num=np.random.choice(range(1,5), 1, p=[0.2, 0.3, 0.3, 0.2]) ## exclude zero 
         # print("cons_num :",cons_num)
-        if cons_num >= len(masked_seq) or cons_num ==0:
+        # print('masked_seq ', masked_seq)
+        # if cons_num >= len(masked_seq) or cons_num ==0:
+        if cons_num >= len(masked_seq):# or cons_num ==0:
+        #     cons_num = 1
+        # if len(masked_seq) == 0:
+        #     return None
             return None
         
         cons_seq = np.random.choice(masked_seq, cons_num, replace=False)    
@@ -564,6 +584,7 @@ class LanguagePairDataset(FairseqDataset):
         out_list='<sep> '+' <sep> '.join(out_list)
         # print("out_list: ",out_list)
         cons_tokens = self.tgt_dict.encode_line(out_list,add_if_not_exist=False)      
+        # print('cons tokens ', cons_tokens)
         return cons_tokens.type_as(self.tgt[index])
            
     def get_masked_sent(self,tgt_tokens):

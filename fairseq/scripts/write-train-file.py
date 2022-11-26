@@ -1,3 +1,6 @@
+#python scripts/write-train-file.py  full_data/lexicalDict/ final-eng-hindi.csv full_data/raw_data/train-full.en full_data/raw_data/train-full.hi .
+
+# Write train file both hindi and english side that contain constraints
 import sys
 from tqdm import tqdm 
 import re
@@ -51,34 +54,47 @@ def Retriever(dictionaries, inputEnFile, inputHiFile, outputDir):
     # line = 0
     # print(inputFile[:inputFile.rfind('/')]+'/'+outputDir+'/'+inputFile[inputFile.rfind('/')+1:inputFile.rfind('.')]+".constraints.log")
     # 1/0
-    logFile = open(inputEnFile[:inputEnFile.rfind('/')]+'/'+outputDir+'/'+inputEnFile[inputEnFile.rfind('/')+1:inputEnFile.rfind('.')]+".constraints.log",'w')
-    consFile = open(inputEnFile[:inputEnFile.rfind('/')]+'/'+outputDir+'/'+inputEnFile[inputEnFile.rfind('/')+1:inputEnFile.rfind('.')]+".constraints",'w')
+    # logFile = open(inputEnFile[:inputEnFile.rfind('/')]+'/'+outputDir+'/'+inputEnFile[inputEnFile.rfind('/')+1:inputEnFile.rfind('.')]+".constraints.log",'w')
+    # consFile = open(inputEnFile[:inputEnFile.rfind('/')]+'/'+outputDir+'/'+inputEnFile[inputEnFile.rfind('/')+1:inputEnFile.rfind('.')]+".constraints",'w')
+    final_en_file =  open(inputEnFile[:inputEnFile.rfind('/')]+'/'+outputDir+'/'+"train.en",'w')
+    final_hi_file =  open(inputHiFile[:inputHiFile.rfind('/')]+'/'+outputDir+'/'+"train.hi",'w')
 
     kp = KeywordProcessor(case_sensitive=True)
     # kp_hi = KeywordProcessor()
     for key in dictionaries.keys():
         kp.add_keyword(key, (key, dictionaries[key]))
+        # kp_hi.add_keyword(dictionaries[key], (key, dictionaries[key]))
     
     with open(inputEnFile,'r') as enFile, open(inputHiFile,'r') as hiFile:
         enLines = enFile.readlines()
         hiLines = hiFile.readlines()
         for i, line in enumerate(tqdm(enLines, total=len(enLines))):
             # line = line.lower()
-            line = re.sub(r"\(\'\"[^()]*\)", "", line).strip()
+            # line = re.sub(r"\(\'\"[^()]*\)", "", line).strip()
             matchings = kp.extract_keywords(line)
+            # matchings_hi = kp_hi.extract_keywords(hiLines[i])
             # print('matching',i,matchings)
-            for matches in set(matchings):
+            # print('matching hi ',i,matchings_hi)
+            if len(set(matchings)) > 0: # and len(set(matchings_hi)) > 0:
+                final_en_file.write(line)
+                final_hi_file.write(hiLines[i])
+                # if i > 20:
+                #     break
+                # print(line, hiLines[i])
+                # print('constraints ', matchings)
+                # exit()
+            # for matches in set(matchings):
                 
-                constraints = matches[1].split(',')
-                constraints = list(set([cons for cons in [cons.strip() for cons in constraints] if cons]))
-                # if(any(tgt_phrase in hiLines[i] for tgt_phrase in constraints)):
-                #     # print('cons',constraints)
-                logFile.write(str(matches))
-                consFile.write(' <sep> '+constraints[0])
-                for i in range(1,len(constraints)):
-                    consFile.write(' <isep> '+constraints[i])
-            logFile.write('\n')
-            consFile.write('\n')
+            #     constraints = matches[1].split(',')
+            #     constraints = list(set([cons for cons in [cons.strip() for cons in constraints] if cons]))
+            #     # if(any(tgt_phrase in hiLines[i] for tgt_phrase in constraints)):
+            #     #     # print('cons',constraints)
+            #     logFile.write(str(matches))
+            #     consFile.write(' <sep> '+constraints[0])
+            #     for i in range(1,len(constraints)):
+            #         consFile.write(' <isep> '+constraints[i])
+            # logFile.write('\n')
+            # consFile.write('\n')
 
 def main(glossPath, glossaries, inputEnFile, inputHiFile, outputDir):
     dictionaries = create_dictionary(glossPath, glossaries)

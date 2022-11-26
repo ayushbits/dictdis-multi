@@ -97,7 +97,7 @@ def load_langpair_dataset(
         print("prefix + src",prefix + src)
         print("prefix + target",prefix + tgt)
         print("prefix + constraint",prefix + 'constraints')
-
+        print('self.cfg.consnmt 2nd time ', consnmt)
         src_dataset = data_utils.load_indexed_dataset(
             prefix + src, src_dict, dataset_impl,tgt_dict
         )
@@ -133,7 +133,7 @@ def load_langpair_dataset(
         if not combine:
             break
 
-    print("len of datsets",len(src_datasets),len(tgt_datasets),len(cons_datas))
+    # print("len of datsets",len(src_datasets),len(tgt_datasets),len(cons_datas))
 
     assert len(src_datasets) == len(tgt_datasets) or len(tgt_datasets) == 0 and len(tgt_datasets) == len(cons_datas)
 
@@ -198,6 +198,7 @@ def load_langpair_dataset(
         num_buckets=num_buckets,
         shuffle=shuffle,
         pad_to_multiple=pad_to_multiple,
+        consnmt=consnmt
     )
 
 
@@ -371,7 +372,7 @@ class TranslationTask(FairseqTask):
         # infer langcode
         src, tgt = self.cfg.source_lang, self.cfg.target_lang
 
-        print("split",split)
+        print("self.cfg.consnmt",self.cfg.consnmt)
 
         self.datasets[split] = load_langpair_dataset(
             data_path,

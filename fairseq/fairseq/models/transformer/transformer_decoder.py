@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+# import numpy as np
 from fairseq import utils
 from fairseq.distributed import fsdp_wrap
 from fairseq.models import FairseqIncrementalDecoder
@@ -389,7 +389,7 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
             #src_tokens = src_tokens[:,:,sep_tkn:]
 
             # print("POST SLICE src token shape",src_tokens.shape)
-            #print(src_tokens.shape)
+            # print(src_tokens.shape)
             # print("ye bhi KAAM ka HAI ye: ", src_tokens.shape)
             #exit()
 
@@ -420,34 +420,43 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
 
             enc_hids = enc.transpose(0,1) ### srclen x bsz x hidsize  -> bsz x srclen x hidsize
             #enc_hids = enc_hids[:,sep_tkn:,:]
-            #print('enc_hids',enc_hids.shape)
+            # print('enc_hids',enc_hids.shape)
 
             ctx = torch.bmm(dec_enc_attn,enc_hids)  ## bsz x tgtlen x hidsize
             # print('ctx_shape',ctx.shape)
             # print('src_embed_shape',src_embedding.transpose(1,2).shape)
             scores = torch.bmm(ctx,src_embedding.transpose(1,2))
 
-            #src_masks = src_masks[:,:,sep_tkn:]
+            # src_masks = src_masks[:,:,sep_tkn:]
             #print("src mask shape",src_masks.shape)
             # print('dec enc attention', dec_enc_attn)
             # print('score ', scores)
             # print('ctx is ', ctx)
+            scores = self.intra_normalization(encoder_out['cons_info'], scores)
             scores = scores.masked_fill(src_masks, float(1e-15))
-            #print('scores shape')
+            # print('scores shape' , scores.shape)
+            # print('dec_enc_attn shape' , dec_enc_attn.shape)
             # print('It reached intra_normalisation')
             # print('start time is :',time.strftime("%Y-%m-%d %X"))
-            scores = self.intra_normalization(encoder_out['cons_info'], scores)
+            
             # print('end time is :',time.strftime("%Y-%m-%d %X"))
             # print('It left intra_normalisation')
             # print('scores2',scores)
-            dec_enc_attn = dec_enc_attn + scores
+            dec_enc_attn = dec_enc_attn# + scores
             # print('scores',scores.shape)
             dec_enc_attn = self.intra_normalization(encoder_out['cons_info'], dec_enc_attn)
             # print('after normaliszaiton dec enc is ', dec_enc_attn)
             # 1/0
             
             gate = self.ptrnet(ctx, inner_states[-1].transpose(0,1))
-            # print('gate is now ', gate)
+            # print('gate ', gate)
+            if torch.any(torch.isnan(scores)) or torch.any(torch.isinf(scores)):
+                print('scores are ', scores)
+                # print(src_tokens )
+                # return None
+            if torch.any(torch.isnan(gate)) or torch.any(torch.isinf(gate)):
+                print('gate is ', gate)
+
             #src_tokens = src_tokens[:,:,sep_tkn:]
             #print("src-token shape",src_tokens.shape)
         else:
@@ -479,6 +488,9 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
         # print("INSIDE INTRA NORMALISATION sep_pos",sep_pos)
         # print("INSIDE INTRA NORMALISATION n_sub_cons",n_sub_cons)
         temp_scores[:,:,0:sep_pos] = F.normalize(scores[:,:,0:sep_pos],p=1,dim=2)
+        # x = F.normalize(scores[:,:,:],p=1,dim=2) # by ayush
+        # temp_scores[:,:,0:sep_pos] = x [:,:, 0:sep_pos]
+        # temp_scores[:,:,0:sep_pos] = 1e-15 # added by ayush
 
         if n_sub_cons:
             end_point = sep_pos + n_sub_cons
@@ -558,10 +570,17 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
         # print("logits",logits.shape)
 
         # try:
-        # print('gate is ', gate)
-        # gate = 0.8
+        # print('gate is ', gate[0][1])
+        # gate = 0.9
         # print('logits ', logits.shape)
+        # sorted_log, idx = torch.sort(logits[0,0,:], descending=True)
+        # print('before logits' , sorted_log[:10], idx[:10])
+        
+
+
         logits = (gate * logits).scatter_add(2, src_tokens[:,:,sep_position:], (1-gate) * dec_enc_attn[:,:,sep_position:]) +1e-10
+        # sorted_log, idx = torch.sort(logits[0,0,:], descending=True)
+        # print('after logits' , sorted_log[:10], idx[:10])
         # print('logits are ', logits)
         # TODo
         # logits += (gate * logits).scatter_add(2, src_tokens[:,:,sep_tkn:] - 2d matrix aayega jisme fanout 1 ke indiex ho, w** dec_enc_attn[:,:,sep_tkn:]) + 1e-10
