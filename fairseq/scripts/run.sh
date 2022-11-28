@@ -38,7 +38,7 @@ train_model(){
     python fairseq_cli/train.py $fseq \
         -a transformer_wmt_en_de --optimizer adam --lr 0.0005 -s $src -t $tgt \
         --distributed-world-size 3 --num-workers 0 --ddp-backend no_c10d \
-        --label-smoothing 0.1 --dropout 0.3 --max-tokens 8192 --update-freq 2 --seed 1 --patience 5 \
+        --label-smoothing 0.1 --dropout 0.3 --max-tokens 4048 --update-freq 2 --seed 1 --patience 5 \
         --stop-min-lr '1e-09' --lr-scheduler inverse_sqrt --weight-decay 0.0001 \
         --criterion label_smoothed_cross_entropy --max-update $MaxUpdates --exp-name "${modelname}-${src}-${tgt}" \
         --warmup-updates 100 --warmup-init-lr '1e-07' --keep-last-epochs 30 \

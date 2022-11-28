@@ -570,7 +570,7 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
         # print("logits",logits.shape)
 
         # try:
-        # print('gate is ', gate[0][1])
+        # print('gate is ', gate)
         # gate = 0.9
         # print('logits ', logits.shape)
         # sorted_log, idx = torch.sort(logits[0,0,:], descending=True)

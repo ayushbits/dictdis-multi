@@ -328,14 +328,19 @@ class LanguagePairDataset(FairseqDataset):
         # print("INDEX:",index)
         tgt_item = self.tgt[index] if self.tgt is not None else None
         src_item = self.src[index]
+        # print('src item ', src_item)
         # Append EOS to end of tgt sentence if it does not have an EOS and remove
         # EOS from end of src sentence if it exists. This is useful when we use
         # use existing datasets for opposite directions i.e., when we want to
         # use tgt_dataset as src_dataset and vice versa
-        # print('inside get item of language pair dataset.py')
-        if not self.consnmt:# or True: # since self.consnmt is not passed as an argument, we change this condition such that random constraints are generated 
+        # print('inside get item of language pair dataset.py self.consnmt', self.consnmt)
+        if not self.consnmt:# or True:
         # if self.consnmt: # condition changed by ayush    
             src_item = self.src[index]
+        # elif self.sep_idx in self.src[index]: # this is added for inference by
+        #     src_item = self.src[index]
+        # elif self.consnmt:
+            # src_item = self.src[index] # this is added for inference by Ayush to refrain from adding random constraints .. During training please remove this condition if you want to add random constraints
         else:
             assert self.sep_idx not in self.src[index] 
 
