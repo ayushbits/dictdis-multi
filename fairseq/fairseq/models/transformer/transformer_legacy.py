@@ -164,7 +164,17 @@ def tiny_architecture(args):
     args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 2)
     return base_architecture(args)
 
-
+@register_model_architecture("transformer", "transformer_4x")
+def transformer_huge(args):
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 1536)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 4096)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 16)
+    args.encoder_normalize_before = getattr(args, "encoder_normalize_before", False)
+    args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 1536)
+    args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 4096)
+    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
+    base_architecture(args)
+    
 @register_model_architecture("transformer", "transformer")
 def base_architecture(args):
     args.encoder_embed_path = getattr(args, "encoder_embed_path", None)

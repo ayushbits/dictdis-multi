@@ -132,7 +132,7 @@ class FairseqTask(object):
 
     def has_sharded_data(self, split):
         # print(os.pathsep in getattr(self.cfg, "data", ""))
-        print("split in fairseq_task",split)
+        # print("split in fairseq_task",split)
         # exit()
         return os.pathsep in getattr(self.cfg, "data", "")
 

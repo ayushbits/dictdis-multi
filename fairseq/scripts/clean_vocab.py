@@ -2,6 +2,7 @@ import sys
 import codecs
 
 def clean_vocab(in_vocab_fname, out_vocab_fname):
+    
     with codecs.open(in_vocab_fname, "r", encoding="utf-8") as infile, codecs.open(
         out_vocab_fname, "w", encoding="utf-8"
     ) as outfile:

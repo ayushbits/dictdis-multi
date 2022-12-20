@@ -337,10 +337,10 @@ class LanguagePairDataset(FairseqDataset):
         if not self.consnmt:# or True:
         # if self.consnmt: # condition changed by ayush    
             src_item = self.src[index]
-        # elif self.sep_idx in self.src[index]: # this is added for inference by
-        #     src_item = self.src[index]
+        elif self.sep_idx in self.src[index]: # this is added for inference by
+            src_item = self.src[index]
         # elif self.consnmt:
-            # src_item = self.src[index] # this is added for inference by Ayush to refrain from adding random constraints .. During training please remove this condition if you want to add random constraints
+        #     src_item = self.src[index] # this is added for inference by Ayush to refrain from adding random constraints .. During training please remove this condition if you want to add random constraints
         else:
             assert self.sep_idx not in self.src[index] 
 
