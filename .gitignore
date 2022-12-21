@@ -7,12 +7,12 @@ __pycache__/
 *$py.class
 *.en*
 *.hi*
-inference/bob
-inference/engg
-inference/med
-inference/rbi
-inference/wat2021/train
-inference/wat2021/dev
+inference/bob/
+inference/engg/
+inference/med/
+inference/rbi/
+inference/wat2021/train/
+inference/wat2021/dev/
 # C extensions
 *.so
 fairseq/checkpoints*/
