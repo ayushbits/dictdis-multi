@@ -18,10 +18,10 @@ with open(pred_fname, 'r') as predf:
 score = []
 # for s,r,p in zip(src, ref, pred):
 score = (chrf_metric.compute(predictions=pred, references = ref, word_order=0, lowercase=True))
-print('Chrf ', score)
+print('Chrf: ', score['score'])
 score = (chrf_metric.compute(predictions=pred, references = ref, word_order=2, lowercase=True))
 
-print('Chrf++ ', score)
+print('Chrf++: ', score['score'])
 
 
 

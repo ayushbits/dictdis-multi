@@ -27,6 +27,6 @@ score = []
 score = (comet_metric.compute(predictions=pred, references = ref, sources =src ))
 
 # print('score is ', score)
-print(score['mean_score'])
+print('Comet: ', score['mean_score'])
 
 

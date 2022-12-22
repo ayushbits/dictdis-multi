@@ -31,7 +31,11 @@ git clone https://github.com/anoopkunchukuttan/indic_nlp_library.git
 - bash compute_bleu.sh <predicted_file> <tgt_file> en hi
 - python final_eval.py <src_file> <predicted_file> <tgt_file>  <comma_separated_lexicon>
 
-
+### COMET and ChrF
+- conda activate translation
+- Execute bash script: `bash compute_comet_chrf.sh <pred> <ref> <src> `
+- python comet_compute.py flores/flores.en flores/flores.hi flores/flores-pred-1-new.hi
+- python chrf_compute.py  flores/flores.hi flores/flores-pred-1-new.hi
 
 
 Please cite as:
