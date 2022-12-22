@@ -10,10 +10,13 @@
 git clone https://github.com/anoopkunchukuttan/indic_nlp_resources.git
 git clone https://github.com/anoopkunchukuttan/indic_nlp_library.git
 ```
-
+- `pip install flashtext evaluate unbabel-comet`
 ## Preprocessing
 - bash preprocess.sh Data lexicalDict en hi
 - Data/ contains raw_data folder where train.(en/hi), test.(en/hi), val.(en/hi) is present
+
+## Path change in files
+- change indic_nlp_lib_home path in scripts/preprocess_translate.py, scripts/postprocess_translate.py and scripts/detokenize.py
 
 ## Train
 - bash script/run.sh
