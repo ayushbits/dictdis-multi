@@ -1,0 +1,679 @@
+2022-12-18 17:43:28 | INFO | fairseq_cli.interactive | {'_name': None, 'common': {'_name': None, 'no_progress_bar': False, 'log_interval': 100, 'log_format': None, 'log_file': None, 'aim_repo': None, 'aim_run_hash': None, 'tensorboard_logdir': None, 'wandb_project': None, 'azureml_logging': False, 'seed': 1, 'cpu': False, 'tpu': False, 'bf16': False, 'memory_efficient_bf16': False, 'fp16': False, 'memory_efficient_fp16': False, 'fp16_no_flatten_grads': False, 'fp16_init_scale': 128, 'fp16_scale_window': None, 'fp16_scale_tolerance': 0.0, 'on_cpu_convert_precision': False, 'min_loss_scale': 0.0001, 'threshold_loss_scale': None, 'amp': False, 'amp_batch_retries': 2, 'amp_init_scale': 128, 'amp_scale_window': None, 'user_dir': None, 'empty_cache_freq': 0, 'all_gather_list_size': 16384, 'model_parallel_size': 1, 'quantization_config_path': None, 'profile': False, 'reset_logging': False, 'suppress_crashes': False, 'use_plasma_view': False, 'plasma_path': '/tmp/plasma'}, 'common_eval': {'_name': None, 'path': 'checkpoints//checkpoint_best.pt', 'post_process': 'subword_nmt', 'quiet': False, 'model_overrides': "{'beam':5}", 'results_path': None}, 'distributed_training': {'_name': None, 'distributed_world_size': 1, 'distributed_num_procs': 1, 'distributed_rank': 0, 'distributed_backend': 'nccl', 'distributed_init_method': None, 'distributed_port': -1, 'device_id': 0, 'distributed_no_spawn': False, 'ddp_backend': 'pytorch_ddp', 'ddp_comm_hook': 'none', 'bucket_cap_mb': 25, 'fix_batches_to_gpus': False, 'find_unused_parameters': False, 'gradient_as_bucket_view': False, 'fast_stat_sync': False, 'heartbeat_timeout': -1, 'broadcast_buffers': False, 'slowmo_momentum': None, 'slowmo_base_algorithm': 'localsgd', 'localsgd_frequency': 3, 'nprocs_per_node': 1, 'pipeline_model_parallel': False, 'pipeline_balance': None, 'pipeline_devices': None, 'pipeline_chunks': 0, 'pipeline_encoder_balance': None, 'pipeline_encoder_devices': None, 'pipeline_decoder_balance': None, 'pipeline_decoder_devices': None, 'pipeline_checkpoint': 'never', 'zero_sharding': 'none', 'fp16': False, 'memory_efficient_fp16': False, 'tpu': False, 'no_reshard_after_forward': False, 'fp32_reduce_scatter': False, 'cpu_offload': False, 'use_sharded_state': False, 'not_fsdp_flatten_parameters': False}, 'dataset': {'_name': None, 'num_workers': 1, 'skip_invalid_size_inputs_valid_test': False, 'max_tokens': None, 'batch_size': 1, 'required_batch_size_multiple': 8, 'required_seq_len_multiple': 1, 'dataset_impl': None, 'data_buffer_size': 10, 'train_subset': 'train', 'valid_subset': 'valid', 'combine_valid_subsets': None, 'ignore_unused_valid_subsets': False, 'validate_interval': 1, 'validate_interval_updates': 0, 'validate_after_updates': 0, 'fixed_validation_seed': None, 'disable_validation': False, 'max_tokens_valid': None, 'batch_size_valid': None, 'max_valid_steps': None, 'curriculum': 0, 'gen_subset': 'test', 'num_shards': 1, 'shard_id': 0, 'grouped_shuffling': False, 'update_epoch_batch_itr': False, 'update_ordered_indices_seed': False}, 'optimization': {'_name': None, 'max_epoch': 0, 'max_update': 0, 'stop_time_hours': 0.0, 'clip_norm': 0.0, 'sentence_avg': False, 'update_freq': [1], 'lr': [0.25], 'stop_min_lr': -1.0, 'use_bmuf': False, 'skip_remainder_batch': False}, 'checkpoint': {'_name': None, 'save_dir': 'checkpoints', 'restore_file': 'checkpoint_last.pt', 'continue_once': None, 'finetune_from_model': None, 'reset_dataloader': False, 'reset_lr_scheduler': False, 'reset_meters': False, 'reset_optimizer': False, 'optimizer_overrides': '{}', 'save_interval': 1, 'save_interval_updates': 0, 'keep_interval_updates': -1, 'keep_interval_updates_pattern': -1, 'keep_last_epochs': -1, 'keep_best_checkpoints': -1, 'no_save': False, 'no_epoch_checkpoints': False, 'no_last_checkpoints': False, 'no_save_optimizer_state': False, 'best_checkpoint_metric': 'loss', 'maximize_best_checkpoint_metric': False, 'patience': -1, 'checkpoint_suffix': '', 'checkpoint_shard_count': 1, 'load_checkpoint_on_all_dp_ranks': False, 'write_checkpoints_asynchronously': False, 'model_parallel_size': 1}, 'bmuf': {'_name': None, 'block_lr': 1.0, 'block_momentum': 0.875, 'global_sync_iter': 50, 'warmup_iterations': 500, 'use_nbm': False, 'average_sync': False, 'distributed_world_size': 1}, 'generation': {'_name': None, 'beam': 5, 'nbest': 1, 'max_len_a': 0.0, 'max_len_b': 200, 'min_len': 1, 'match_source_len': False, 'unnormalized': False, 'no_early_stop': False, 'no_beamable_mm': False, 'lenpen': 1.0, 'unkpen': 0.0, 'replace_unk': None, 'sacrebleu': False, 'score_reference': False, 'prefix_size': 0, 'no_repeat_ngram_size': 0, 'sampling': False, 'sampling_topk': -1, 'sampling_topp': -1.0, 'constraints': None, 'temperature': 1.0, 'diverse_beam_groups': -1, 'diverse_beam_strength': 0.5, 'diversity_rate': -1.0, 'print_alignment': None, 'print_step': False, 'lm_path': None, 'lm_weight': 0.0, 'iter_decode_eos_penalty': 0.0, 'iter_decode_max_iter': 10, 'iter_decode_force_max_iter': False, 'iter_decode_with_beam': 1, 'iter_decode_with_external_reranker': False, 'retain_iter_history': False, 'retain_dropout': False, 'retain_dropout_modules': None, 'decoding_format': None, 'no_seed_provided': False, 'eos_token': None}, 'eval_lm': {'_name': None, 'output_word_probs': False, 'output_word_stats': False, 'context_window': 0, 'softmax_batch': 9223372036854775807}, 'interactive': {'_name': None, 'buffer_size': 1, 'input': '././bobdata/bobtest-sheet3.en.leca'}, 'model': None, 'task': {'_name': 'translation', 'data': 'bobdata/final_bin', 'source_lang': 'en', 'target_lang': 'hi', 'load_alignments': False, 'left_pad_source': True, 'left_pad_target': False, 'max_source_positions': 1024, 'max_target_positions': 1024, 'upsample_primary': -1, 'truncate_source': False, 'num_batch_buckets': 0, 'train_subset': 'train', 'dataset_impl': None, 'required_seq_len_multiple': 1, 'eval_bleu': False, 'eval_bleu_args': '{}', 'eval_bleu_detok': 'space', 'eval_bleu_detok_args': '{}', 'eval_tokenized_bleu': False, 'eval_bleu_remove_bpe': None, 'eval_bleu_print_samples': False, 'consnmt': True}, 'criterion': {'_name': 'cross_entropy', 'sentence_avg': True}, 'optimizer': None, 'lr_scheduler': {'_name': 'fixed', 'force_anneal': None, 'lr_shrink': 0.1, 'warmup_updates': 0, 'lr': [0.25]}, 'scoring': {'_name': 'bleu', 'pad': 1, 'eos': 2, 'unk': 3}, 'bpe': None, 'tokenizer': None, 'ema': {'_name': None, 'store_ema': False, 'ema_decay': 0.9999, 'ema_start_update': 0, 'ema_seed_model': None, 'ema_update_freq': 1, 'ema_fp32': False}}
+2022-12-18 17:43:28 | INFO | fairseq.tasks.translation | [en] dictionary: 19184 types
+2022-12-18 17:43:28 | INFO | fairseq.tasks.translation | [hi] dictionary: 33048 types
+2022-12-18 17:43:28 | INFO | fairseq_cli.interactive | loading model(s) from checkpoints//checkpoint_best.pt
+2022-12-18 17:43:37 | INFO | fairseq_cli.interactive | NOTE: hypothesis and token scores are output in base 2
+2022-12-18 17:43:37 | INFO | fairseq_cli.interactive | Type the input sentence and press return:
+src tokens inside interactive  tensor([[   72,  1216,   161,  7494, 16657,  6573,  6939,     9,    30,  1758,
+            12,    13,   331,    72,   330, 12149,   509,   141,   676,    59,
+          6573,  6939,    13,    12,     6,   530,     9,  2963,  4586,  8043,
+          3777,   104,  6064,    10,   141,  7158,  8475,  8390,   401,     9,
+         11596,     8,  9534,    33,   303,     8,    57,    15,  1216,   161,
+          7494, 16657,     8,   346,    22,  2458,  9550,   394,    23,  1460,
+           592, 15020,     7,     2,     4,   901,  5477,   837,     4,  1160,
+          1062,     1,     4,   469, 11787,     1,     4,  6035,     1,     1,
+             4,     4,  3246,     1,     4,  6143,     1,     1,     1,     1,
+             1,     1,     1,     1]])
+S-0	A non-refundable Application Money of as mentioned in " [ A ] Important Dates - Application Money " in the form of Bankers Cheque / Demand Draft favoring Bank of Baroda , payable at Mumbai , which is non-refundable , must be submitted separately along with Bid responses . <sep> अनुक्रियाएं <sep> आवेदन राशि <sep> मांग ड्राफ्ट <sep> फार्म <sep> <sep> बोली <sep> देय
+W-0	3.826	seconds
+H-0	-0.7340095043182373	" ( क ) बैंकर चेक / मांग ड्राफ्ट के रूप में " ( क ) " महत्वपूर्ण दिनांकित आवेदन राशि , जो मुंबई में देय है , जो कि गैर<unk> निधि योग्य है , के रूप में , अलग से प्रस्तुत की जानी चाहिए और साथ ही उसे बिड प्रतिक्रियाओं के साथ प्रस्तुत किया जाना चाहिए .
+D-0	-0.7340095043182373	" ( क ) बैंकर चेक / मांग ड्राफ्ट के रूप में " ( क ) " महत्वपूर्ण दिनांकित आवेदन राशि , जो मुंबई में देय है , जो कि गैर<unk> निधि योग्य है , के रूप में , अलग से प्रस्तुत की जानी चाहिए और साथ ही उसे बिड प्रतिक्रियाओं के साथ प्रस्तुत किया जाना चाहिए .
+P-0	-1.0457 -0.8971 -0.1613 -0.1355 -2.2050 -0.9435 -0.0765 -0.2236 -0.3568 -0.1676 -1.8061 -0.2875 -0.1584 -0.8516 -1.2669 -0.1223 -0.1331 -0.7795 -0.6884 -4.3548 -1.4599 -0.0195 -0.5731 -1.2894 -1.2350 -0.1935 -0.3533 -0.1685 -0.0539 -1.0992 -0.2949 -0.3727 -1.2151 -2.1109 -0.0972 -2.2825 -0.6275 -0.2164 -0.1443 -0.5392 -0.9018 -0.1549 -0.8315 -1.0626 -0.0753 -0.9141 -0.3130 -0.1375 -0.1403 -0.9799 -1.6821 -0.2087 -2.4798 -1.5468 -0.8607 -1.1573 -0.6669 -0.4240 -0.4292 -0.0967 -0.8391 -0.0361 -0.1108 -0.4824 -0.1721
+src tokens inside interactive  tensor([[   16,   401,   223,     8,    33,    70,  8935,   857,     8,  6936,
+           105, 17421,    51,  4485,  1347,   620,    20,    36,    41,  6510,
+          2484,    23,   180, 14362,  1374,     2,     4,  2433,     4,  4537,
+             4, 11058,     1,     1]])
+S-1	The Bank may , at its discretion , reject any vendor whereapplication money has not been furnished with RFP response <sep> मुद्रा <sep> विवेक <sep> विक्रेता
+W-1	0.265	seconds
+H-1	-0.7383109331130981	बैंक अपने विवेक के आधार पर ऐसे किसी भी विक्रेता को अस्वीकार कर सकता है जिसका आवेदन राशि आरएफपी प्रतिक्रिया के साथ नहीं दी गई है .
+D-1	-0.7383109331130981	बैंक अपने विवेक के आधार पर ऐसे किसी भी विक्रेता को अस्वीकार कर सकता है जिसका आवेदन राशि आरएफपी प्रतिक्रिया के साथ नहीं दी गई है .
+P-1	-0.1997 -0.5959 -0.3528 -1.4106 -0.4999 -0.0978 -1.9355 -0.6002 -1.0716 -0.3178 -1.0507 -2.5656 -0.2152 -0.1011 -0.1314 -1.8225 -0.1175 -1.7210 -0.1441 -0.0224 -1.1117 -0.4028 -0.6371 -1.0481 -0.7582 -0.5247 -0.9618 -0.8503 -0.1432
+src tokens inside interactive  tensor([[ 378,    7, 8821,  727, 3430,  410,   37,    2,    1,    1,    1,    1]])
+S-2	5 . Sub-Contracting :
+W-2	0.071	seconds
+H-2	-1.0389583110809326	5 उप<unk> संविदात्मक :
+D-2	-1.0389583110809326	5 उप<unk> संविदात्मक :
+P-2	-0.0162 -2.1967 -0.6436 -0.9683 -0.5598 -1.8979 -2.4896 -0.4588 -0.1198
+src tokens inside interactive  tensor([[   16,  2097,   653, 15192,   104,  4190,  1611,   191,    36,   967,
+          4113,    51,  9798,  1424,    76,   143,    70,  1133,    11,  3716,
+           105,     9,     6,   157,     8,   653,    51,    76,  1383,  1077,
+           101,    34,   657,     2,     4, 12944,     4,  1169,     4,   770,
+             4,  4826,     1,     1]])
+S-3	The selected service provider / vender shall not subcontract or permit anyone other than its personnel to perform any of the work , service or other performance required under this project <sep> परमिट <sep> पालन <sep> परियोजना <sep> कार्मिक
+W-3	0.357	seconds
+H-3	-0.6829215884208679	चयनित सेवा प्रदाता / प्रदाता इस परियोजना के तहत अपेक्षित किसी भी कार्य , सेवा या अन्य निष्पादन को करने के लिए अपने कर्मचारियों को छोड़कर किसी को भी संविदा नहीं देगा या अनुमति नहीं देंगे .
+D-3	-0.6829215884208679	चयनित सेवा प्रदाता / प्रदाता इस परियोजना के तहत अपेक्षित किसी भी कार्य , सेवा या अन्य निष्पादन को करने के लिए अपने कर्मचारियों को छोड़कर किसी को भी संविदा नहीं देगा या अनुमति नहीं देंगे .
+P-3	-0.1640 -0.1356 -0.0469 -0.1537 -2.2106 -2.1995 -0.2925 -0.2036 -1.2427 -0.2755 -1.4149 -0.1842 -0.3562 -0.1381 -0.1862 -0.5837 -0.0462 -0.3616 -1.5163 -0.4547 -0.4234 -0.0770 -0.0298 -0.7014 -0.8178 -0.3854 -0.4981 -1.2678 -0.5353 -3.0236 -0.6215 -1.5434 -0.3427 -1.5295 -0.3282 -0.8563 -0.6630 -0.1399
+src tokens inside interactive  tensor([[   68,    96,   105,  1822,  3615,  3039,   653,    12,   599,  1493,
+          1291, 10104,    12,     6,  6709,     9,   157,  4739,   967,  6835,
+           410,     8,    35,   248,    11,    22,  4176,    12,     6,  2307,
+           104,  1374,  4601,    23,    54,     6,  1051,     9,     6,   157,
+           104,   537,     2,     4,   388,  2189,     4,   351,     1,     1,
+             1]])
+S-4	In case any particular specialized service in th eprescribed in the scope of work requires subcontracting , it need to be specified in the proposal / response document with all the details of the work / services <sep> प्रलेख <sep> मामला
+W-4	0.350	seconds
+H-4	-0.6942206621170044	यदि किसी विशेष विशेष विशेष विशेषीकृत सेवा को कार्य के क्षेत्र में परिशोधित करने की आवश्यकता है तो उसे कार्य / सेवाओं के सभी विवरण के साथ प्रस्ताव / प्रतिक्रिया दस्तावेज में विनिर्दिष्ट करना होगा .
+D-4	-0.6942206621170044	यदि किसी विशेष विशेष विशेष विशेषीकृत सेवा को कार्य के क्षेत्र में परिशोधित करने की आवश्यकता है तो उसे कार्य / सेवाओं के सभी विवरण के साथ प्रस्ताव / प्रतिक्रिया दस्तावेज में विनिर्दिष्ट करना होगा .
+P-4	-0.3315 -1.5432 -0.5024 -0.8861 -1.0815 -1.5011 -0.0571 -0.4829 -1.1684 -1.1152 -0.4784 -0.8824 -0.1611 -4.1705 -0.4848 -0.0382 -1.3208 -0.0517 -0.4379 -0.4883 -0.2595 -0.7124 -1.6158 -0.1756 -0.4336 -0.2237 -0.5898 -0.4796 -1.0654 -0.0300 -0.2376 -0.2026 -0.4098 -1.0953 -0.1792 -0.2695 -1.2191 -0.9705 -0.2683 -0.1479
+src tokens inside interactive  tensor([[3494, 2056,   18,   91,  157,  104,  537,  191,   22,  967, 6835,  409,
+          521,    6, 5589, 2954,   32,    6,  401,   12, 2861,    7,    2,    1,
+            1,    1,    1]])
+S-5	Please note that no work / services shall be subcontracted without the prior permission from the Bank in writing .
+W-5	0.194	seconds
+H-5	-0.5005849003791809	कृपया नोट करें कि बैंक से लिखित में पूर्व अनुमति लिए बिना किसी भी कार्य / सेवाओं में कमी नहीं की जाएगी .
+D-5	-0.5005849003791809	कृपया नोट करें कि बैंक से लिखित में पूर्व अनुमति लिए बिना किसी भी कार्य / सेवाओं में कमी नहीं की जाएगी .
+P-5	-0.0263 -0.0994 -0.0988 -0.1604 -0.1346 -1.9391 -0.6839 -1.1491 -0.2978 -0.1059 -0.5339 -0.7667 -0.6578 -0.2944 -0.9484 -0.2411 -0.3613 -1.2853 -1.3765 -0.1061 -0.2301 -0.1941 -0.1819 -0.1411
+src tokens inside interactive  tensor([[  528,     7,  1700,  6996,  4147,    10,  6509,  1900,  6951,  4147,
+            37,     2,     4,   388,   161, 15684,     4,  1785,     1,     1,
+             1,     1]])
+S-6	6 . Service Level Agreement and Non-Disclosure Agreement : <sep> प्रकटीकरण <sep> करार
+W-6	0.125	seconds
+H-6	-0.45991063117980957	6 . सेवा स्तर का करार और प्रकटीकरण करार :
+D-6	-0.45991063117980957	6 . सेवा स्तर का करार और प्रकटीकरण करार :
+P-6	-0.0988 -0.1460 -0.1235 -0.8042 -0.2077 -0.5970 -0.6459 -0.1131 -0.1663 -0.2991 -2.1951 -0.4850 -0.0972
+src tokens inside interactive  tensor([[   16,  1467, 10035,  1611,   191, 13044,    14,    25,  1700,  6996,
+          4147,    24, 14556,    72,    25,    10,  6509,  1900,  6951,  4147,
+            24,  3310,    25,    24,   254,   135, 16151,  2210,   607,    25,
+             8,    57,  6862,    54,     6,   537,    10,  1192,    10,  1505,
+             9,     6,   537,    11,    22,  2167,    30,  3688,  7769,    12,
+             7,     2,     4,  1785,     1,     1,     4,  3246,  2946,  2521,
+             4,  4832,     1,     1,     4,  7147,    94, 15684,     1,     1,
+             1,     1,     1,     1]])
+S-7	The successful bidder shall execute a ) Service Level Agreement ( SLA ) and Non-Disclosure Agreement ( NDA ) ( As per Annexure 8 ) , which contained all the services and terms and conditions of the services to be extended as detailed herein . <sep> करार <sep> बोली लगानेवाला <sep> अनुबंध <sep> कार्यान्वित करना टीकरण
+W-7	0.486	seconds
+H-7	-0.556699812412262	सफल बोलीकर्ता एक सेवा स्तरीय करार ( एसएलए ) और प्रकटीकरण करार ( एनडीए ) ( अनुलग्नक 8 के अनुसार ) निष्पादित करेगा , जिसमें निम्नलिखित के अनुसार विस्तृत की जाने वाली सभी सेवाओं और सेवाओं की शर्तों को शामिल किया जाएगा .
+D-7	-0.556699812412262	सफल बोलीकर्ता एक सेवा स्तरीय करार ( एसएलए ) और प्रकटीकरण करार ( एनडीए ) ( अनुलग्नक 8 के अनुसार ) निष्पादित करेगा , जिसमें निम्नलिखित के अनुसार विस्तृत की जाने वाली सभी सेवाओं और सेवाओं की शर्तों को शामिल किया जाएगा .
+P-7	-0.1501 -0.4205 -0.4696 -0.7429 -3.4024 -0.2619 -0.4609 -0.4955 -0.1915 -0.0727 -0.4663 -0.1145 -0.7843 -0.1662 -0.0495 -0.0793 -0.1054 -0.1819 -0.0252 -0.1603 -0.5441 -0.0212 -0.0510 -1.0368 -0.0503 -0.3904 -0.1563 -0.1435 -1.6241 -0.0653 -0.5282 -0.9472 -0.1327 -1.3597 -2.0091 -2.3286 -0.2919 -0.8619 -0.1778 -0.0815 -0.4887 -1.4104 -0.9987 -0.7020 -0.3075 -0.3119 -0.3266 -1.0191 -0.1636 -0.9194 -0.5661 -0.1319
+src tokens inside interactive  tensor([[   16,  1467, 10035,  1611,   191, 13044,     6, 14556,    72,    10,
+          3310,    10,   502,     6,   307,   394,    23, 10283,     9,  2630,
+         10274,  7378,     7,     2,     4,  7147,    94,     1,     4,  3246,
+          2946,     4, 13605,   633,     1,     1,     1,     1]])
+S-8	The successful bidder shall execute the SLA and NDA and provide the same along with acceptance of Purchase Order . <sep> कार्यान्वित करना <sep> बोली लगा<sep> क्रय आदेश
+W-8	0.248	seconds
+H-8	-0.557807207107544	सफल बोलीदाता एसएलए और एनडीए को निष्पादित करेगा और उसे खरीद आदेश की स्वीकृति के साथ प्रदान करेगा ।
+D-8	-0.557807207107544	सफल बोलीदाता एसएलए और एनडीए को निष्पादित करेगा और उसे खरीद आदेश की स्वीकृति के साथ प्रदान करेगा ।
+P-8	-0.1143 -0.3658 -0.2614 -0.7655 -0.2094 -0.6089 -0.6239 -0.0384 -0.5205 -0.8938 -0.0414 -0.2926 -0.5570 -2.7457 -0.1615 -0.5644 -1.1888 -0.8715 -0.2924 -0.6651 -0.5499 -0.0891 -0.8222 -0.1439
+src tokens inside interactive  tensor([[  261,     6,  6631,   780,    11,  7831,     9,     6,  4601,   121,
+            30,     6,  5334, 13240,  2010,    10,  3190,  1709,   129,   105,
+           191,    22,  7537,    28,     6,  1467, 10035,  1611,     2,     4,
+           595,     1,     1,     4,  3246,  2946,  2521,     4,  6920,     1,
+             1,     4,  2411,     4,   388,  2189,  4664,  6029,  1330,     1,
+             1,     1,     1,     1,     1]])
+S-9	All the expenses related to execution of the document such as the applicable stamp duty and registration charges if any shall be borne by the successful bidder <sep> लागू <sep> बोली लगानेवाला <sep> निष्पादन <sep> प्रभार <sep> प्रलेख स्टाम्प शुल्क
+W-9	0.284	seconds
+H-9	-0.43695515394210815	दस्तावेज के निष्पादन से संबंधित सभी व्यय जैसे कि लागू स्टांप शुल्क और पंजीकरण प्रभार यदि कोई सफल बोलीदाता द्वारा वहन किया जाएगा .
+D-9	-0.43695515394210815	दस्तावेज के निष्पादन से संबंधित सभी व्यय जैसे कि लागू स्टांप शुल्क और पंजीकरण प्रभार यदि कोई सफल बोलीदाता द्वारा वहन किया जाएगा .
+P-9	-0.3552 -0.3415 -0.2863 -0.5264 -0.2204 -0.2132 -0.2446 -1.1288 -0.4829 -0.5578 -0.0768 -0.2744 -0.3476 -0.2776 -0.1432 -0.3678 -0.9407 -0.3437 -0.7986 -0.4786 -1.0884 -0.6891 -0.2853 -0.0331 -0.6008 -0.3714 -0.6088 -0.1517
+src tokens inside interactive  tensor([[  595,     7,  8325, 16374,    23, 14299,    37,     2,     1,     1,
+             1,     1]])
+S-10	7 . Compliance with Laws :
+W-10	0.057	seconds
+H-10	-0.5837512016296387	7 . नियमों का अनुपालन :
+D-10	-0.5837512016296387	7 . नियमों का अनुपालन :
+P-10	-0.0709 -1.1557 -1.1193 -0.2144 -0.0988 -1.3120 -0.1152
+src tokens inside interactive  tensor([[ 8325, 16374,    12, 13251, 11560,   664,   104,  1056,  5625,   104,
+          5685, 11150,    37,    16, 11467,  1611,   191,  7898,  3498,    10,
+          5405,  7488,    54,   121, 17220,  1053,     8,  1056,  5625,     8,
+         11560,   664,     8,  5685, 11150,     8,   862,     8,    30,   223,
+            22,  1272,    51,  1077,    17,   105,     9,     6,  3895,     9,
+            34,   657,    51,    17,     6,  1840,     9,    50,   389,   655,
+           101,   105,  5334,  2208,     8,   139, 10361,   104,  9757,    10,
+           191,   714,     6,   307,  6523,    10,   144,  1105,   128,     6,
+          1249,     9,     6,   657,     7,     2,     4,   985,   719,     5,
+           786,     4,  3246,  2946,  2521,     1,     4,   682,    22,   913,
+             1,     4,   770,     1,     1,     4,   595,  1838,     1,     1,
+             1,     4,  2134,     1,     1,     1,     1,     1,     1,     1,
+             1,     1,     1]])
+S-11	Compliance in obtaining approvals / permissions / licenses : The Bidder shall promptly and timely obtain all such consents , permissions , approvals , licenses , etc , as may be necessary or required for any of the purposes of this project or for the conduct of their own business under any applicable Law , Government Regulation / Guidelines and shall keep the same valid and inforce during the term of the project . <sep> मीयाद <isep> अवधि <sep> बोली लगानेवाला <sep> दिशा - निर्देश <sep> परियोजना <sep> लागू कारोबार <sep> विधि
+W-11	0.857	seconds
+H-11	-0.7190638184547424	अनुमोदन / अनुमति / लाइसेंस प्राप्त करने में अनुपालन : बिडर को इस परियोजना के किसी भी उद्देश्य से आवश्यक या आवश्यक सभी सहमति , अनुमति , अनुमोदन , लाइसेंस आदि यथासमय प्राप्त करना होगा या किसी लागू कानून , सरकारी विनियम / दिशानिर्देश के तहत अपने स्वयं के व्यवसाय के संचालन के लिए तत्परता से और समय पर प्राप्त करना होगा और परियोजना की अवधि के दौरान इसे वैध और लागू करना होगा ।
+D-11	-0.7190638184547424	अनुमोदन / अनुमति / लाइसेंस प्राप्त करने में अनुपालन : बिडर को इस परियोजना के किसी भी उद्देश्य से आवश्यक या आवश्यक सभी सहमति , अनुमति , अनुमोदन , लाइसेंस आदि यथासमय प्राप्त करना होगा या किसी लागू कानून , सरकारी विनियम / दिशानिर्देश के तहत अपने स्वयं के व्यवसाय के संचालन के लिए तत्परता से और समय पर प्राप्त करना होगा और परियोजना की अवधि के दौरान इसे वैध और लागू करना होगा ।
+P-11	-0.1539 -0.9034 -0.4270 -0.2210 -0.3639 -0.0351 -0.1532 -0.6664 -0.5065 -0.0565 -1.9136 -2.7643 -1.2845 -2.5399 -0.1475 -0.1718 -0.1280 -0.2041 -1.1557 -0.5512 -1.8265 -1.0609 -1.0583 -0.8531 -1.7250 -0.2496 -0.3610 -0.1155 -0.1464 -0.1378 -0.2381 -0.2869 -1.9578 -0.9534 -0.2944 -1.6233 -1.0346 -1.5208 -0.5862 -1.0024 -0.4348 -0.1942 -0.1269 -1.0419 -0.2828 -0.2249 -1.2889 -0.1262 -1.0096 -0.5127 -0.8128 -0.1054 -1.2831 -0.6266 -0.1299 -0.8064 -0.2191 -1.0413 -1.5990 -0.8218 -0.0916 -0.3243 -0.5489 -0.2039 -0.3294 -0.2797 -0.5892 -0.4511 -0.9873 -1.3313 -0.1098 -0.2224 -0.0704 -1.8856 -0.2488 -0.9901 -0.8753 -3.4494 -0.2610 -0.7866 -0.1407
+src tokens inside interactive  tensor([[ 1108,     6, 10035,  1611,   191, 13531,    23,     6,  1988,     9,
+          3851,     9,  8219,     8,    10,    76, 15053,  2449, 13115,   610,
+            12,     6,   640,     9,   105,  4397,    51,   884,   476,  2525,
+            11,    94,   107,     8,   191,  2172,   683,  4118,  4531,     8,
+           714,  2172,   683,  4118,  3009,     8,  1104, 12631,   613,     8,
+          9067,     8,  2335,    10,  1324, 14413,   321,     6,   401,    10,
+            70,  1496,   104,   823,   104,  1832,   104,  1133,   104,  2681,
+           104,  9023,    32,    10,    77,    54,  2570,    51,  3120,     9,
+         11699,    10,    54,  6049,    18,   223,  5336,    51,  7867,    17,
+           105,  8532,    51,  4397,    19,    70,   242,    11,   719,   530,
+            51, 13531,    23,     6,  1117,    10,    54,    76, 10385, 12477,
+          8505,    87,    32,     7,     2,     4, 10590,     1,     1,     1,
+             4,  3246,  2946,  2521,     1,     4, 10583,     1,     1,     1,
+             4,   536,   426,     1,     1,     4,     4,  4826,     1,     1,
+             4, 17413,  2207,  9821,  1517,     4,  6937,     1,     1,     1,
+             1,     1,     1,     1,     1,     1,     1]])
+S-12	Also the bidder shall comply with the provisions of code of wages , and other labor welfare legislations in the event of any failure or omission to do so , shall indemnify , keep indemnified , hold harmless , defend , protect and fully compensate the Bank and its employees / officers / staff / personnel / representatives / agents from and against all claims or demands of liability and all consequences that may occur or arise for any default or failure on its part to conform or comply with the above and all other statutory obligations arising there from . <sep> विफलता <sep> बोली लगानेवाला <sep> कूट <sep> लोप <sep> <sep> कार्मिक <sep> क्षतिपूरित रखना <sep> चूक
+W-12	1.937	seconds
+H-12	-0.819878339767456	साथ ही , बोलीकर्ता किसी भी प्रकार की किसी भी विफलता या अपघटन की स्थिति में मजदूरी की संहिता , और अन्य श्रम कल्याण कानूनों के प्रावधानों का अनुपालन करेगा , बैंक और उसके कर्मचारियों / अधिकारियों / कर्मचारियों / कर्मचारियों / प्रतिनिधियों / एजेंटों को सभी दावों या देयता की मांगों और इनके किसी भी प्रकार की चूक या विफलता के लिए जो उससे उत्पन्न हो सकती है या उत्पन्न हो सकती है , के लिए तथा उससे संबंधित सभी सांविधिक दायित्वों को पूरा करने , उन्हें अक्षरशः रखने , सुरक्षित रखने , सुरक्षित रखने और पूरी तरह से क्षतिपूर्ति करने के लिए करेगा .
+D-12	-0.819878339767456	साथ ही , बोलीकर्ता किसी भी प्रकार की किसी भी विफलता या अपघटन की स्थिति में मजदूरी की संहिता , और अन्य श्रम कल्याण कानूनों के प्रावधानों का अनुपालन करेगा , बैंक और उसके कर्मचारियों / अधिकारियों / कर्मचारियों / कर्मचारियों / प्रतिनिधियों / एजेंटों को सभी दावों या देयता की मांगों और इनके किसी भी प्रकार की चूक या विफलता के लिए जो उससे उत्पन्न हो सकती है या उत्पन्न हो सकती है , के लिए तथा उससे संबंधित सभी सांविधिक दायित्वों को पूरा करने , उन्हें अक्षरशः रखने , सुरक्षित रखने , सुरक्षित रखने और पूरी तरह से क्षतिपूर्ति करने के लिए करेगा .
+P-12	-0.4513 -0.0827 -0.5980 -1.8350 -0.6447 -0.6710 -0.4777 -0.8647 -0.5175 -0.1622 -2.7471 -0.6175 -1.7425 -0.6846 -2.6553 -2.6104 -0.3157 -0.1178 -0.1036 -1.1378 -0.6693 -0.2595 -1.5836 -0.4950 -0.3665 -1.0181 -0.0391 -0.5514 -0.2580 -0.0257 -0.1993 -0.4987 -0.2687 -0.4130 -0.2365 -0.5315 -0.8049 -0.1494 -0.2635 -0.4885 -0.0796 -0.5994 -0.0841 -0.9531 -0.1633 -0.3379 -0.4983 -1.0874 -0.0622 -1.3337 -1.3779 -0.0208 -0.9978 -0.0827 -0.9091 -0.2710 -0.9239 -1.0619 -1.8998 -2.0344 -0.6731 -1.1152 -0.3389 -0.0451 -0.3389 -1.2181 -0.6577 -0.6932 -2.4994 -2.1280 -0.6671 -0.5955 -1.9181 -0.4702 -0.3406 -1.2124 -0.2178 -0.0996 -0.3133 -0.1640 -2.4314 -1.6021 -3.5874 -0.7878 -1.0673 -0.5845 -0.5110 -0.0067 -0.4980 -1.5445 -1.2315 -0.9415 -0.4302 -1.7574 -3.7977 -0.5851 -0.2620 -0.3902 -0.3828 -0.0981 -3.6544 -0.0378 -0.3450 -1.7216 -0.0176 -0.9246 -1.3709 -0.0294 -0.3640 -1.3019 -0.3286 -0.7541 -0.2549 -1.6754 -1.0657 -0.1212
+src tokens inside interactive  tensor([[   16,   401,    27,   376,  2031,     9,   105,   121,  1931,    51,
+          1250,     9, 11699,   691,  6708,    82,    11,     6, 11467,  1611,
+             7,     2,     4,  3246,  2946,  2521,     1,     4, 16289,   359,
+          7845,   589,     4,  1056,     4,   961,     1,     1,     1,     1,
+             1,     1,     1,     1]])
+S-13	The Bank will give notice of any such claim or demand of liability within reasonable time to the Bidder . <sep> बोली लगानेवाला <sep> वसीयतनामा <sep> दे<sep> दावा
+W-13	0.231	seconds
+H-13	-0.7102425694465637	बैंक , ऐसे किसी भी दावे या देयताओं की मांग को बिडर को उचित समय में नोटिस देगा .
+D-13	-0.7102425694465637	बैंक , ऐसे किसी भी दावे या देयताओं की मांग को बिडर को उचित समय में नोटिस देगा .
+P-13	-0.1309 -2.0857 -0.5729 -0.2364 -0.4078 -0.5686 -0.6039 -0.1024 -1.4854 -0.1305 -0.3607 -0.0755 -0.5338 -0.8912 -3.2598 -0.2124 -0.5852 -0.1359 -1.0310 -1.0323 -1.4119 -0.3439 -0.1376
+src tokens inside interactive  tensor([[   16, 11467,  1611,    15,    36, 18163,  6457,    32,    70,  1264,
+             9,  3441,  1703,    23,     6, 10385, 12477,    30,  4176,  1117,
+             7,     2,     4,  3246,  2946,  2521,     1,     1]])
+S-14	The Bidder is not absolved from its responsibility of complying with the statutory obligations as specified above . <sep> बोली लगानेवाला
+W-14	0.195	seconds
+H-14	-0.8620122671127319	उक्त विनिर्दिष्ट सांविधिक दायित्वों का अनुपालन करने के अपने दायित्व से बिडर को मुक्त नहीं किया जाता है ।
+D-14	-0.8620122671127319	उक्त विनिर्दिष्ट सांविधिक दायित्वों का अनुपालन करने के अपने दायित्व से बिडर को मुक्त नहीं किया जाता है ।
+P-14	-2.9716 -2.4873 -0.0299 -0.0158 -0.5710 -0.4557 -0.8121 -0.3780 -0.2739 -0.1566 -0.9069 -0.1819 -0.5465 -2.8676 -1.1040 -3.5124 -0.1560 -0.2349 -0.2077 -0.5950 -0.3564 -0.1432
+src tokens inside interactive  tensor([[ 2683,  1843,   416,   237,  2847, 15925, 15913,  4363,  2432,   159,
+         15925,  2918,   159,  4469,   179, 13478,   104,  5295,  4363,  1734,
+           179,  4185, 10009,  3095,  4185,  5284,   230,  2483,   771,   140,
+          2483,   158,  5050, 15925,   140,  2483,   798,  3095,   140,  3906,
+          6953,    72,    55,   567,  2698,  9455,   237,  2432, 15335,  5149,
+         10025,  5110,  3424,   790,  2698,   364,   196,   798, 15962, 10135,
+          2483, 13858,  3095,  8279,   159,   179,   829,     2,     4,  4015,
+            31,     4,   741,   745,     4,  6220,     1,     1,     1]])
+S-15	REQUEST FOR PROPOSALFOR SELECTION / APPOINTMENT OF MERCHANT BANKER FOR BANK OF BARODA ' S STAKESALE IN NATIONAL STOCK EXCHANGE OF INDIA LTD <sep> बैंकर <sep> शेयर बाजार <sep> व्यापारी
+W-15	0.246	seconds
+H-15	-1.4846577644348145	भारतीय एलटीडी के राष्ट्रीय बचत बैंक में बैंका के बैंकनोट के लिए आरक्षित / अग्रिमों के लिए प्रावधान
+D-15	-1.4846577644348145	भारतीय एलटीडी के राष्ट्रीय बचत बैंक में बैंका के बैंकनोट के लिए आरक्षित / अग्रिमों के लिए प्रावधान
+P-15	-0.1514 -4.4622 -0.0272 -0.1862 -1.0122 -1.3226 -3.4624 -1.9993 -0.9760 -2.4837 -2.1656 -0.4342 -2.8598 -2.6034 -0.5333 -0.4562 -0.3530 -5.2198 -0.0764 -4.6592 -0.0585 -0.0847 -0.9248 -0.6246 -0.7720 -0.6923
+src tokens inside interactive  tensor([[  401,  9680,     6,   343,    11,  6156,   321,    34,   180, 14362,
+            33,   105,  1726,   521,   105,  2031,    51,   357,  6615,   105,
+          1074,     7,     2,     4,  1327,    94,     4,  5982,   278, 14579,
+             1,     1,     1]])
+S-16	Bank reserves the right to terminate this RFP at any stage without any notice or assigning any reason . <sep> समाप्त करना <sep> आरक्षित निधियां
+W-16	0.234	seconds
+H-16	-0.7129517793655396	बैंक इस आरएफपी को किसी भी समय बिना किसी सूचना के या किसी कारण से समाप्त करने का अधिकार रखता है ।
+D-16	-0.7129517793655396	बैंक इस आरएफपी को किसी भी समय बिना किसी सूचना के या किसी कारण से समाप्त करने का अधिकार रखता है ।
+P-16	-0.1837 -1.6785 -1.1224 -0.0981 -0.1745 -1.4928 -0.2646 -1.8021 -0.7856 -0.0940 -0.6589 -0.1068 -1.3714 -0.0379 -0.4843 -0.9876 -1.9286 -0.1103 -0.1593 -0.0543 -2.1112 -0.1502 -1.1174 -0.1364
+src tokens inside interactive  tensor([[  516,   105,    82,   128,     6,  1106,     9,     6,   180, 14362,
+           569,    51,   207,     6,  1738,     9,  4113,    51,    88,  7831,
+             9,     6,  4113,    18,    66,    51,   108,  1192,    10,  1505,
+          2471,   287,    12,    34,   609,  7319,   301,  1194,  4018,   228,
+            20,    36,    41,  1084,    28,  1569, 10035,  1611,    51,     6,
+         10035,  1611,    20,   116,  1949,  1031,  8961,    51,    20,   235,
+           105, 12140,   731, 14478,    51,  2688,   324,     7,     2,     4,
+          7319,   313,     1,     4,  3246,  2946,  2521,     4,  2255,     1,
+             1,     4,  6920,     1,     1,     4,     4,  1231,   196,  1476,
+          5144,    16,   627,     1,     1,     1,     1,     1,     1]])
+S-17	At any time during the course of the RFP process or before the award of contract or after execution of the contract that one or more terms and conditions laid down in this Request For Proposal has not been met by thebidder or the bidder has made material misrepresentation or has given any materially incorrect or false information . <sep> झूठी सूचना <sep> बोली लगानेवाला <sep> सामान <sep> निष्पादन <sep> <sep> गलत बयानी ठेका देना
+W-17	0.485	seconds
+H-17	-0.793899655342102	आरएफपी प्रक्रिया के दौरान अथवा संविदा के अधिनिर्णय से पूर्व कि इस अनुरोध में निर्धारित एक अथवा अधिक नियम एवं शर्तों को बीमाकर्ता द्वारा पूरा नहीं किया गया है अथवा बोलीकर्ता ने भौतिक रूप से गलत या गलत जानकारी दी है .
+D-17	-0.793899655342102	आरएफपी प्रक्रिया के दौरान अथवा संविदा के अधिनिर्णय से पूर्व कि इस अनुरोध में निर्धारित एक अथवा अधिक नियम एवं शर्तों को बीमाकर्ता द्वारा पूरा नहीं किया गया है अथवा बोलीकर्ता ने भौतिक रूप से गलत या गलत जानकारी दी है .
+P-17	-0.1182 -0.0456 -0.1138 -0.2620 -0.3479 -0.6700 -0.2762 -1.2636 -2.9970 -0.2476 -0.6980 -0.5159 -0.7318 -0.2779 -0.2367 -0.8963 -0.6708 -0.2591 -0.8297 -0.1069 -1.3279 -1.2388 -2.1276 -0.8752 -1.6273 -2.9288 -0.0957 -0.4339 -0.8355 -0.1872 -0.1074 -0.1401 -0.7502 -0.6204 -2.6195 -0.7119 -0.9862 -0.2370 -2.7689 -0.5611 -0.1519 -0.1298 -1.5349 -0.3433 -0.9331 -1.4375 -0.1974 -1.2918 -0.1360
+src tokens inside interactive  tensor([[  401,   223,  6156,   321,    43,  4113,    10,   223, 14880,  1383,
+           937,  8457,    51,  1038,  2366,    35,     6,   369,  7156,    30,
+             6,    96,   223,    22,     7,     2,     4,  9194,  1311,     4,
+           267,  4558,     4,  1327,    94,     4, 11211,     1,     4,     4,
+          1169,     1,     1,     1,     1,     1]])
+S-18	Bank may terminate his contract and may invoke performance bank guarantee or forfeit the security deposit as the case may be . <sep> प्रतिभूति जमा <sep> बैंक गारंटी <sep> समाप्त करना <sep> संविदा <sep> <sep> पालन
+W-18	0.297	seconds
+H-18	-0.5035188794136047	बैंक अपने संविदा को समाप्त कर सकता है और कार्यनिष्पादन बैंक गारंटी या प्रतिभूति जमा को जैसा भी मामला हो , जब्त कर सकता है .
+D-18	-0.5035188794136047	बैंक अपने संविदा को समाप्त कर सकता है और कार्यनिष्पादन बैंक गारंटी या प्रतिभूति जमा को जैसा भी मामला हो , जब्त कर सकता है .
+P-18	-0.0942 -0.8910 -0.7318 -0.2647 -0.8590 -0.2033 -0.2178 -0.1311 -0.9285 -1.0346 -0.0720 -0.0955 -0.1080 -1.2926 -0.1303 -0.8004 -1.1114 -1.6564 -0.0316 -0.1027 -0.0577 -0.2281 -2.2903 -0.1731 -0.0896 -0.1252 -0.2393 -0.1385
+src tokens inside interactive  tensor([[ 2768,   937,   223, 10383,   121, 15699,   104,    95,    19,  1569,
+         14928,   410, 10035,  1611,    30,    35,  7561,  4563,     7,     2,
+             4,  3246,  2946,  2521,     4,  1902,  6355,     5,  2105,     1,
+             1,     1]])
+S-19	Further bank may impose such restriction / s on thedefaulting bidder as it deemed fit . <sep> बोली लगानेवाला <sep> निर्बंधन <isep> प्रतिबंध
+W-19	0.193	seconds
+H-19	-0.7516419291496277	इसके अलावा बैंक चूककर्ता को ठीक समझे जाने पर इस प्रकार का प्रतिबंध / प्रतिबंध लगा सकता है .
+D-19	-0.7516419291496277	इसके अलावा बैंक चूककर्ता को ठीक समझे जाने पर इस प्रकार का प्रतिबंध / प्रतिबंध लगा सकता है .
+P-19	-0.7399 -0.9546 -0.4566 -1.2612 -0.0219 -0.0314 -1.0343 -3.5129 -0.5735 -0.1287 -0.5529 -1.5818 -1.0248 -1.4099 -0.0956 -0.3124 -0.4231 -0.6351 -0.3328 -0.1453 -1.1754 -0.1319
+src tokens inside interactive  tensor([[  336,     6,  1738,     9,     6,  4113,     8,   129,     6,  2097,
+         10035,  1611,   362,    36,  3716, 18427,  2747,  3231,    51,  2348,
+          2584,  7831,     9,     6,  4113,     8,     6,   401,  9680,     6,
+           343,    11,   211,     6,  3112,  4113,  8967,    28,   417,   214,
+             9,    70,  3712,    28, 10049,  1058,    66,   523,  2031,    17,
+             6,   307,     8,    68,   121,    42,   640,     8,     6, 10035,
+          1611,    15,  3561,    11,   203,   194,     6,  1628,  3807,    57,
+             6,   401,   223,    29,    11,  2585,   969,    17,     6,  7831,
+             9,     6,  3112,     9,     6,  4113,     7,     2,     4,  3246,
+          2946,  2521,     1,     1,     4,  1827,   798,     5, 12533,   290,
+             4,  6920,     1,     1,     1,     1,     4,  5982,   278, 14579,
+             1,     1,     4,  3044,     1,     1,     1,     1,     4, 11211,
+             1,     1,     1,     1,     4,  1629,     5,  2286,     1,     1,
+             1,     1,     1,     1,     1,     1,     1,     1]])
+S-20	After the award of the contract , if the selected bidder does not perform satisfactorily or delays execution of the contract , the Bank reserves the right to get the balance contract executed by another party of its choice by givingone month notice for the same , In such an event , the bidder is bound to make good the additional expenditure which the Bank may have to incur for the execution of the balance of the contract . <sep> बोली लगानेवाला <sep> अधिनिर्णय <isep> पंचाट <sep> निष्पादन <sep> आरक्षित निधियां <sep> व्यय <sep> संविदा <sep> बाकी <isep> शेष
+W-20	0.929	seconds
+H-20	-0.6850922107696533	संविदा के अधिनिर्णय के पश्चात , यदि चयनित बोलीकर्ता संविदा के निष्पादन में संतोषजनक या देरी न करता हो , तो बैंक को यह अधिकार देता है कि वह अपनी पसंद के किसी अन्य पक्ष द्वारा निष्पादित शेष संविदा को उसी हेतु एक माह की सूचना देकर प्राप्त करे , इस संबंध में , बोलीदाता को यह अधिकार है कि वह उस अतिरिक्त व्यय किया जाए जो बैंक को संविदा की शेष राशि के निष्पादन के लिए प्रभारित करना होगा ।
+D-20	-0.6850922107696533	संविदा के अधिनिर्णय के पश्चात , यदि चयनित बोलीकर्ता संविदा के निष्पादन में संतोषजनक या देरी न करता हो , तो बैंक को यह अधिकार देता है कि वह अपनी पसंद के किसी अन्य पक्ष द्वारा निष्पादित शेष संविदा को उसी हेतु एक माह की सूचना देकर प्राप्त करे , इस संबंध में , बोलीदाता को यह अधिकार है कि वह उस अतिरिक्त व्यय किया जाए जो बैंक को संविदा की शेष राशि के निष्पादन के लिए प्रभारित करना होगा ।
+P-20	-0.1184 -0.7375 -2.8068 -0.2397 -0.1678 -1.0934 -0.2270 -0.0753 -0.2345 -1.6340 -0.9463 -0.9444 -0.6955 -0.2928 -0.0557 -0.4912 -0.6521 -1.1533 -0.5539 -1.1810 -0.6560 -1.2046 -0.8256 -0.5143 -0.2862 -0.7675 -1.5588 -0.0090 -1.1918 -0.1380 -0.1161 -0.2286 -0.8016 -0.1501 -0.3845 -0.4741 -0.1303 -0.1358 -0.2973 -0.2092 -0.0809 -0.2583 -0.1211 -0.7351 -0.4255 -1.1328 -0.0557 -0.4372 -0.8687 -0.6030 -0.5554 -0.0354 -1.1857 -0.4776 -0.9244 -1.8966 -0.1683 -1.9118 -1.7522 -0.5171 -0.8057 -0.4985 -1.6160 -0.2362 -0.6836 -0.1395 -0.0956 -1.5608 -1.6798 -0.2019 -3.6067 -0.0989 -1.9325 -0.2331 -0.3241 -0.0423 -0.3106 -0.0817 -0.0405 -0.4527 -0.1599 -0.4426 -0.1428 -2.4369 -2.0569 -0.0078 -0.3263 -2.0359 -0.7432 -0.1422
+src tokens inside interactive  tensor([[17291,   734, 10498,  1291,  8808,    10, 14298,  2759, 16125,    37,
+             2,     4,  1337,     4,  2560,     1,     1]])
+S-21	Grievance Redressal and Dispute Resolution : <sep> विवाद <sep> संकल्प
+W-21	0.066	seconds
+H-21	-0.46322962641716003	शिकायत निवारण और विवाद समाधान :
+D-21	-0.46322962641716003	शिकायत निवारण और विवाद समाधान :
+P-21	-0.1043 -0.2696 -0.5193 -0.6095 -1.3649 -0.2256 -0.1494
+src tokens inside interactive  tensor([[ 5480, 10035,  1611,    58,  2570,    11,    29,    14, 15463,    77,
+            14,   457,    51,   372,    23,  9824,    11,     6,  1988,     9,
+            34,   180, 14362,   223,  1621,    14,  2540,    11,     6,   500,
+          7478,     8, 14652,  4033,  9033,    33,   267,   250,   513,  6915,
+           626,   217,   513,   198, 11121,  3819,  2631,   202,  3320,  2128,
+          1305,   462,  9272,     2,     4, 13389,  3544,  3048,     5,  2066,
+          6303,     4,  3246,  2946,  2521,     1,     1,     1,     4,   941,
+          2814,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+             1,     1,     1,     1]])
+S-22	Any bidder who claims to have a grievance against a decision or action with regards to the provisions of this RFP may file a request to the General Manager , Treasury Operations at gm.treasury.bcc @ bankofbaroda.com <sep> कोषागार परिचालन <isep> ट्रेजरी <sep> बोली लगानेवाला <sep> राजकोष
+W-22	0.522	seconds
+H-22	-0.3596382737159729	कोई भी बोलीदाता , जो इस आरएफपी के प्रावधानों के संबंध में किसी निर्णय या कार्रवाई के संबंध में शिकायत करने का दावा करता है , महाप्रबंधक , ट्रेजरी परिचालन जीएम.ट्रेजरी .बीसीसी @ bankofbaroda<unk> को अनुरोध दर्ज कर सकता है .
+D-22	-0.3596382737159729	कोई भी बोलीदाता , जो इस आरएफपी के प्रावधानों के संबंध में किसी निर्णय या कार्रवाई के संबंध में शिकायत करने का दावा करता है , महाप्रबंधक , ट्रेजरी परिचालन जीएम.ट्रेजरी .बीसीसी @ bankofbaroda<unk> को अनुरोध दर्ज कर सकता है .
+P-22	-0.2492 -0.2788 -1.2046 -0.6231 -0.7596 -1.0351 -0.2385 -0.0681 -0.2487 -0.0772 -0.1533 -0.1338 -0.1962 -0.1628 -0.1395 -0.4308 -0.0363 -0.5881 -0.0636 -0.2290 -1.8008 -0.1448 -0.0130 -0.4772 -0.0813 -0.0248 -0.0981 -0.1981 -0.2690 -0.3837 -0.1980 -0.1910 -0.0201 -0.1861 -2.0382 -1.3734 -0.3988 -0.0631 -0.6163 -1.7665 -0.1005 -0.0262 -0.0059 -0.3769 -0.0032 -0.0179 -0.0192 -0.0096 -0.0054 -0.0432 -0.6140 -0.6729 -0.9441 -0.2649 -0.1177 -0.1542 -0.0912 -0.1332
+src tokens inside interactive  tensor([[   63,   223,  3814,    22,  2539,    18,     6, 15463,    67,    22,
+           708,    28,   127,    18, 10035,  1611,    58,    20,  1837,    12,
+          4265,    12,  5212,    23,     6,  1988,     9,    34,   180, 14362,
+             7,     2,     4,  3246,  2946,  2521,     1,     1]])
+S-23	It may please be noted that the grievance can be filed by only that bidder who has participated in proceedings in accordance with the provisions of this RFP . <sep> बोली लगानेवाला
+W-23	0.281	seconds
+H-23	-0.5570289492607117	कृपया नोट किया जाए कि शिकायत केवल उस निर्गमकर्ता द्वारा दायर की जा सकती है जिसने इस आरएफपी के प्रावधानों के अनुसार कार्यवाहियों में भाग लिया है .
+D-23	-0.5570289492607117	कृपया नोट किया जाए कि शिकायत केवल उस निर्गमकर्ता द्वारा दायर की जा सकती है जिसने इस आरएफपी के प्रावधानों के अनुसार कार्यवाहियों में भाग लिया है .
+P-23	-0.7400 -1.5581 -0.7363 -0.9061 -0.2059 -0.1361 -0.2657 -1.3775 -2.4765 -0.3643 -0.0261 -0.1645 -1.5387 -0.1138 -0.0994 -0.2336 -0.1624 -0.8423 -0.1204 -0.3358 -0.0774 -0.2259 -0.1813 -0.1384 -0.6255 -2.1036 -0.5582 -0.0869 -0.1403 -1.0546 -0.1671 -0.4452 -0.5891 -0.1419
+src tokens inside interactive  tensor([[   16,   401,    10,     6, 11467,  1611,   191,   203,   310,  2261,
+            11,  3254,   366,   667,  2948,     8,    28,  2130, 12253,  8128,
+           234,   133,     6,  2998,   657, 15884,     9,     6,  2963,   202,
+            10,     6, 11467,  1611,     8,   105,   344,  2082,    51,  2755,
+          8505,   133,    60,   101,    51,    12,  1004,    23,    34,   180,
+         14362,     7,     2,     4,  2666,     1,     1,     4,  3246,  2946,
+          2521,     4,   770,     4,   879,  3297, 12748,     1,     1,     1,
+             1,     1,     1,     1,     1]])
+S-24	The Bank and the Bidder shall make every effort to resolve amicably , by direct informal negotiation between the respective project managers of the Bankand the Bidder , any disagreement or dispute arising between them under or in connection with this RFP . <sep> प्रत्यक्ष <sep> बोली लगानेवाला <sep> परियोजना <sep> परक्रामण
+W-24	0.470	seconds
+H-24	-0.8531773090362549	बैंक और बिडर बैंक के संबंधित परियोजना प्रबंधकों , उनके अंतर्गत या इस आरएफपी के संबंध में किसी प्रकार का कोई अस्वीकृति या विवाद , के संबंध में सीधी अनौपचारिक बातचीत करके , सौहार्दपूर्ण ढंग से समाधान के लिए हर संभव प्रयास करेंगे ।
+D-24	-0.8531773090362549	बैंक और बिडर बैंक के संबंधित परियोजना प्रबंधकों , उनके अंतर्गत या इस आरएफपी के संबंध में किसी प्रकार का कोई अस्वीकृति या विवाद , के संबंध में सीधी अनौपचारिक बातचीत करके , सौहार्दपूर्ण ढंग से समाधान के लिए हर संभव प्रयास करेंगे ।
+P-24	-0.1190 -0.5356 -0.4295 -3.1596 -3.0042 -0.4720 -0.0777 -0.2053 -0.3618 -0.0851 -1.7168 -0.8372 -1.5525 -0.6856 -0.2062 -0.4583 -0.0578 -0.4978 -1.0103 -0.1330 -0.9891 -1.1106 -0.9739 -0.1646 -1.3238 -3.2943 -0.6805 -0.1730 -0.5602 -0.2320 -1.9818 -0.1459 -3.8980 -0.1882 -0.6388 -1.6056 -0.8350 -3.2367 -0.0031 -0.0420 -0.7787 -0.1000 -0.3452 -1.9276 -0.2724 -0.5876 -0.1580 -0.0722 -0.5611 -0.8810 -0.1458
+src tokens inside interactive  tensor([[  271,     6,   401,   657,  5540,    10, 11467,  1611,   657,  5540,
+           104,  1254,    26,   137,   406,   554,    11,  3254,     6,  2755,
+           691, 11254,   368,    32,     6, 12869,     9,  1333,   547, 12253,
+          8762,     8,    53,   191,  1150,  6842,   321,     6,  2755,    11,
+         12819,   264, 10726, 10832,  1133,  6975,    28,     6, 11467,  1611,
+            10,   401,  2197,     2,     4,  1337,     1,     1,     4,  3246,
+          2946,  2521,     4,  4826,     1,     1,     1,     1,     1,     1,
+             1,     1]])
+S-25	If the Bank project manager and Bidder project manager / director are unableto resolve the dispute within thirty days from the commencement of suchinformal negotiations , they shall immediately escalate the dispute to thesenior authorized personnel designated by the Bidder and Bank respectively <sep> विवाद <sep> बोली लगानेवाला <sep> कार्मिक
+W-25	0.531	seconds
+H-25	-0.7193524837493896	यदि बैंक परियोजना प्रबंधक और बिडडर परियोजना प्रबंधक / निदेशक उपयुक् <unk> त वार्ताओं के प्रारंभ से तीस दिनों के भीतर इस विवाद का समाधान नहीं कर रहे हैं , तो वे क्रमशः बिडर और बैंक द्वारा नामित कम प्राधिकृत कर्मियों के लिए विवाद को तत्काल बढ़ा देंगे .
+D-25	-0.7193524837493896	यदि बैंक परियोजना प्रबंधक और बिडडर परियोजना प्रबंधक / निदेशक उपयुक् <unk> त वार्ताओं के प्रारंभ से तीस दिनों के भीतर इस विवाद का समाधान नहीं कर रहे हैं , तो वे क्रमशः बिडर और बैंक द्वारा नामित कम प्राधिकृत कर्मियों के लिए विवाद को तत्काल बढ़ा देंगे .
+P-25	-0.0549 -0.7309 -0.5114 -0.0450 -1.1416 -0.3009 -1.1769 -3.2906 -0.1591 -0.0485 -0.1072 -0.0457 -3.4984 -1.0531 -0.5672 -0.1842 -0.0289 -0.0159 -3.2871 -0.2183 -0.5382 -0.7325 -0.1307 -0.9876 -0.1934 -0.1864 -0.2422 -0.5151 -0.9702 -0.4823 -0.4263 -1.5671 -0.5162 -0.8944 -0.3035 -1.3251 -0.1174 -0.0749 -2.7471 -0.4370 -2.2883 -1.0301 -0.0403 -0.1338 -0.1200 -1.4904 -0.3694 -0.0253 -2.0225 -0.8644 -0.5487 -0.8489 -0.2416 -0.5775 -0.5005 -0.2854 -0.3415 -0.1403
+src tokens inside interactive  tensor([[  271,   691, 11254,   368,    32,     6, 12869,     9,   121,  8762,
+           133,     6,   542, 10832,  1133,  6975,    28,     6, 11467,  1611,
+            10,   401,     8,     6,   401,    10,     6, 11467,  1611,    26,
+          5060,    11,  3254,  6835,  5124,  2755,   366,   667,  2948,     8,
+          1375,   214,   223,  4625,    18,     6,  2755,    22,  1921,    17,
+          3180,   153,  5588, 16790,  6155,     7,     2,     4,  2560,     1,
+             1,     4,  3246,  2946,  2521,     4, 10126,  5649,     1,     4,
+             4,  4826,     1,     4,  1337,     1,     1,     1,     1,     1,
+             1,     1,     1]])
+S-26	If within thirty days from the commencement of such negotiations between the senior authorized personnel designated by the Bidder and Bank , the Bank and the Bidder are unable to resolve contractual dispute amicably , either party may require that the dispute be referred for resolution through formal arbitration . <sep> संकल्प <sep> बोली लगानेवाला <sep> विवाचन <sep> <sep> कार्मिक <sep> विवाद
+W-26	1.160	seconds
+H-26	-0.6941847205162048	यदि बीदर और बैंक द्वारा नामित वरिष्ठ प्राधिकृत कार्मिकों के बीच इस प्रकार की बातचीत के तीस दिनों के भीतर , बैंक और बिडर संविदागत विवाद का समाधान सौहार्दपूर्ण ढंग से करने में असमर्थ हैं तो या तो पक्ष से यह अपेक्षित होगा कि इस विवाद को औपचारिक मध्यस्थता के माध्यम से समाधान के लिए संदर्भित किया जाए ।
+D-26	-0.6941847205162048	यदि बीदर और बैंक द्वारा नामित वरिष्ठ प्राधिकृत कार्मिकों के बीच इस प्रकार की बातचीत के तीस दिनों के भीतर , बैंक और बिडर संविदागत विवाद का समाधान सौहार्दपूर्ण ढंग से करने में असमर्थ हैं तो या तो पक्ष से यह अपेक्षित होगा कि इस विवाद को औपचारिक मध्यस्थता के माध्यम से समाधान के लिए संदर्भित किया जाए ।
+P-26	-0.4005 -1.7985 -2.7624 -0.7028 -0.0474 -0.1555 -0.0725 -0.0471 -0.1442 -0.0330 -2.0318 -0.0345 -0.1496 -0.0830 -1.4840 -0.5727 -0.9700 -0.8645 -0.7689 -0.2557 -0.1448 -0.1949 -0.1107 -1.7864 -0.3748 -0.2976 -0.6088 -1.7403 -1.6972 -0.0333 -0.0219 -0.1217 -0.4213 -0.8000 -1.7358 -3.0153 -0.0176 -0.0183 -0.4930 -0.1369 -1.1521 -0.1314 -0.0626 -1.0332 -0.6615 -2.3511 -0.4454 -1.8815 -1.2146 -1.3679 -0.8899 -0.9312 -0.0862 -1.8600 -0.4429 -0.3407 -0.0465 -1.1782 -0.2525 -0.5385 -0.1547 -0.4360 -0.5694 -0.1438 -1.1927 -0.0891 -0.2162 -0.9286 -0.1508
+src tokens inside interactive  tensor([[  261,  1459,     8,  8236,    51,  4875,  8505,   101,    10,    84,
+             9,     8,    51,   144,  1004,    23,     6,  4113,    51,  2673,
+            84,     9,     6,   157,  1128,   128,  1569,  1147,     9,     6,
+           157,    51,    88,     6,  4447,    10,  1128,   207,    51,    88,
+             6,  7388,     8, 10123,   388,   841,    51, 10414,     9,     6,
+          4113,   191,    22,  1921,    11, 16790,  6155,    28,    14,  9452,
+           861,  6213,   312,  1311,  7973,    11,   231,   826,   364,   638,
+             6,   226,     9, 13741,  1358,   191,    22,   181,     8,    23,
+           269,   661,    11,     6,  2755,   103,  6481,    11,  2683,  1843,
+           416,   237,  2847, 15925, 15913,  4363,  2432,   159, 15925,  2918,
+           159,  4469,   179, 13478,   104,  5295,  4363,  1734,   179,  4185,
+         10009,  3095,  4185,  5284,   230,  2483,   771,   140,  2483,   158,
+          5050, 15925,   140,  2483,   798,  3095,   140,  3906,  6953,    72,
+            55,   567,  2698,  9455,   914,  2432, 15335,  5149, 10025,  5110,
+          3424,   790,  2698,   364,   196,   798, 15962, 10135,  2483, 13858,
+          3095,  8279,   159,   179,   829,    24, 15095,    25,     7,     2,
+             4,   741,   745,     4, 10126,  5649,     4,  1337,     1,     4,
+          4015,    31,     4, 11211,     1,     4,     4,  6220,     1,     1,
+             1,     1,     1]])
+S-27	All questions , disputes or differences arising under and out of , or inconnection with the contract or carrying out of the work whether during theprogress of the work or after the completion and whether before or after the determination , abandonment or breach of the contract shall be referred to arbitration by a sole Arbitrator acceptable to both parties OR the number of arbitrators shall be three , with each side to the dispute being entitled to REQUEST FOR PROPOSALFOR SELECTION / APPOINTMENT OF MERCHANT BANKER FOR BANK OF BARODA ' S STAKE SALE IN NATIONAL STOCK EXCHANGE OF INDIA LTD ( NSE ) . <sep> शेयर बाजार <sep> विवाचन <sep> विवाद <sep> बैंकर <sep> संविदा <sep> <sep> व्यापारी
+W-27	1.075	seconds
+H-27	-1.2159924507141113	इन सभी प्रश्नों , विवादों या संविदाओं के अंतर्संबंध में या संविदा पूरी होने के दौरान या उसके बाद किए गए कार्यों से संबंधित , चाहे निर्धारण के पूर्व अथवा बाद में अथवा संविदा को समाप्त करने के बाद , दोनों पक्षों को स्वीकार्य एकल मध्यस्थ द्वारा पंचाट में संदर्भित किया जाएगा .
+D-27	-1.2159924507141113	इन सभी प्रश्नों , विवादों या संविदाओं के अंतर्संबंध में या संविदा पूरी होने के दौरान या उसके बाद किए गए कार्यों से संबंधित , चाहे निर्धारण के पूर्व अथवा बाद में अथवा संविदा को समाप्त करने के बाद , दोनों पक्षों को स्वीकार्य एकल मध्यस्थ द्वारा पंचाट में संदर्भित किया जाएगा .
+P-27	-3.2662 -0.5229 -1.5949 -0.4083 -0.3429 -0.6335 -3.1097 -0.0217 -0.0870 -0.6175 -1.9281 -1.0194 -1.5023 -0.8107 -2.8475 -1.6635 -0.4201 -1.4280 -0.7149 -0.6452 -0.6757 -0.8553 -0.9240 -0.6333 -2.0816 -0.6562 -1.5268 -2.8742 -0.4547 -2.6325 -0.2433 -0.7172 -1.0629 -1.8529 -0.0753 -1.7510 -0.5676 -2.5230 -2.4417 -0.9211 -0.3528 -2.1164 -0.5870 -0.6065 -0.2210 -0.8506 -0.9182 -1.7688 -1.9592 -0.3750 -0.1221 -5.2454 -0.2285 -0.4919 -2.1677 -0.2203 -0.1401 -3.5272 -0.7897
+src tokens inside interactive  tensor([[ 8005,    66, 13741,  1311,     2,     4, 10126,  5006,     4,  1736,
+            94,     1,     1]])
+S-28	appoint one arbitrator <sep> विवाचक <sep> नियुक्त करना
+W-28	0.074	seconds
+H-28	-0.7606522440910339	एक मध्यस्थ की नियुक्ति करना
+D-28	-0.7606522440910339	एक मध्यस्थ की नियुक्ति करना
+P-28	-0.1424 -1.3889 -0.3185 -1.6163 -0.1157 -0.8631 -0.8796
+src tokens inside interactive  tensor([[   16,    83, 13741,  1358,  1283,    28,     6,   826,   191,  8005,
+            14,   694, 13741,  1311,    58,   191,   987,    30,     6,  2464,
+             9,     6,  4265,     7,     2,     4, 10126,  5006,     4,  1736,
+            94,     1,     1]])
+S-29	The two arbitrators appointed by the parties shall appoint a third arbitrator who shall act as the chairman of the proceedings . <sep> विवाचक <sep> नियुक्त करना
+W-29	0.229	seconds
+H-29	-0.5540141463279724	दोनों पक्षों द्वारा नियुक्त मध्यस्थ एक तिहाई मध्यस्थ की नियुक्ति करेंगे जो कार्यवाही के अध्यक्ष के रूप में कार्य करेगा .
+D-29	-0.5540141463279724	दोनों पक्षों द्वारा नियुक्त मध्यस्थ एक तिहाई मध्यस्थ की नियुक्ति करेंगे जो कार्यवाही के अध्यक्ष के रूप में कार्य करेगा .
+P-29	-2.5457 -0.3907 -0.0915 -0.2586 -1.3368 -0.3773 -0.9507 -1.8882 -0.8347 -0.3692 -0.5392 -0.0708 -0.0911 -0.3045 -0.7531 -0.1991 -0.0394 -0.2554 -0.3415 -0.1506 -0.2734 -0.7196 -0.3807 -0.1345
+src tokens inside interactive  tensor([[   16,  1189,    10,   253,     9, 16790,  6155,   191,    22,  1588,
+            84,    33,     6,   401,    55,    95,   803,    18,  2057,     6,
+           360,     7,     2,     4,  1146,     4, 10126,  5649,     1,     1,
+             1]])
+S-30	The seat and place of arbitration shall be carried out at the Bank ' s office that placed the order . <sep> कार्यालय <sep> विवाचन
+W-30	0.201	seconds
+H-30	-0.846524715423584	पंचाट की सीट और स्थान को बैंक के उस कार्यालय में रखा जाएगा जिस पर यह आदेश दिया गया है ।
+D-30	-0.846524715423584	पंचाट की सीट और स्थान को बैंक के उस कार्यालय में रखा जाएगा जिस पर यह आदेश दिया गया है ।
+P-30	-2.6235 -0.0962 -0.1713 -1.8792 -0.5746 -0.0922 -1.3746 -0.7249 -0.1166 -1.7863 -0.0984 -0.6998 -1.0670 -0.2153 -2.7375 -0.2868 -1.4798 -1.0762 -0.2074 -0.0831 -1.0370 -0.9053 -0.1371
+src tokens inside interactive  tensor([[   16,   861,  6213,  6155,    10, 10046, 14512,   451, 10456,    51,
+           105, 10385,  6429,  2848,  5131,   191,  2148,    11,     6, 16790,
+          6155,  4265,     7,     2,     4, 12644,     1,     4,   234,     4,
+         10126,  5649,     1,     1,     1]])
+S-31	The Arbitration and Conciliation Act 1996 or any statutory modification thereof shall apply to the arbitration proceedings . <sep> सुलह <sep> आ<sep> विवाचन
+W-31	0.184	seconds
+H-31	-0.5388655662536621	मध्यस्थता और समझौता अधिनियम 1996 या उसका कोई सांविधिक संशोधन पंचाट की कार्यवाही पर लागू होगा .
+D-31	-0.5388655662536621	मध्यस्थता और समझौता अधिनियम 1996 या उसका कोई सांविधिक संशोधन पंचाट की कार्यवाही पर लागू होगा .
+P-31	-0.9993 -0.5959 -1.3977 -0.0654 -0.6878 -0.6480 -1.7077 -0.3184 -0.0435 -0.0216 -0.3367 -1.4599 -0.0427 -0.1701 -0.7672 -0.6599 -0.1645 -0.0677 -0.4856 -0.1377
+src tokens inside interactive  tensor([[   16, 13741,   228,  1738,   191,    22,    12,  2861,     8,   102,
+             6,  2017,    17,     6,  1738,     8,    10,   545,   877,    10,
+         13329,    19,     6,   826,     7,     2,     4,  1827,   798,     5,
+         12533,   290,     1,     1]])
+S-32	The arbitral award shall be in writing , state the reasons for the award , and befinal and binding on the parties . <sep> अधिनिर्णय <isep> पंचाट
+W-32	0.235	seconds
+H-32	-0.9663068056106567	यह पंच निर्णय लिखित रूप में दिया जाएगा , जिसमें निर्णय के कारणों का उल्लेख किया जाएगा और पक्षकारों पर बाध्यकारी होगा ।
+D-32	-0.9663068056106567	यह पंच निर्णय लिखित रूप में दिया जाएगा , जिसमें निर्णय के कारणों का उल्लेख किया जाएगा और पक्षकारों पर बाध्यकारी होगा ।
+P-32	-1.8318 -2.5706 -0.2202 -0.1071 -0.6464 -0.3577 -1.8232 -0.2182 -2.3589 -1.4764 -2.1578 -1.1421 -0.6015 -0.8906 -0.4814 -0.5068 -0.5565 -1.5001 -2.2308 -0.4410 -0.3934 -1.4491 -0.2563 -0.5951 -0.1754 -0.1356
+src tokens inside interactive  tensor([[   16,  1738,   223,   627,    42,  1738,     9,  4458,     8,   229,
+          6708,  1682,   491, 14172,    55,  7346,    10, 10554,   195,  3262,
+             7,     2,     4,  1330,     4,  1827,   798,     5, 12533,   290,
+             1,     1,     1,     1,     1,     1]])
+S-33	The award may include an award of costs , including reasonable attorneys ' fees and disbursements . <sep> शुल्क <sep> अधिनिर्णय <isep> पंचाट
+W-33	0.245	seconds
+H-33	-0.8389870524406433	इस पुरस्कार में लागत का एक अधिनिर्णय , जिसमें यथोचित अनुषंगियों की फीस और संवितरण शामिल हो सकता है ।
+D-33	-0.8389870524406433	इस पुरस्कार में लागत का एक अधिनिर्णय , जिसमें यथोचित अनुषंगियों की फीस और संवितरण शामिल हो सकता है ।
+P-33	-0.2504 -2.4125 -0.1701 -0.6027 -0.2975 -1.6983 -2.1843 -0.3554 -0.9440 -0.1705 -2.1108 -0.1157 -0.0124 -4.1080 -1.2193 -1.2037 -0.0483 -0.2870 -0.2171 -1.3858 -0.6344 -0.0459 -0.5683 -0.2244 -0.9708 -0.1587 -0.9564 -0.1389
+src tokens inside interactive  tensor([[11534,   461,     6,  1738,   223,    22,  2649,    28,   105,   289,
+           765,  8038,  5131,    51,   765,  8038,    89,     6,  2911,   570,
+             7,     2,     4,   179,     1,     1,     1,     1,     4,  1827,
+             4,   766,    22,   113,     1,     1,     1,     1,     1,     1,
+             1,     1]])
+S-34	Judgment upon the award may be entered by any court having jurisdiction thereof or having jurisdiction over the relevant Party . <sep> पार्टी <sep> अधि<sep> अधिकार - क्षेत्र
+W-34	0.241	seconds
+H-34	-0.9554749727249146	इस निर्णय के आधार पर निर्णय ऐसे न्यायालय द्वारा किया जा सकता है जहां उनका अधिकार क्षेत्र हो या जिनका अधिकार संबंधित पार्टी पर है .
+D-34	-0.9554749727249146	इस निर्णय के आधार पर निर्णय ऐसे न्यायालय द्वारा किया जा सकता है जहां उनका अधिकार क्षेत्र हो या जिनका अधिकार संबंधित पार्टी पर है .
+P-34	-1.2067 -0.8415 -1.2973 -1.6537 -0.1044 -1.5503 -1.7617 -0.2893 -0.0991 -0.5422 -0.5908 -0.2340 -0.1506 -2.6598 -2.1785 -1.2234 -0.1654 -0.4201 -1.1679 -2.8745 -1.3401 -0.4454 -1.1850 -0.5648 -0.5040 -0.6128 -0.1345
+src tokens inside interactive  tensor([[  318,     7, 12811, 14299,    37,     2,     1,     1,     1,     1]])
+S-35	10 . Governing Laws :
+W-35	0.057	seconds
+H-35	-0.6677852272987366	10 गवर्निंग विधि :
+D-35	-0.6677852272987366	10 गवर्निंग विधि :
+P-35	-0.0111 -0.8675 -0.1576 -2.7252 -0.1315 -0.1137
+src tokens inside interactive  tensor([[   64,   180, 14362,    10,     6,  7954,  4113,   191,    22, 15726,
+            10,  8514,   392,   205,    10,   264,  3241,    12,  5212,    23,
+             6,  1787,     9,    38,     7,     2,     4, 11211,     1,     1]])
+S-36	This RFP and the subsequent contract shall be governed and construed and enforced in accordance with the laws of India . <sep> संविदा
+W-36	0.184	seconds
+H-36	-0.6890088319778442	यह आरएफपी और उसके बाद की संविदा भारत के नियमों के अनुसार नियंत्रित और नियंत्रित होगी और लागू होगी ।
+D-36	-0.6890088319778442	यह आरएफपी और उसके बाद की संविदा भारत के नियमों के अनुसार नियंत्रित और नियंत्रित होगी और लागू होगी ।
+P-36	-0.5753 -0.3756 -0.0584 -0.7621 -1.6783 -0.1318 -0.5895 -0.9261 -0.4801 -0.3377 -1.1564 -0.1370 -0.6131 -1.0274 -0.6793 -2.2819 -1.1194 -0.8860 -0.2699 -0.3405 -0.5934 -0.1389
+src tokens inside interactive  tensor([[  696,     6, 15144,   191,  3980,    18,    12,   953,     9,   105,
+          2755,  8505,   461,     8,    89,    51,    12,   953,     9,   105,
+             9,     6,  1192,     9,    34,   180, 14362,     8,   127,     6,
+          3746,    12,   303,   191,    29,  8644, 16953,  2884,  3257,    11,
+          1491,    10, 10575,  2884,   321,   121,  8236,    11,     6,   699,
+         12881,     9,    54,    76,  3746,     7,     2,     4,  1578,  8673,
+             4,  1337,     1,     1,     1]])
+S-37	Both the Parties shall agree that in respect of any dispute arising upon , over or in respect of any of the terms of this RFP , only the courts in Mumbai shall have exclusive jurisdictionto try and adjudicate such disputes to the exclusion of all other courts . <sep> अपवर्जन <sep> विवाद
+W-37	0.473	seconds
+H-37	-0.622303307056427	दोनों पक्ष इस बात से सहमत होंगे कि इस आरएफपी के किसी भी विषय पर या उससे संबंधित किसी भी विवाद के संबंध में केवल मुंबई की न्यायालयों के पास ही ऐसे विवादों को अन्य सभी न्यायालयों के बाहर करने का प्रयास करने और उनका न्यायनिर्णयन करने का अधिकार होगा ।
+D-37	-0.622303307056427	दोनों पक्ष इस बात से सहमत होंगे कि इस आरएफपी के किसी भी विषय पर या उससे संबंधित किसी भी विवाद के संबंध में केवल मुंबई की न्यायालयों के पास ही ऐसे विवादों को अन्य सभी न्यायालयों के बाहर करने का प्रयास करने और उनका न्यायनिर्णयन करने का अधिकार होगा ।
+P-37	-0.3206 -0.1855 -0.2038 -0.4700 -0.2922 -0.0411 -0.0894 -0.1226 -0.5666 -0.3393 -0.0549 -0.8008 -0.3113 -0.1184 -1.9304 -0.9110 -0.6464 -1.1840 -0.4646 -0.0353 -1.0294 -0.4426 -0.3907 -0.2080 -0.1519 -0.7697 -0.0372 -0.6200 -0.9506 -0.8629 -1.2545 -0.5273 -1.3344 -0.3169 -1.2248 -0.9493 -0.1567 -0.5239 -1.5182 -0.8634 -0.5630 -2.1590 -1.4589 -0.0887 -0.4289 -1.9007 -0.7573 -0.2694 -0.0131 -0.0640 -0.3470 -2.1011 -0.1772 -0.5367 -0.1412
+src tokens inside interactive  tensor([[ 3857, 14839,   210,    10,   189,  1425,  1355,   631,   486, 11115,
+         14067,    37,     2,     1,     1,     1,     1]])
+S-38	Corrupt and Fraudulent Practices :
+W-38	0.080	seconds
+H-38	-1.229280948638916	रुपांतरण और धोखाधड़ी संबंधी प्रथाएँ :
+D-38	-1.229280948638916	रुपांतरण और धोखाधड़ी संबंधी प्रथाएँ :
+P-38	-4.7823 -1.3107 -0.4501 -0.5015 -1.1916 -1.8229 -1.6383 -0.2744 -0.2082 -0.1129
+src tokens inside interactive  tensor([[  254,   135,   431, 13353,   686,    24,   196,  9162,    25, 15554,
+             8,    35,    15,  1077,    18,   310,  4268, 10035,  2396,  1077,
+            11,  1585,    42,  4945,   199,   987,    30,   135,     6,  1595,
+           699,  2210,  6254,     9,    34,   180, 14362,     7,     2,     4,
+          6379,     4,  4832,     4,  6506,     1,     1]])
+S-39	As per Central Vigilance Commission ( CVC ) directives , it is required that every participating bidders required to signed an integrity pact as per the annexure 09 of this RFP . <sep> कमीशन <sep> अनुबंध <sep> सतर्कता
+W-39	0.379	seconds
+H-39	-0.6640963554382324	केंद्रीय सतर्कता आयोग ( सीवीसी ) के निर्देशों के अनुसार , यह आवश्यक है कि प्रत्येक सहभागी बोलीदाताओं द्वारा इस आरएफपी के 9 वर्ष की समाप्ति पर सत्यनिष्ठा करार पर हस्ताक्षर किए जाएं ।
+D-39	-0.6640963554382324	केंद्रीय सतर्कता आयोग ( सीवीसी ) के निर्देशों के अनुसार , यह आवश्यक है कि प्रत्येक सहभागी बोलीदाताओं द्वारा इस आरएफपी के 9 वर्ष की समाप्ति पर सत्यनिष्ठा करार पर हस्ताक्षर किए जाएं ।
+P-39	-0.5420 -0.6301 -0.1342 -0.1536 -0.0660 -0.0124 -0.1233 -0.1550 -0.9415 -0.1281 -0.2490 -0.9834 -0.6794 -0.6860 -0.1534 -0.1487 -1.6192 -1.0016 -0.0030 -1.1030 -0.5543 -0.5713 -1.2642 -0.3428 -0.5750 -0.0523 -0.2474 -1.7879 -2.1092 -3.1082 -0.3824 -0.8954 -1.4437 -0.0354 -1.5915 -0.2055 -0.0781 -0.9305 -0.5107 -0.8847 -0.1446
+src tokens inside interactive  tensor([[ 2782, 11467,  2396,   104,  4172,   840, 10382,   104,   727,  3430,
+          3319,    26,   928,    11,  6627,     6,  1389,  3264,     9, 16317,
+           128,     6,  4040,    10,  7831,     9,   121, 10365,   144, 10769,
+           734,     9,     6,   831,    37,  2506,    13,  3857, 14839,   210,
+         11115, 14843,    13,   779,     6,  3364,     8,  1408,     8,  2065,
+            51,  2732,   667,  2489,     9,  1089,     9,  1193,    11,  3404,
+             6,   372,     9,    42,   449,    12,     6,  4040,   569,    51,
+            12,  4113,  7831,  8272,  2506,    13,   189,  1425,  1355,   631,
+           486, 11115, 14843,    13,   779,    14,  1031,  8961,     9,  4283,
+            12,   360,    11,  3404,    14,  4040,   569,    51,     6,  7831,
+             9,  4113,    11,  1569,   418,  1730,   841,     9,     6,   401,
+            10,  1401,  6401,   392,  2771,  2636,   259, 11467,  2396,    24,
+          5589,    11,    51,    88,  4576,  8169,    25,  3343,    11,  3535,
+          4576,   970,    33, 10210,  1216,  4611,  2152,    10,    11, 17658,
+          1394,     6,   401,     9,     6,  1883,     9,   754,    10,   815,
+          2522,     7,     2,     4,   658,     1,     1,     4,  6920,     1,
+             1,     4,  1518,     1,     1,     4,   762,    94,     4,  3246,
+         11211,     1,     1,     4,  1231,   196,  1476,     1,     1,     1,
+             1,     1,     1]])
+S-40	Every Bidders / Suppliers / Contractors are expected to observe the highest standard of ethics during the procurement and execution of such contracts inpursuance of the policy : > " Corrupt Practice " means the offering , giving , receiving or soliciting of anything of value to influence the action of an official in the procurement process or in contract execution AND > " Fraudulent Practice " means a misrepresentation of facts in order to influence a procurement process or the execution of contract to thedetriment of the Bank and includes collusive practice among Bidders ( prior to or after bid submission ) designed to establish bid prices at artificial non-competitive levels and to deprive the Bank of the benefits of free and open competition . <sep> नीति <sep> निष्पादन <sep> मुक्त <sep> स्थापित करना <sep> बोली संविदा <sep> गलत बयानी
+W-40	1.564	seconds
+H-40	-0.807851254940033	प्रत्येक बिडिंग / आपूर्तिकर्ता / संविदाओं से अपेक्षा की जाती है कि वे नीति के अनुसरण में ऐसी संविदाओं की खरीद और निष्पादन के दौरान आचार संहिता के उच्चतम मानक का पालन करें : > ' करंट प्रथा ' का अर्थ यह है कि किसी अधिकारी की खरीद प्रक्रिया में कार्रवाई को प्रभावित करने के लिए या संविदा निष्पादन में कुछ भी मूल्य प्राप्त करना , प्राप्त करना या प्राप्त करना <unk> और ' विवेकपूर्ण व्यवहार ' से तात्पर्य खरीद प्रक्रिया को प्रभावित करने या बैंक के विनिवेश के लिए संविदा के निष्पादन को प्रभावित करने के लिए तथ्यों का गलत ढंग से प्रतिनिधित्व करना ।
+D-40	-0.807851254940033	प्रत्येक बिडिंग / आपूर्तिकर्ता / संविदाओं से अपेक्षा की जाती है कि वे नीति के अनुसरण में ऐसी संविदाओं की खरीद और निष्पादन के दौरान आचार संहिता के उच्चतम मानक का पालन करें : > ' करंट प्रथा ' का अर्थ यह है कि किसी अधिकारी की खरीद प्रक्रिया में कार्रवाई को प्रभावित करने के लिए या संविदा निष्पादन में कुछ भी मूल्य प्राप्त करना , प्राप्त करना या प्राप्त करना <unk> और ' विवेकपूर्ण व्यवहार ' से तात्पर्य खरीद प्रक्रिया को प्रभावित करने या बैंक के विनिवेश के लिए संविदा के निष्पादन को प्रभावित करने के लिए तथ्यों का गलत ढंग से प्रतिनिधित्व करना ।
+P-40	-0.3662 -0.6033 -2.3120 -0.2512 -0.7919 -0.1595 -0.1859 -0.5467 -0.0746 -2.0477 -0.3853 -1.7410 -0.0981 -0.4685 -0.1074 -0.1217 -0.0707 -0.5590 -0.2939 -0.6562 -0.1171 -1.9833 -0.0920 -0.0043 -0.0447 -0.4188 -0.0341 -1.1860 -0.1434 -0.2641 -0.4965 -2.4472 -1.6389 -0.9272 -0.5119 -0.3197 -0.2805 -1.0228 -0.4756 -0.5537 -0.0958 -2.8369 -2.9192 -0.8114 -1.3549 -0.2577 -1.2125 -0.6139 -2.6982 -0.7467 -0.2370 -0.3045 -0.3397 -0.7817 -0.0686 -0.1136 -0.6875 -0.5033 -0.3826 -0.0487 -0.0748 -2.4112 -0.1041 -1.1024 -0.2245 -1.0011 -0.1740 -2.2248 -1.1574 -0.2918 -2.1862 -2.0222 -1.7449 -1.2411 -0.4129 -0.7081 -3.6140 -0.1295 -3.5334 -0.9562 -0.8813 -1.4921 -0.0455 -0.0316 -1.0620 -0.2635 -0.6622 -0.7997 -0.5337 -0.0302 -1.2986 -0.1905 -0.1854 -0.0474 -0.1418 -0.5056 -0.0604 -0.6004 -4.4303 -1.0361 -0.6136 -0.3601 -0.8168 -0.2255 -0.5391 -0.8058 -0.1320 -0.2651 -0.4481 -0.0394 -0.5699 -0.3688 -2.8832 -0.1160 -1.4889 -0.0866 -3.5963 -0.5415
+src tokens inside interactive  tensor([[   16,   401,  9680,     6,   343,    11,  6936,    14,  2307,    17,
+          1738,   129,    35,  9741,   165,    18,     6, 11467,  1611,  3998,
+            17,  1738,    20,  3036,    12,  8956,    51, 11288,   631,   486,
+          2975,    12, 15685,    17,     6,  4113,    12,   880,     7,     2,
+             4, 11211,     1,     1,     1,     1,     4,  3246,  2946,  2521,
+             1,     1,     4,  5982,   278, 14579, 12533,   290,     1,     1,
+             1,     1,     1,     1,     1,     1]])
+S-41	The Bank reserves the right to reject a proposal for award if it determines that the Bidder recommended for award has engaged in corrupt or fraudulent practices in competing for the contract in question . <sep> संविदा <sep> बोली लगानेवाला <sep> आरक्षित निधियां पंचाट
+W-41	0.447	seconds
+H-41	-0.9236456155776978	बैंक अधिनिर्णय के प्रस्ताव को अस्वीकार करने का अधिकार रखता है , यदि वह यह निर्धारित करता है कि बिडर ने इस निर्णय के लिए सिफारिश की है कि वह भ्रष्ट या धोखाधड़ी से संबंधित प्रथाओं को पूछताछ में संविदागत कर रहा है ।
+D-41	-0.9236456155776978	बैंक अधिनिर्णय के प्रस्ताव को अस्वीकार करने का अधिकार रखता है , यदि वह यह निर्धारित करता है कि बिडर ने इस निर्णय के लिए सिफारिश की है कि वह भ्रष्ट या धोखाधड़ी से संबंधित प्रथाओं को पूछताछ में संविदागत कर रहा है ।
+P-41	-0.6559 -2.0847 -0.0700 -0.5918 -0.5636 -0.1346 -1.4086 -0.0846 -0.1754 -0.0247 -1.0222 -0.1696 -1.5397 -0.0754 -0.7621 -0.5727 -0.3496 -0.0814 -0.1485 -0.1216 -2.3139 -2.9289 -0.1839 -2.5857 -3.0389 -0.3862 -0.1116 -0.8303 -0.1756 -0.2737 -0.1788 -0.5093 -2.1077 -1.1401 -0.5128 -1.3344 -1.0920 -1.7995 -1.0644 -2.7826 -0.4593 -3.4668 -0.1961 -0.5001 -1.1872 -2.0608 -0.7504 -0.2557 -1.1744 -0.1447
+src tokens inside interactive  tensor([[   16,   401,  9680,     6,   343,    11,  6847,    14,  2414,   144,
+          4023,     8,  1375,   144,  4488,    51,    17,    14,   931,   497,
+             9,    82,     8,    11,    22,  2680,    14,  4113,   129,    33,
+           105,    82,    35,  9741,   165,    18,     6,  2414,    20,  3036,
+            12,  8956,    51, 11288,   631,   486,  2975,    12, 15685,    17,
+            51,    12, 14489,  5801,     6,  4113,     7,     2,     4, 11211,
+             1,     1,     4,  5982,   278, 14579,     1,     1,     1,     1,
+             1,     1]])
+S-42	The Bank reserves the right to declare a firm ineligible , either indefinitely or for a stated period of time , to be awarded a contract if at any time it determines that the firm has engaged in corrupt or fraudulent practices in competing for or in executing the contract . <sep> संविदा <sep> आरक्षित निधियां
+W-42	0.583	seconds
+H-42	-0.853547990322113	बैंक किसी फर्म को अपात्र घोषित करने का अधिकार , अनिश्चित या नियत अवधि के लिए , यदि वह किसी समय यह निर्धारित करता है कि फर्म ने संविदा के लिए प्रतिस्पर्धा करने या निष्पादित करने के लिए भ्रष्ट या धोखाधड़ी करने वाली प्रथाओं में लिप्त पाया है , तो उसे निश्चित रूप से एक संविदा प्रदान करने का अधिकार होगा .
+D-42	-0.853547990322113	बैंक किसी फर्म को अपात्र घोषित करने का अधिकार , अनिश्चित या नियत अवधि के लिए , यदि वह किसी समय यह निर्धारित करता है कि फर्म ने संविदा के लिए प्रतिस्पर्धा करने या निष्पादित करने के लिए भ्रष्ट या धोखाधड़ी करने वाली प्रथाओं में लिप्त पाया है , तो उसे निश्चित रूप से एक संविदा प्रदान करने का अधिकार होगा .
+P-42	-0.0798 -0.4991 -0.2380 -0.2242 -1.3917 -1.0862 -1.0402 -0.0481 -0.8195 -0.4448 -1.0958 -1.1438 -0.0889 -1.8825 -2.3787 -0.7018 -0.4562 -0.1085 -0.1377 -0.1043 -0.7514 -1.4546 -0.2670 -1.1050 -0.1203 -0.3894 -0.1562 -0.1709 -2.3894 -0.6351 -0.1525 -0.6149 -0.4873 -1.1154 -0.5322 -0.5378 -2.1262 -0.4600 -0.1006 -2.1572 -0.3224 -1.0247 -0.8894 -0.6918 -2.1730 -0.6201 -1.4882 -0.5742 -1.3994 -0.6674 -0.7376 -0.3519 -0.9703 -0.8896 -3.5090 -1.3311 -0.1375 -3.3646 -0.4932 -1.4743 -0.3404 -0.1330 -0.0489 -2.2611 -0.6042 -0.1437
+src tokens inside interactive  tensor([[17019,  2974, 15989, 11613,  3622,    37,    16,  2097, 11467,  1611,
+           191,  8070,     6, 10832,  4452, 14088,    58,    67,  2508,    10,
+          9177,   592,    23,     6,   401,     8,    23,   551,    11,     6,
+         12477,   101,     6,  4113,     7,     2,     4, 11211,     4,  3246,
+          2946,  2521,     1,     1,     1,     1]])
+S-43	Authorized Signatory : The selected Bidder shall indicate the authorized signatories who can discuss and correspond with the Bank , with regard to the obligations under the contract . <sep> संविदा <sep> बोली लगानेवाला
+W-43	0.337	seconds
+H-43	-0.785736620426178	प्राधिकृत हस्ताक्षर : चयनित बीडर , बैंक के साथ विचार<unk> विमर्श करने तथा संविदा के अंतर्गत बाध्यताओं के संबंध में पत्राचार करने वाले प्राधिकृत हस्ताक्षरकर्ताओं को सूचित करेगा ।
+D-43	-0.785736620426178	प्राधिकृत हस्ताक्षर : चयनित बीडर , बैंक के साथ विचार<unk> विमर्श करने तथा संविदा के अंतर्गत बाध्यताओं के संबंध में पत्राचार करने वाले प्राधिकृत हस्ताक्षरकर्ताओं को सूचित करेगा ।
+P-43	-0.8111 -0.0069 -0.2622 -0.2192 -0.1648 -1.1122 -3.2256 -1.8149 -0.9310 -0.3970 -0.0461 -1.9396 -0.0515 -0.0107 -1.9110 -2.6858 -1.3371 -0.2494 -0.6942 -2.3212 -0.0683 -0.3575 -0.4251 -0.1548 -0.6212 -0.7433 -0.5894 -0.7324 -0.3700 -0.1661 -0.0162 -3.0421 -0.1612 -0.2021 -0.1352 -1.5058 -0.2428 -0.7737 -0.1448
+src tokens inside interactive  tensor([[  142,  1918, 11467,  1611,   191,  3632,    33,     6,    82,     9,
+          6615,     6,  4113,     8,    14, 13230,  4882,     9,  8286,   454,
+         17971,     9,    50,   834,     8,  7283, 11438,    28,  3358,   415,
+           104,   776,     8,  8864,  5173,    42,   449,    51,   475,     9,
+             6,   541,    51,    14,  1951,     9, 13029,  4882,    11,  2508,
+             8,  2225,  6722,   104, 10365,    23,     6,   401,     7,     2,
+             4, 11211,     1,     1,     4,  3246,  2946,  2521,     4, 15545,
+          4784,  6614,     1,     1,     1,     1,     1,     1]])
+S-44	Selected Bidder shall submit at the time of signing the contract , a certified copy of ther esolution of their Board , authenticated by Company Secretary / Director , authorizing an official or officials of the company or a Power of Attorney copy to discuss , sign agreements / contracts with the Bank . <sep> संविदा <sep> बोली लगानेवाला <sep> मुख्तारनामा
+W-44	0.575	seconds
+H-44	-0.7375486493110657	चयनित बिडर संविदा पर हस्ताक्षर करने के समय बैंक के साथ करार पर हस्ताक्षर करने / संविदाओं पर हस्ताक्षर करने के लिए कंपनी सचिव / निदेशक द्वारा प्रमाणित अपने बोर्ड के अपेक्षाकृत अधिक अंतरण की एक प्रमाणित प्रति प्रस्तुत करेगा , जिसे कंपनी के किसी अधिकारी या अधिकारियों या अटार्नी प्रति को प्राधिकृत किया गया है .
+D-44	-0.7375486493110657	चयनित बिडर संविदा पर हस्ताक्षर करने के समय बैंक के साथ करार पर हस्ताक्षर करने / संविदाओं पर हस्ताक्षर करने के लिए कंपनी सचिव / निदेशक द्वारा प्रमाणित अपने बोर्ड के अपेक्षाकृत अधिक अंतरण की एक प्रमाणित प्रति प्रस्तुत करेगा , जिसे कंपनी के किसी अधिकारी या अधिकारियों या अटार्नी प्रति को प्राधिकृत किया गया है .
+P-44	-0.5735 -0.6309 -2.1747 -0.8299 -0.1399 -0.0324 -0.8688 -0.1492 -0.1376 -2.5158 -0.3252 -0.1374 -1.6218 -1.0403 -0.0704 -1.3687 -1.1005 -0.8040 -0.0342 -0.1500 -0.0646 -0.8647 -0.1292 -1.8391 -0.2348 -0.2290 -0.0600 -0.1682 -0.0730 -0.4529 -1.5779 -2.5107 -0.1885 -0.5312 -3.8816 -1.0714 -1.3525 -0.3273 -1.0590 -0.2193 -0.1819 -0.1782 -0.3852 -1.3656 -1.6391 -0.2196 -0.1170 -0.4889 -0.4150 -0.5957 -0.8697 -1.9150 -0.6888 -0.3201 -0.1540 -1.7502 -0.3277 -1.1066 -0.0089 -0.6226 -0.9540 -0.3631 -0.8572 -0.1385
+src tokens inside interactive  tensor([[   16, 11467,  1611,   191,  6510,  1140,  4164,     9, 13488,  7681,
+            17,  1117,  3895,    30,  1077,    28,     6,   401,     7,     2,
+             4,  3246,  2946,  2521,     1,     1]])
+S-45	The Bidder shall furnish proof of signature identification for above purposes as required by the Bank . <sep> बोली लगानेवाला
+W-45	0.144	seconds
+H-45	-0.8607280254364014	बिडिंग बैंक द्वारा अपेक्षित उपर्युक्त उद्देश्यों के लिए हस्ताक्षर पहचान का प्रमाण प्रस्तुत करेगा .
+D-45	-0.8607280254364014	बिडिंग बैंक द्वारा अपेक्षित उपर्युक्त उद्देश्यों के लिए हस्ताक्षर पहचान का प्रमाण प्रस्तुत करेगा .
+P-45	-1.4161 -3.3747 -1.0981 -0.3384 -0.9777 -0.7887 -1.1525 -0.2574 -0.1294 -1.6902 -0.5268 -1.0654 -0.7110 -0.2445 -0.5021 -0.2255 -0.1339
+src tokens inside interactive  tensor([[   16, 10510,  8169,    28,   780,   826,    37,   271,   780,   826,
+            24,    30,  5544,  1833,    25,  3632,   108,   143,    66,  4576,
+           131,   231,   104,    54, 10510,  2458,    28,   780,   826,    26,
+         14898,    11,    22,  2149,    33,   105,  1726,    33,   401,    55,
+            95,  8935,   857,    37,    14,    25,   140,  4353,  2458,    28,
+          2372,   541,    10,    70, 10979,   541,     3,   556,    25,   140,
+          4353,  2458,    28,    83,    51,   108,   984,   765,  1042,  1254,
+           104,    95,  1080,    25,   140,  4353,  2458,    28,  2224,  6109,
+           104, 10442,  3440,   765,  1042,  3178,   592,    25,   140,  4353,
+          2458,    28,   984,    12,     6,   307,   645,     9,  5803,  2325,
+           104,  1054,     7,     2,     4,  3246,     1,     1,     1,     1,
+             1,     1,     4,    24,    38,   629,    11,  3453,     1,     1,
+             4,  2389,     1,     1,     1,     1,     1,     4,  5522,     5,
+          9472,   382,  1577,  2234,  1687,   382,     4,  4537,     1,     1,
+             1,     1,     1,     1,     4,  1102,  1124,     1,     1,     1,
+             1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+             1,     1]])
+S-46	The bids submission by related parties : If related parties ( as defined below ) submit more than one bid then both / all bids submitted by related parties are liable to be rejected at any stage at Bank ' s discretion : a ) Bids submitted by holding company and its subsidiary company <unk> b ) Bids submitted by two or more companies having common director / s c ) Bids submitted by partnership firms / LLPs having common partners d ) Bids submitted by companies in the same group of promoters / management . <sep> बोली <sep> एक ही समूह की कंपनियां <sep> प्रबंध <sep> धारक <isep> नियंत्रक कंपनी नुषंगी कंपनी <sep> विवेक <sep> भागी
+W-46	1.211	seconds
+H-46	-0.5867790579795837	संबंधित पक्षों द्वारा प्रस्तुत बोलियां : यदि संबंधित पक्ष ( जैसा कि नीचे परिभाषित किया गया है ) एक से अधिक बोली प्रस्तुत करते हैं तो संबंधित पक्षों द्वारा प्रस्तुत की गई सभी बोलियों को बैंक के विवेक के अनुसार किसी भी स्तर पर अस्वीकृत किए जाने के लिए उत्तरदायी होंगे : ए ) धारक कंपनी और इसकी अनुषंगी कंपनी द्वारा प्रस्तुत बिड्स <unk> बी ) साझेदार फर्मो / एलएलपी द्वारा प्रस्तुत की गई दो या अधिक कंपनियों द्वारा प्रस्तुत बिड्स , जिनके पास आम भागीदार हैं , द्वारा प्रस्तुत की गई बीडी ) प्रवर्तकों / प्रबंधन के उसी समूह में कंपनियों द्वारा प्रस्तुत की गई बिड्स ।
+D-46	-0.5867790579795837	संबंधित पक्षों द्वारा प्रस्तुत बोलियां : यदि संबंधित पक्ष ( जैसा कि नीचे परिभाषित किया गया है ) एक से अधिक बोली प्रस्तुत करते हैं तो संबंधित पक्षों द्वारा प्रस्तुत की गई सभी बोलियों को बैंक के विवेक के अनुसार किसी भी स्तर पर अस्वीकृत किए जाने के लिए उत्तरदायी होंगे : ए ) धारक कंपनी और इसकी अनुषंगी कंपनी द्वारा प्रस्तुत बिड्स <unk> बी ) साझेदार फर्मो / एलएलपी द्वारा प्रस्तुत की गई दो या अधिक कंपनियों द्वारा प्रस्तुत बिड्स , जिनके पास आम भागीदार हैं , द्वारा प्रस्तुत की गई बीडी ) प्रवर्तकों / प्रबंधन के उसी समूह में कंपनियों द्वारा प्रस्तुत की गई बिड्स ।
+P-46	-0.2961 -0.2929 -0.0587 -0.1990 -0.6930 -1.1118 -0.0853 -0.1326 -0.1821 -1.1967 -0.1991 -2.7223 -0.2576 -0.7384 -1.2073 -0.6436 -0.2300 -0.5049 -0.1360 -0.0923 -0.0804 -0.0511 -0.5039 -0.1057 -1.0587 -0.1892 -0.5118 -0.0861 -0.3313 -0.0518 -0.0780 -1.3295 -0.4424 -0.7035 -0.0347 -0.1673 -0.2958 -0.2663 -0.0633 -0.5200 -1.3684 -0.5821 -0.3078 -0.2804 -1.7490 -0.1386 -0.2947 -0.0437 -2.0191 -0.1036 -0.7062 -0.3357 -0.6312 -1.5489 -0.1324 -1.0996 -0.0928 -2.3931 -0.4660 -0.7546 -0.2879 -0.1697 -0.0381 -0.0137 -0.1265 -0.1068 -0.0908 -1.1500 -1.5761 -0.3173 -0.0539 -0.0682 -1.8125 -0.4885 -0.1148 -0.2264 -0.2715 -0.0644 -0.7212 -1.5650 -1.3967 -0.3992 -2.6682 -0.6530 -0.7827 -0.0885 -0.4813 -0.5504 -1.2157 -1.1119 -0.4171 -2.3471 -0.1599 -2.1640 -0.2026 -0.8623 -0.1427 -0.4656 -0.0989 -1.0661 -0.4616 -1.8305 -0.4214 -0.0863 -0.2070 -0.7581 -0.3856 -0.1236 -0.2891 -0.9337 -1.0884 -0.1739 -0.3835 -0.5530 -0.1176 -0.1487 -0.5456 -0.7032 -0.8357 -1.5364 -0.4334 -0.1352
+src tokens inside interactive  tensor([[ 5048,    11,   609, 11892,   140,  4353,    37,   401,  9680,     6,
+          8512,    10,   137,   719, 16459,   343,    11,  6936,     6,  1374,
+            11,    34,   180, 14362,   129,    35,    15,    36,    12,  5212,
+            23,    70,  3604,    10,    91,  9177,   190,  1296,    27,    22,
+          6884, 14381,    28,     6,   401,    12,     6,   323,     7,     2,
+             4, 16289,   359,  7845,   589,     4,  5982,   278, 14579,     1,
+             1,     1]])
+S-47	Right to Reject Bids : Bank reserves the absolute and unconditional right to reject the response to this RFP if it is not in accordance with its requirements and no correspondence will be entertained by the Bank in the matter . <sep> वसीयतनामा <sep> आरक्षित निधियां
+W-47	0.414	seconds
+H-47	-0.5209854245185852	निर्गम बिड्स का अधिकार : बैंक अपनी अपेक्षाओं के अनुरूप नहीं होने पर इस आरएफपी की प्रतिक्रिया को अस्वीकार करने का पूर्ण और बिना शर्त अधिकार रखता है और इस मामले में बैंक द्वारा कोई पत्राचार नहीं किया जाएगा ।
+D-47	-0.5209854245185852	निर्गम बिड्स का अधिकार : बैंक अपनी अपेक्षाओं के अनुरूप नहीं होने पर इस आरएफपी की प्रतिक्रिया को अस्वीकार करने का पूर्ण और बिना शर्त अधिकार रखता है और इस मामले में बैंक द्वारा कोई पत्राचार नहीं किया जाएगा ।
+P-47	-1.6241 -0.6516 -0.7522 -0.1618 -0.9230 -0.1695 -0.9272 -2.6013 -0.7098 -0.0167 -0.2122 -1.0106 -1.1421 -0.7025 -0.1503 -0.9678 -0.3487 -0.0571 -1.1837 -0.1964 -0.3883 -1.1275 -0.1329 -0.3771 -0.2063 -0.5013 -0.9810 -0.0082 -0.2342 -1.8108 -0.1524 -0.2969 -0.4345 -0.2913 -0.1207 -0.0541 -0.1322 -0.5598 -0.1724 -0.0121 -0.0902 -0.1298 -0.1475 -0.0523 -0.9017 -0.1413
+src tokens inside interactive  tensor([[   16,  4576,    15, 14898,    11,    22,  2149,   129,    37,    63,
+            15,    36,    12,   719,  2524,   874,    23,     6,  4674,  1758,
+            12,     6,   180, 14362,  4601,     7,     2,     4,   388,  2189,
+             4,  1102,  1124,     4,  3246,     1,     1,     1]])
+S-48	The bid is liable to be rejected if : It is not in conformity with the instructions mentioned in the RFP document . <sep> प्रलेख <sep> भागी <sep> बोली
+W-48	0.221	seconds
+H-48	-0.5739962458610535	यदि आरएफपी दस्तावेज में उल्लिखित अनुदेशों के अनुरूप नहीं है तो इस बोली को अस्वीकृत किया जाना चाहिए ।
+D-48	-0.5739962458610535	यदि आरएफपी दस्तावेज में उल्लिखित अनुदेशों के अनुरूप नहीं है तो इस बोली को अस्वीकृत किया जाना चाहिए ।
+P-48	-0.1376 -0.9031 -0.0601 -1.0814 -0.1601 -0.3181 -0.4809 -0.2113 -0.2587 -0.4160 -0.3470 -0.2357 -0.4101 -1.5615 -1.9877 -0.1407 -0.9717 -0.0392 -0.3398 -0.4769 -1.0378 -1.4846 -0.1418
+src tokens inside interactive  tensor([[   63,    15,    36,  2943,    28,     6, 12162,  6573,  6939,    10,
+          9376, 11627,  6939,   871, 16969,    24,   237,  7363,    25,     7,
+             2,     4,  1160,  1062,     4,   196,  9519,  1311,    22,  1062,
+             1,     1,     1,     1,     1]])
+S-49	It is not accompanied by the requisite Application Money and Earnest Money Deposit ( EMD ) . <sep> आवेदन राशि <sep> बयाना जमा - राशि
+W-49	0.169	seconds
+H-49	-0.6700155735015869	इसमें अपेक्षित आवेदन राशि और बयाना राशि ( ईएमडी ) शामिल नहीं है ।
+D-49	-0.6700155735015869	इसमें अपेक्षित आवेदन राशि और बयाना राशि ( ईएमडी ) शामिल नहीं है ।
+P-49	-3.2277 -0.1291 -0.5458 -0.7386 -0.9809 -0.5517 -1.0778 -1.6431 -0.2252 -0.1798 -0.0293 -0.1612 -1.1887 -0.0681 -0.2038 -0.2985 -0.1408
+src tokens inside interactive  tensor([[   63,    15,    36,  6021,    51, 12777,  1585,     7,     2,     4,
+          1241,  2128,   191,    67,    14,     5,  7317,   248,  4564, 13476,
+             1,     1]])
+S-50	It is not properly or duly signed . <sep> सम्यक रूप से <isep> विधिवत् हस्ताक्षरित
+W-50	0.095	seconds
+H-50	-0.49680107831954956	यह उचित या विधिवत हस्ताक्षरित नहीं है .
+D-50	-0.49680107831954956	यह उचित या विधिवत हस्ताक्षरित नहीं है .
+P-50	-0.8661 -0.7573 -1.7772 -0.2437 -0.0158 -0.1344 -0.1842 -0.5878 -0.2555 -0.1461
+src tokens inside interactive  tensor([[   63,    15,   573,   153,  5466, 11796,   104,  6388,   241,  5278,
+           104,  3987,   895,     7,    63,    15,   573,    88, 16116,   320,
+             9,     6,   308,   848,    10,    82,     7,     2,     4,  2402,
+             5,  4666,   158,     1,     1]])
+S-51	It is received through Telex / telegram / fax . It is received after expiry of the due date and time . <sep> तारीख <isep> नियत दिन
+W-51	0.274	seconds
+H-51	-0.5389335751533508	इसे टेलेक्स / टेलीग्राम / फैक्स के माध्यम से प्राप्त किया जाता है . इसे देय तारीख और समय की समाप्ति के बाद प्राप्त किया जाता है .
+D-51	-0.5389335751533508	इसे टेलेक्स / टेलीग्राम / फैक्स के माध्यम से प्राप्त किया जाता है . इसे देय तारीख और समय की समाप्ति के बाद प्राप्त किया जाता है .
+P-51	-2.7041 -1.3909 -0.3036 -0.0240 -0.0969 -1.0797 -0.0258 -0.0938 -0.6006 -1.0098 -0.4046 -0.1201 -0.1307 -0.0245 -0.3608 -0.0935 -0.1568 -2.0937 -1.6470 -0.4113 -0.5309 -0.7968 -0.4573 -1.1763 -0.0547 -0.7007 -0.2352 -0.0084 -0.4415 -0.0890 -0.1499 -0.2203 -0.1517
+src tokens inside interactive  tensor([[   63,    15, 14629,   229,  8015,    59,  6510,  3261,     6,  1077,
+          2592,     7,     2,     1,     1,     1,     1]])
+S-52	It is incomplete including non- furnishing the required documents .
+W-52	0.102	seconds
+H-52	-0.48493918776512146	यह आवश्यक दस्तावेजों को प्रस्तुत नहीं करने सहित अधूरा है .
+D-52	-0.48493918776512146	यह आवश्यक दस्तावेजों को प्रस्तुत नहीं करने सहित अधूरा है .
+P-52	-1.1688 -0.5907 -1.0706 -0.5245 -0.0789 -0.7286 -0.3292 -0.1952 -0.7895 -0.0328 -0.1171 -0.5394 -0.1388
+src tokens inside interactive  tensor([[   63,    15,  1461,   357,  3808,    51,  4199, 14478,   324,     7,
+             2,     1,     1,     1,     1]])
+S-53	It is evasive or contains incorrect information .
+W-53	0.087	seconds
+H-53	-0.9057029485702515	यह भ्रामक है या गलत जानकारी रखता है .
+D-53	-0.9057029485702515	यह भ्रामक है या गलत जानकारी रखता है .
+P-53	-0.3531 -4.7150 -0.0122 -0.1911 -0.6406 -0.3118 -1.4857 -1.3780 -0.1402 -0.5927 -0.1423
+src tokens inside interactive  tensor([[  134,    15,  3451,   329, 13224,     9,   105,  1055,     7,     2,
+             1,     1,     1,     1]])
+S-54	There is canvassing of any kind .
+W-54	0.095	seconds
+H-54	-0.821436882019043	किसी भी प्रकार की भरमार हो रही है ।
+D-54	-0.821436882019043	किसी भी प्रकार की भरमार हो रही है ।
+P-54	-0.7376 -0.2429 -0.4454 -0.9110 -4.6089 -0.0627 -0.7466 -0.4448 -0.1946 -0.5037 -0.1376
+src tokens inside interactive  tensor([[ 2351, 17547,    28,   780,   826,    37,    63,    15,  2458,  5425,
+            76,   143,     6,   253,  1758,    12,     6,   180, 14362,     7,
+             2,     1,     1,     1,     1]])
+S-55	Submitted by related parties : It is submitted anywhere other than the place mentioned in the RFP .
+W-55	0.171	seconds
+H-55	-0.426052987575531	संबंधित पक्षों द्वारा प्रस्तुत : इसे आरएफपी में उल्लिखित स्थान के अलावा कहीं और प्रस्तुत किया जाता है .
+D-55	-0.426052987575531	संबंधित पक्षों द्वारा प्रस्तुत : इसे आरएफपी में उल्लिखित स्थान के अलावा कहीं और प्रस्तुत किया जाता है .
+P-55	-0.0706 -0.3966 -0.1314 -1.4073 -0.4662 -0.9174 -0.3229 -0.0296 -0.2857 -0.2539 -0.0386 -1.1932 -0.2355 -0.3838 -0.6786 -0.1116 -0.1378 -0.7707 -0.1372 -0.8402 -0.1383
+src tokens inside interactive  tensor([[ 2768,   401,  9680,     6,  1276,    11,    37,   609, 11892,   105,
+            51,    54, 15020,   573,    12,  1374,    11,     6,   180, 14362,
+             7,  1334, 10532,     6,    82,    17,  8169,     9,    54,  6010,
+             7,   196,  3032,  1019,     6,   180, 14362,    33,   105,  1726,
+             8,   521,   357,  6615,   105,  1074,  8776,     7,     2,     4,
+           901,  5477,   837,     4,  5982,   278, 14579,     1,     1]])
+S-56	Further Bank reserves the rights to : Reject any or all responses received in response to the RFP . Extend the time for submission of all proposals . Cancel the RFP at any stage , without assigning any reason whatsoever . <sep> अनुक्रियाएं <sep> आरक्षित निधियां
+W-56	0.496	seconds
+H-56	-0.7778932452201843	इसके अलावा , बैंक इस अधिकार को आरक्षित करता है : आरएफपी के जवाब में प्राप्त किसी भी या सभी प्रतिक्रियाओं को वापस लें , सभी प्रस्तावों को प्रस्तुत करने का समय प्रदान करें . किसी भी कारण का उल्लेख किए बिना आरएफपी को किसी भी स्तर पर रद्द करें .
+D-56	-0.7778932452201843	इसके अलावा , बैंक इस अधिकार को आरक्षित करता है : आरएफपी के जवाब में प्राप्त किसी भी या सभी प्रतिक्रियाओं को वापस लें , सभी प्रस्तावों को प्रस्तुत करने का समय प्रदान करें . किसी भी कारण का उल्लेख किए बिना आरएफपी को किसी भी स्तर पर रद्द करें .
+P-56	-0.5366 -0.8714 -1.4654 -0.0476 -1.9522 -0.6275 -0.5849 -2.1245 -0.4155 -0.2049 -0.6564 -0.1723 -0.0450 -0.8793 -0.6946 -0.1637 -0.0746 -1.3532 -0.7348 -0.9099 -1.6111 -1.6314 -0.3939 -0.1344 -2.1952 -1.4438 -2.0619 -0.2638 -0.1981 -0.2097 -0.0740 -0.1236 -0.7293 -0.0215 -3.3085 -0.1763 -1.9396 -0.6706 -0.1339 -1.0415 -1.1784 -1.5803 -0.3024 -0.2972 -1.0502 -0.0577 -0.2556 -0.2774 -0.2878 -1.1564 -0.1712 -1.3913 -0.6186 -1.1509 -0.1319
+src tokens inside interactive  tensor([[11708,     6,   253,     9,   157,     9,     6, 10035,  1611,     7,
+           727, 11149,    42,  9691,     9,     6,   537,   681,    28,     6,
+         10035,  1611,     7,     2,     4,  3246,  2946,  2521,     1,     1]])
+S-57	Visit the place of work of the bidder . Conduct an audit of the services provided by the bidder . <sep> बोली लगानेवाला
+W-57	0.209	seconds
+H-57	-0.8259010910987854	बोलीकर्ता के कार्य के स्थान पर जाएं , बोलीकर्ता द्वारा उपलब्ध कराई गई सेवाओं की लेखापरीक्षा करें .
+D-57	-0.8259010910987854	बोलीकर्ता के कार्य के स्थान पर जाएं , बोलीकर्ता द्वारा उपलब्ध कराई गई सेवाओं की लेखापरीक्षा करें .
+P-57	-2.2987 -0.7309 -0.7373 -0.1851 -0.2647 -1.2277 -0.0728 -0.2332 -2.2586 -1.7377 -2.2634 -0.9508 -1.0389 -0.1125 -1.1109 -0.1207 -0.5738 -0.1815 -0.2090 -0.4154 -0.4877 -1.9904 -0.4772 -0.1427
+src tokens inside interactive  tensor([[ 1866,  1174,   324,    32,     6,  4829,    10,    76,  1242,    11,
+            57,     6, 10035,  2396,    29, 10343,    50,   537,    17,  7831,
+             9,  1439,   762,     7,     2,     4,  6920,     1,     1]])
+S-58	Ascertain information from the Banks and other institutions to which the bidders have rendered their services for execution of similar projects . <sep> निष्पादन
+W-58	0.257	seconds
+H-58	-0.6602514386177063	बैंकों और अन्य संस्थाओं से ऐसी कुछ जानकारी , जिसके लिए बोलीदाताओं ने ऐसी ही परियोजनाओं के निष्पादन के लिए अपनी सेवाएं प्रदान की हैं ।
+D-58	-0.6602514386177063	बैंकों और अन्य संस्थाओं से ऐसी कुछ जानकारी , जिसके लिए बोलीदाताओं ने ऐसी ही परियोजनाओं के निष्पादन के लिए अपनी सेवाएं प्रदान की हैं ।
+P-58	-0.3577 -0.5332 -0.1047 -1.0119 -0.2125 -1.2069 -1.2349 -0.9774 -0.9235 -2.1168 -1.0222 -2.2645 -0.0883 -0.1114 -0.1914 -0.4540 -0.4496 -0.1060 -0.5331 -0.7690 -0.6998 -0.1615 -0.5241 -0.1987 -0.3254 -0.4398 -0.5536 -1.4290 -0.1464
+src tokens inside interactive  tensor([[ 5381,  1980,   105,   242,     9,     6,  7960,  4601,     8,    28,
+          1318,    14,   793,  6683,   264, 16845,    33,   105,  1726,   827,
+             6,  1738,     9,     6,  4113,     7,     2,     4,   388,  2189,
+             1,     1,     1,     4,     4,  1827,   798,     5, 12533,   290,
+         11211,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+             1,     1,     1]])
+S-59	Revise any part of the tender document , by providing a written addendum at any stage till the award of the contract . <sep> प्रलेख <sep> <sep> अधिनिर्णय <isep> पंचाट संविदा
+W-59	0.231	seconds
+H-59	-0.6420093178749084	संविदा के अधिनिर्णय तक किसी भी स्तर पर लिखित परिशिष्ट प्रस्तुत करते हुए निविदा दस्तावेज के किसी भी भाग को संशोधित करना .
+D-59	-0.6420093178749084	संविदा के अधिनिर्णय तक किसी भी स्तर पर लिखित परिशिष्ट प्रस्तुत करते हुए निविदा दस्तावेज के किसी भी भाग को संशोधित करना .
+P-59	-1.9473 -0.3702 -1.4574 -0.1755 -0.4272 -0.1708 -0.1082 -1.7018 -0.1266 -0.0814 -0.3560 -0.6538 -2.1451 -1.8296 -0.2079 -0.3802 -1.0824 -0.6660 -0.1527 -0.5130 -0.1933 -0.4018 -0.2210 -1.0550 -0.1268 -0.1414
+src tokens inside interactive  tensor([[   16,   401,  9680,     6,   343,    11,   382, 16792,  4588,    11,
+            34,  7960,  4601,    33,   105,    82,   207,     6,  1738,   848,
+             7,     2,     4,  1827,   798,     5, 12533,   290,     4,  1944,
+             1,     1,     1,     1,     4, 11039,     4,   388,  2189,     1,
+             4,  5982,   278, 14579,     1,     1,     1,     1,     1,     1,
+             1,     1,     1,     1]])
+S-60	The Bank reserves the right to issue revisions to this tender document at any time before the award date . <sep> अधिनिर्णय <isep> पंचाट <sep> प्रश्न <sep> निविदा <sep> प्रलेख <sep> आरक्षित निधियां2022-12-18 17:44:04 | INFO | fairseq_cli.interactive | Total time: 36.385 seconds; translation time: 26.592
+
+W-60	0.209	seconds
+H-60	-0.6459403038024902	बैंक इस निविदा दस्तावेज में संशोधन की तारीख से पहले कभी भी जारी करने का अधिकार रखता है .
+D-60	-0.6459403038024902	बैंक इस निविदा दस्तावेज में संशोधन की तारीख से पहले कभी भी जारी करने का अधिकार रखता है .
+P-60	-0.1350 -1.4070 -0.1829 -0.8518 -0.2863 -0.3074 -2.3507 -0.0738 -0.4083 -0.7071 -1.6484 -0.0199 -2.1824 -0.1440 -0.1188 -0.0638 -1.2384 -0.1617 -0.4943 -0.1367
+src tokens inside interactive  tensor([[  16, 6683,  264, 1871, 1940,    8,  129,  105,    8,  191,   22, 1654,
+           19,  401,   55,   95, 1251,  127,    7,    2,    1,    1,    1,    1]])
+S-61	The addendums , if any , shall be published on Bank ' s website only .
+W-61	0.149	seconds
+H-61	-0.4990987479686737	परिशिष्ट , यदि कोई हो , तो , बैंक की वेबसाइट पर ही प्रकाशित किया जाएगा .
+D-61	-0.4990987479686737	परिशिष्ट , यदि कोई हो , तो , बैंक की वेबसाइट पर ही प्रकाशित किया जाएगा .
+P-61	-4.4575 -0.2949 -0.1162 -0.0304 -0.0525 -0.0679 -0.2845 -0.1635 -0.8411 -0.7390 -0.0575 -0.0825 -0.1038 -0.4403 -0.0314 -1.0660 -0.2096 -0.3090 -0.1354
