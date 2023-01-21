@@ -1,6 +1,5 @@
 
---------------------------------------------------------------------------------
-
+# DictDis: Dictionary Constrained Disambiugation for Improved NMT
 ## Installation
 
 - fairseq directory contain the v0.12 of fairseq repo
