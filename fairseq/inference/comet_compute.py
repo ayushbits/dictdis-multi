@@ -6,8 +6,8 @@ comet_metric = load('comet')
 # model_path = download_model("wmt22-comet-da")
 # model = load_from_checkpoint(model_path)
 source_fname = sys.argv[1]
-ref_fname = sys.argv[2]
-pred_fname = sys.argv[3]
+ref_fname = sys.argv[3]
+pred_fname = sys.argv[2]
 
 src, ref, pred = [], [], []
 

@@ -73,8 +73,11 @@ def collate(
     res_fanout_1 = None
     res_fanout_n =None
     # print('src before merge ', src_tokens)
-    src_tokens,_,_ = merge('source', left_pad=left_pad_source,
-    pad_to_length=pad_to_length["source"] if pad_to_length is not None else None,consnmt=consnmt,)
+    
+    # src_tokens,_,_ = merge('source', left_pad=left_pad_source,
+    # pad_to_length=pad_to_length["source"] if pad_to_length is not None else None,consnmt=consnmt,)
+    src_tokens,res_fanout_1,res_fanout_n = merge('source', left_pad=left_pad_source, consnmt=consnmt)
+    
     # src_tokens = merge(
     #     "source",
     #     left_pad=left_pad_source,
@@ -339,8 +342,8 @@ class LanguagePairDataset(FairseqDataset):
             src_item = self.src[index]
         elif self.sep_idx in self.src[index]: # this is added for inference by
             src_item = self.src[index]
-        # elif self.consnmt:
-        #     src_item = self.src[index] # this is added for inference by Ayush to refrain from adding random constraints .. During training please remove this condition if you want to add random constraints
+        elif self.consnmt:
+            src_item = self.src[index] # this is added for inference by Ayush to refrain from adding random constraints .. During training please comment this condition if you want to add random constraints
         else:
             assert self.sep_idx not in self.src[index] 
 

@@ -5,7 +5,6 @@
 
 import math
 from typing import Any, Dict, List, Optional
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -429,7 +428,7 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
 
             # src_masks = src_masks[:,:,sep_tkn:]
             #print("src mask shape",src_masks.shape)
-            # print('dec enc attention', dec_enc_attn)
+            # print('dec enc attention before normalized probs', dec_enc_attn)
             # print('score ', scores)
             # print('ctx is ', ctx)
             scores = self.intra_normalization(encoder_out['cons_info'], scores)
@@ -442,7 +441,7 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
             # print('end time is :',time.strftime("%Y-%m-%d %X"))
             # print('It left intra_normalisation')
             # print('scores2',scores)
-            dec_enc_attn = dec_enc_attn# + scores
+            dec_enc_attn = dec_enc_attn #+ scores
             # print('scores',scores.shape)
             dec_enc_attn = self.intra_normalization(encoder_out['cons_info'], dec_enc_attn)
             # print('after normaliszaiton dec enc is ', dec_enc_attn)
@@ -468,6 +467,25 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
 
         return x, {"attn": [attn], "inner_states": inner_states,'dec_enc_attn':dec_enc_attn, 'gate': gate, 'src_tokens': src_tokens}
 
+    # def intra_normalization(self, cons_info, scores):
+    #     bsz,n_tgt,src_len = scores.shape
+    #     # print('src-mask non zero',min(src_mask.nonzero()[:,2]))
+    #     # print('cumsum',torch.cumsum((src_mask==True),dim=2))
+    #     # 1/0
+    #     # sep_position = min(src_mask.nonzero()[:,:,1])
+    #     temp_scores = torch.zeros(bsz,n_tgt,src_len, dtype=torch.float64).to('cuda')
+    #     #temp_scores = torch.zeros(bsz,n_tgt,src_len)
+    #     n_cons = cons_info['n_cons']
+    #     sep_pos = cons_info['sep_pos']
+    #     n_sub_cons = cons_info['n_sub_cons']
+    #     # print('n_cons ', n_cons, 'n_sub_cons',n_sub_cons)
+    #     print('scores[:,:,sep_pos:sep_pos + n_sub_cons]', scores[:,:,sep_pos:sep_pos + n_sub_cons])
+    #     print('cons info' ,cons_info)
+    #     for i in range(n_cons):
+    #         temp_scores[:,:,sep_pos:sep_pos + n_sub_cons] = F.normalize(scores[:,:,sep_pos:sep_pos + n_sub_cons],p=1,dim=2)
+    #         sep_pos += n_sub_cons
+    #     # scores = temp_scores
+    #     return scores
 ## Souvik's code for intra norm
     def intra_normalization(self, cons_info, scores):
         bsz,n_tgt,src_len = scores.shape
@@ -535,7 +553,7 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
     #     scores = temp_scores
     #     return scores
 
-    def get_normalized_probs(self, net_output, log_probs, sample):
+    def get_normalized_probs(self, net_output, log_probs, sample, tgt_dict):
         """Get normalized probabilities (or log probs) from a net's output."""
 
         # print("NET OUTPUT", net_output[1].keys())
@@ -553,13 +571,19 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
         src_tokens = net_output[1]['src_tokens']    
         logits = F.softmax(logits, dim=-1)
 
-        # print(src_tokens.shape)
+        # print(src_tokens)
         sep_id = 4
         if (sep_id not in src_tokens):
             sep_position = len(src_tokens)
         else:
+            # sep_id_indices = (src_tokens== 4).nonzero()
+            # sep_position = min(sep_id_indices[:,1])  
+
             sep_id_indices = (src_tokens== 4).nonzero()
-            sep_position = min(sep_id_indices[:,1])  
+
+            ## training time pe isko dhyan se change krna
+            #sep_position = min(sep_id_indices[:,1])
+            sep_position = sep_id_indices[0][2]
 
 
         ######################## DEBUG ##########################
@@ -579,9 +603,55 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
 
 
         logits = (gate * logits).scatter_add(2, src_tokens[:,:,sep_position:], (1-gate) * dec_enc_attn[:,:,sep_position:]) +1e-10
+        abc = logits
+
+     
+
+        # print('fanout 1 inside decoder ', sample['fanout']['fanout_1'])
+        # print('fanout n inside decoder ', sample['fanout']['fanout_n'])
+        ''' Begin Code for alpha and fanout'''
+        fanout_1 = sample['fanout']['fanout_1'].float()
+        fanout_n = sample['fanout']['fanout_n'].float()
+
+        # tgt_dict = task.target_dictionary
+        # fanout_1 = fanout_1*alpha.requires_grad_(True)
+        # fanout_n = fanout_n*(1-alpha).requires_grad_(True)
+       
+        alpha = sample['alpha']
+        fanout_1 = fanout_1*alpha
+        fanout_n = fanout_n*(1-alpha)
+
+        # print('fanout 1 inside decoder ', fanout_1.shape)
+        # print('fanout n inside decoder ', fanout_n.shape)
+
+        # torch.nn.functional.relu(w1, inplace=True)
+        # torch.nn.functional.relu(w2, inplace=True)
+        # w1 = torch.nn.functional.relu(torch.mul(fanout_1,dec_enc_attn), inplace = True)
+        # w2 = torch.nn.functional.relu(torch.mul(fanout_n,dec_enc_attn), inplace = True)
+        w1 = (torch.mul(fanout_1,dec_enc_attn))
+        # w2 = (torch.mul(fanout_n,dec_enc_attn))
+        
+        # print('w1 is ', w1.shape)
+        # print('dec_enc_attn ', dec_enc_attn.shape)
+        # print('dec_enc_attn ', dec_enc_attn)
+        logits = logits.scatter_add(2, src_tokens, w1) 
+        # logits = logits.scatter_add(2, src_tokens,w2) 
+
+        
+        ''' Ending Code for alpha and fanout '''
+
+        
+
         # sorted_log, idx = torch.sort(logits[0,0,:], descending=True)
+        # sorted_log_abc, idx_abc = torch.sort(abc[0,0,:], descending=True)
+        # print('Before Printing strings --> ', tgt_dict.string(idx_abc[:10].int().cpu()))
+        # print('After Printing strings --> ', tgt_dict.string(idx[:10].int().cpu()))
+        # for i in idx_abc:
+        #     print('string is ', tgt_dict.string(i))
         # print('after logits' , sorted_log[:10], idx[:10])
         # print('logits are ', logits)
+        # print('logits', sorted_log[:10], idx[:10])
+        # print('before  logtis ', sorted_log_abc[:10], idx_abc[:10])
         # TODo
         # logits += (gate * logits).scatter_add(2, src_tokens[:,:,sep_tkn:] - 2d matrix aayega jisme fanout 1 ke indiex ho, w** dec_enc_attn[:,:,sep_tkn:]) + 1e-10
         # logits += (gate * logits).scatter_add(2, src_tokens[:,:,sep_tkn:] - 2d matrix aayega jisme fanout > 1 ke indiex ho, (1-w)* dec_enc_attn[:,:,sep_tkn:]) + 1e-10

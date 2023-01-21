@@ -222,7 +222,7 @@ class TransformerEncoderBase(FairseqEncoder):
                   hidden states of shape `(src_len, batch, embed_dim)`.
                   Only populated if *return_all_hiddens* is True.
         """
-        # print(self.consnmt)
+        # print('self.consnmt ', self.consnmt)
         # print('src_tokens.view(-1) ',src_tokens.view(-1))
         # print(torch.cuda.current_device())
         if not self.consnmt or (4 not in src_tokens.view(-1)):

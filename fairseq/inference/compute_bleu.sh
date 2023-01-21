@@ -15,9 +15,9 @@ tgt_lang=$4
 # For English output: sacrebleu reffile < outputfile. This internally tokenizes using mteval-v13a
 # For Indian language output, we need tokenized output and reference since we don't know how well the sacrebleu tokenizer works for Indic input.
 # Hence we tokenize both preds and target files with IndicNLP tokenizer and then run: sacrebleu --tokenize none reffile < outputfile
-if [ $tgt_lang == 'en' ]; then
+if [ $tgt_lang == 'en' ] || [ $tgt_lang == 'de' ]; then
     # indic to en models
-    sacrebleu $ref_fname < $pred_fname
+    sacrebleu $ref_fname < $pred_fname >  ${pred_fname}.bleu
 else
     # if input is not detokenized, first detokenize it
     python ../scripts/detokenize.py $pred_fname $pred_fname.detok $tgt_lang

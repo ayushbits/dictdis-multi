@@ -59,11 +59,14 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
     for ind, (src, pred, gt) in tqdm(enumerate(zip(src_arr, pred_arr, gt_arr)), total=len(src_arr)):
         # print('line',type(ind),line[srcCol])
         # src = line[srcCol].lower()
+        print_src = src
+        print_gt = gt
         src = src.lower()
         pred = pred.lower()
         gt = gt.lower()
         src = re.sub(r"\(\'\"[^()]*\)", "", src).strip()
         matchings = kp.extract_keywords(src) # matched with source side ie English
+        # print('matchings are ', matchings)
         if(len(matchings)>0):
             sent_count += 1
             gt_cons = []
@@ -75,13 +78,16 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
                 pred_found = False
                 gt_found = False
                 cons_cand_trans = matches[1].split(',')
-                cons = list(set([con for con in [con.strip() for con in cons_cand_trans] if con]))
+                cons = list(set([con for con in [con.strip().lower() for con in cons_cand_trans] if con]))
                 if(len(cons) in spdi_tot.keys()):
                     spdi_tot[len(cons)] +=1
                 else:
                     spdi_tot[len(cons)] =1
+                # print('Cons is ', cons)
                 for tgt_phrase in cons:
                     # if(tgt_phrase in line[tgtCol] and tgt_phrase in line['groundTruth']):
+                    # print('pred ', pred)
+                    # print('gt ', gt)
                     if(tgt_phrase in pred and tgt_phrase in gt):
                         pred_found = True
                         pred_hit += 1
@@ -93,6 +99,10 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
                         break
                     elif tgt_phrase not in pred and tgt_phrase in gt:
                         incorrect_pred = tgt_phrase
+                        print('not ingested constraint ', matchings, pred , gt,src)
+                        print("\n")
+                        # print(print_gt)
+                        # print('sent count ', sent_count)
 
                     # if(tgt_phrase in gt):
                     #     gt_hit += 1
@@ -172,7 +182,7 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
         cm.write('Disamb Acc wrt model_trans & groundTruth aka Copy Success Rate: '+ str(pred_hit*1.0/gt_hit)+'\n')
         cm.write('Disamb Acc wrt source & groundTruth i.e. (groundTruth hit/source side hit): '+ str(gt_hit*1.0/total)+'\n')
         cm.write('Disamb Acc wrt source & model_trans i.e. (model_trans hit/source side hit) : '+ str(pred_hit*1.0/total)+'\n')
-        cm.write('Total Sentences having dictionary words: '+ str(sent_count)+ ' out of '+ str(len(src))+'\n')
+        cm.write('Total Sentences having dictionary words: '+ str(len(src)) + ' out of '+ str(sent_count)+'\n')
         cm.write('No of times dictionary word doesnt occur in groundTruth :'+ str(total - gt_hit)+'\n')
 
         cm.write('######################### Sense Polysemy Degree Importance #########################)\n')
@@ -187,9 +197,10 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
         cm.write('Model Translation Vs GroundTruth i.e (model_trans hit/GroundTruth hit): '+ str(spdi_pred_gt_score)+'\n')
 
 if __name__ == "__main__":
-    srcfile = sys.argv[1]
-    tgtfile = sys.argv[2]
-    gtfile = sys.argv[3]
+    
+    tgtfile = sys.argv[1]
+    gtfile = sys.argv[2]
+    srcfile = sys.argv[3]
     glossPath = '../full_data/lexicalDict' # sys.argv[4]
     glossary = sys.argv[4]
     # directory_storage = sys.argv[6]

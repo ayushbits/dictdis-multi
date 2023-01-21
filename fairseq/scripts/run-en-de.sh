@@ -12,7 +12,7 @@ train_model(){
     #fseq=$workloc/5M_bin
 
 
-    modeldir=$workloc/model_wmt_enhi_rand
+    modeldir=$workloc/model_newseuro_en_de
     #modeldir=$workloc/models_alpha_5M
     #modeldir=$workloc/models_check_samantar_newfinal
     echo "This is model $modeldir"
@@ -29,21 +29,21 @@ train_model(){
     if [[ $src == *"zh"* ]] || [[ $tgt == *"zh"* ]]; then
         MaxUpdates=60000    
     else
-        MaxUpdates=300000
+        MaxUpdates=500000
     fi
 
     echo "train ${modelname} NMT on $src-to-$tgt ..."
     now=$(date +"%T")
     echo "Start time : $now" 
-    python fairseq_cli/train.py $fseq \
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python fairseq_cli/train.py $fseq \
         -a transformer_wmt_en_de --optimizer adam --lr 0.0005 -s $src -t $tgt \
-        --distributed-world-size 2 --num-workers 0 --ddp-backend no_c10d \
-        --label-smoothing 0.1 --dropout 0.2 --max-tokens 2048 --update-freq 1 --seed 1 --patience 5 \
+        --distributed-world-size 4 --num-workers 0 --ddp-backend no_c10d \
+        --label-smoothing 0.1 --dropout 0.2 --max-tokens 3500 --update-freq 1 --seed 1 --patience 5 \
         --stop-min-lr '1e-09' --lr-scheduler inverse_sqrt --weight-decay 0.0001 \
         --criterion label_smoothed_cross_entropy --max-update $MaxUpdates --exp-name "${modelname}-${src}-${tgt}" \
         --warmup-updates 4000 --warmup-init-lr '1e-07' --keep-last-epochs 30 \
         --adam-betas '(0.9, 0.98)'  \
-        --clip-norm 1.0 \
+        --clip-norm 1.0  --save-dir checkpoints_newseuro_en_de \
         --tensorboard-logdir $modeldir/tensorboard --consnmt $useptr \
         --eval-bleu \
         --eval-bleu-args '{"beam": 5, "max_len_a": 1.2, "max_len_b": 10}' \
@@ -69,8 +69,8 @@ get_test_BLEU(){
     modelname=$4
     testclean=$5
 
-    fseq=$workloc/binarised
-    modeldir=$workloc/model
+    fseq=$workloc/final_bin
+    modeldir=$workloc/wmt_en_de
     resdir=$workloc/result && mkdir -p $resdir 
     # raw_reference=$workloc/raw/test.$tgt
 
@@ -112,10 +112,10 @@ get_test_BLEU(){
 set -e 
 cd ..
 pwd
-export CUDA_VISIBLE_DEVICES=2,3
+export CUDA_VISIBLE_DEVICES=0,1,2,3
 export CUDA_LAUNCH_BLOCKING=1
 # export datadir=trial_data
-export datadir=full_data
+export datadir=data-en-de/newseuro
 # export datadir=bobdata
 
 
@@ -123,7 +123,7 @@ export datadir=full_data
 ##The raw format of test reference locates in $datadir/raw/test.$tgt
 ##The moses detokenize scripts de
 src=en
-tgt=hi
+tgt=de
 
 ModelType=leca_ptrnet  ## choice=['leca','leca_ptrnet']
 

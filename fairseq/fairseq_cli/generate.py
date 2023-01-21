@@ -198,6 +198,7 @@ def _main(cfg: DictConfig, output_file):
             constraints = sample["constraints"]
 
         gen_timer.start()
+        print("hello ji")
         hypos = task.inference_step(
             generator,
             models,

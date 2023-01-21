@@ -12,7 +12,7 @@ train_model(){
     #fseq=$workloc/5M_bin
 
 
-    modeldir=$workloc/model_wmt_enhi_rand
+    modeldir=$workloc/bob_enhi-trans4x
     #modeldir=$workloc/models_alpha_5M
     #modeldir=$workloc/models_check_samantar_newfinal
     echo "This is model $modeldir"
@@ -36,8 +36,8 @@ train_model(){
     now=$(date +"%T")
     echo "Start time : $now" 
     python fairseq_cli/train.py $fseq \
-        -a transformer_wmt_en_de --optimizer adam --lr 0.0005 -s $src -t $tgt \
-        --distributed-world-size 2 --num-workers 0 --ddp-backend no_c10d \
+        -a transformer_4x --optimizer adam --lr 0.0005 -s $src -t $tgt \
+        --distributed-world-size 3 --num-workers 0 --ddp-backend no_c10d \
         --label-smoothing 0.1 --dropout 0.2 --max-tokens 2048 --update-freq 1 --seed 1 --patience 5 \
         --stop-min-lr '1e-09' --lr-scheduler inverse_sqrt --weight-decay 0.0001 \
         --criterion label_smoothed_cross_entropy --max-update $MaxUpdates --exp-name "${modelname}-${src}-${tgt}" \
@@ -51,7 +51,8 @@ train_model(){
         --eval-bleu-remove-bpe \
         --eval-bleu-print-samples \
         --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-        2>&1 | tee   $modeldir/out.log
+        --restore-file checkpoints_param/checkpoint_best.pt \
+        2>&1 | tee   $modeldir/log.txt
 }
 # --restore-file checkpoints_latest/checkpoint_best.pt \
 
@@ -112,11 +113,11 @@ get_test_BLEU(){
 set -e 
 cd ..
 pwd
-export CUDA_VISIBLE_DEVICES=2,3
+export CUDA_VISIBLE_DEVICES=0,1,2
 export CUDA_LAUNCH_BLOCKING=1
 # export datadir=trial_data
-export datadir=full_data
-# export datadir=bobdata
+# export datadir=full_data
+export datadir=bobdata
 
 
 ##The processed data locates in $datadir/processed_data 

@@ -24,6 +24,7 @@ from indicnlp.transliterate import unicode_transliterate
 
 
 en_tok = MosesTokenizer(lang="en")
+de_tok = MosesTokenizer(lang="de")
 en_normalizer = MosesPunctNormalizer()
 
 
@@ -31,6 +32,10 @@ def preprocess_line(line, normalizer, lang, transliterate=False):
     if lang == "en":
         return " ".join(
             en_tok.tokenize(en_normalizer.normalize(line.strip()), escape=False)
+        )
+    elif lang == "de":
+        return " ".join(
+            de_tok.tokenize(en_normalizer.normalize(line.strip()), escape=False)
         )
     elif transliterate:
         # line = indic_detokenize.trivial_detokenize(line.strip(), lang)
@@ -58,7 +63,7 @@ def preprocess(infname, outfname, lang, transliterate=False):
 
     n = 0
     num_lines = sum(1 for line in open(infname, "r"))
-    if lang == "en":
+    if lang == "en"  or lang =="de":
         with open(infname, "r", encoding="utf-8") as infile, open(
             outfname, "w", encoding="utf-8"
         ) as outfile:

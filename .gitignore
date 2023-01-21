@@ -1,6 +1,26 @@
 # JetBrains PyCharm IDE
 .idea/
-
+note.txt
+model_ende/
+model_newseuro_en_de/
+English-French/
+fairseq/bobdata/bob_enhi-trans4x
+fairseq/data-en-de/
+fairseq/data-en-fr/
+fairseq/inference/eval_final/
+fairseq/inference/bob/
+fairseq/inference/engg/
+fairseq/inference/himl/
+fairseq/inference/postedit/
+fairseq/inference/rbi/
+fairseq/inference/wat2021/*
+fairseq/inference/wat2021/test
+fairseq/inference/wmt14
+fairseq/inference/flores/*
+fairseq/inference/wmt17ende/
+fairseq/inference/*.txt
+fairseq/testsets/
+fairseq/preprocess-en-fr*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

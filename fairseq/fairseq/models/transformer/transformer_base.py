@@ -179,9 +179,10 @@ class TransformerModelBase(FairseqEncoderDecoderModel):
         net_output: Tuple[Tensor, Optional[Dict[str, List[Optional[Tensor]]]]],
         log_probs: bool,
         sample: Optional[Dict[str, Tensor]] = None,
+        tgt_dict = None,
     ):
         """Get normalized probabilities (or log probs) from a net's output."""
-        return self.get_normalized_probs_scriptable(net_output, log_probs, sample)
+        return self.get_normalized_probs_scriptable(net_output, log_probs, sample, tgt_dict)
 
 
 def Embedding(num_embeddings, embedding_dim, padding_idx):

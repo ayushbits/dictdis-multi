@@ -365,6 +365,8 @@ class SequenceGenerator(nn.Module):
                     encoder_outs,
                     incremental_states,
                     self.temperature,
+                    sample,
+                    self.tgt_dict
                 )
 
             if self.lm_model is not None:
@@ -594,6 +596,8 @@ class SequenceGenerator(nn.Module):
             finalized[sent] = torch.jit.annotate(
                 List[Dict[str, Tensor]], finalized[sent]
             )
+
+        # print("finalized tokens",finalized[0]['tokens'])
         return finalized
 
     def _prefix_tokens(
@@ -823,6 +827,8 @@ class EnsembleModel(nn.Module):
         encoder_outs: List[Dict[str, List[Tensor]]],
         incremental_states: List[Dict[str, Dict[str, Optional[Tensor]]]],
         temperature: float = 1.0,
+        sample=None,
+        tgt_dict=None,
     ):
         log_probs = []
         avg_attn: Optional[Tensor] = None
@@ -863,8 +869,9 @@ class EnsembleModel(nn.Module):
                 decoder_out[0][:, -1:, :].div_(temperature),
                 None if decoder_len <= 1 else decoder_out[1],
             )
+            # print('sample inside seq generator ', sample)
             probs = model.get_normalized_probs(
-                decoder_out_tuple, log_probs=True, sample=None
+                decoder_out_tuple, log_probs=True, sample=sample, tgt_dict = tgt_dict
             )
             probs = probs[:, -1, :]
             if self.models_size == 1:

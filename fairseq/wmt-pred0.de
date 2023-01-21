@@ -1,0 +1,15 @@
+QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQq True
+self.cfg.consnmt True
+data path data-en-de/newseuro/final_bin2
+datpath data-en-de/newseuro/final_bin2
+split test
+consfile name  data-en-de/newseuro/final_bin2/test.en-de.constraints
+file name is  data-en-de/newseuro/final_bin2/test.en-de.en
+filename True
+consfilename False
+datpath data-en-de/newseuro/final_bin2
+split test
+consfile name  data-en-de/newseuro/final_bin2/test.de-en.constraints
+file name is  data-en-de/newseuro/final_bin2/test.de-en.en
+filename False
+consfilename False

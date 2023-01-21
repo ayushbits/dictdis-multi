@@ -154,7 +154,7 @@ pwd
 echo "Translation Started"
 useptr='--use-ptrnet'
 # CUDA_VISIBLE_DEVICES=0 fairseq-interactive  $data_bin_dir \
-CUDA_VISIBLE_DEVICES=2 python fairseq_cli/interactive.py $data_bin_dir \
+CUDA_VISIBLE_DEVICES=2 python fairseq_cli/interactive2.py $data_bin_dir \
     -s $src_lang -t $tgt_lang  --batch-size 1 --buffer-size 2500 \
     --path $model_dir/checkpoint_best.pt \
     --beam 5  --remove-bpe --consnmt $useptr \

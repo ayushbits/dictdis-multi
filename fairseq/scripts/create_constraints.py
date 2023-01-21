@@ -18,7 +18,7 @@ def numberOfLines(inputFile):
     return lines
 
 def create_dictionary(glossPath, glossaries):
-    glossaries = glossaries.split(',')
+    glossaries = glossaries.split(';')
     print(glossaries)
     dictionaries = {}
     print('gloss path is ', glossPath)
@@ -39,6 +39,8 @@ def create_dictionary(glossPath, glossaries):
             tgt_phrase=[re.sub(r'[0-9]+.', ',', meaning) for meaning in tgt_phrase] 
             tgt_phrase=[meaning.strip() for meaning in tgt_phrase]
             # tgt_phrase = [re.sub(r"\(\'\"[^()]*\)", "", meaning).strip() for meaning in tgt_phrase]
+            if len(tgt_phrase) > 3:
+                tgt_phrase = tgt_phrase[:3]
             tgt_phrase = ','.join(tgt for tgt in tgt_phrase)
             if(src_phrase not in dictionaries):
                 dictionaries[src_phrase] = tgt_phrase

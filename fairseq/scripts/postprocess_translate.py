@@ -62,6 +62,11 @@ def postprocess(
         with open(outfname, "w", encoding="utf-8") as outfile:
             for sent in consolidated_testoutput:
                 outfile.write(en_detok.detokenize(sent.split(" ")) + "\n")
+    elif lang=="de":
+        en_detok = MosesDetokenizer(lang="de")
+        with open(outfname, "w", encoding="utf-8") as outfile:
+            for sent in consolidated_testoutput:
+                outfile.write(en_detok.detokenize(sent.split(" ")) + "\n")
     else:
         xliterator = unicode_transliterate.UnicodeIndicTransliterator()
         with open(outfname, "w", encoding="utf-8") as outfile:

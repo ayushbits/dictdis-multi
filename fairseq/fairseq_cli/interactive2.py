@@ -8,6 +8,7 @@ Translate raw text with a trained model. Batches data on-the-fly.
 """
 
 import ast
+import re
 import fileinput
 import logging
 import math
@@ -64,8 +65,12 @@ def make_batches(lines, cfg, task, max_positions, encode_fn):
         batch_constraints = [list() for _ in lines]
         for i, line in enumerate(lines):
             # print("LINE:",line)
-            if "\t" in line:
-                lines[i], *batch_constraints[i] = line.split("\t")
+            if "<sep>" in line:
+                lines[i], *batch_constraints[i] = line.split("<sep>")
+            if "<isep>" in line:
+                lines[i], *batch_constraints[i] = line.split("<isep>")
+            
+            print("batch_con",batch_constraints)
 
         # Convert each List[str] to List[Tensor]
         for i, constraint_list in enumerate(batch_constraints):
@@ -148,6 +153,7 @@ def main(cfg: FairseqConfig):
     use_cuda = torch.cuda.is_available() and not cfg.common.cpu
 
     # Setup task, e.g., translation
+    print('cfg tasks ', cfg.task)
     task = tasks.setup_task(cfg.task)
 
     # Load ensemble
@@ -215,6 +221,48 @@ def main(cfg: FairseqConfig):
     logger.info("NOTE: hypothesis and token scores are output in base 2")
     logger.info("Type the input sentence and press return:")
     start_id = 0
+
+    # def repeat_check(sentence, phrase):
+    #     words = sentence.split()
+    #     phrase_len = len(phrase.split())
+    #     count = 0
+    #     for i in range(len(words) - phrase_len):
+    #         if words[i:i+phrase_len] == phrase.split():
+    #             if words[i-phrase_len:i] == phrase.split():
+    #                 count += 1
+    #     if count > 0:
+    #         return True
+    #     else:
+    #         return False
+
+    def repeat_check(sentence,constraint_phrases):
+        # Split the sentence into words
+        words = sentence.split()
+        # print("words to check repeat",words)
+        # Initialize a list to store the phrases
+        phrases = []
+        # Iterate through the words
+        for i in range(len(words) - 1):
+            for j in range(i + 1, len(words) + 1):
+                # Add the phrase to the list
+                phrases.append(" ".join(words[i:j]))
+        # Iterate through the phrases and check for repetition
+        # print("phrases",phrases)
+
+        sentence = ' '
+        sentence = ' '.join(words)
+        
+        # print("sentence",sentence)
+        for phrase in phrases:
+                match = re.findall(r'({})'.format(re.escape(phrase)), sentence)
+                # print("Phrase:",phrase,"match:",match)
+                if len(match) > 1:
+                    consecutive = re.findall(r'(?=(?:{}\s+){{2,}})'.format(re.escape(phrase)), sentence)
+                    if len(consecutive) >0:
+                        print("Phrase:",phrase,"match:",match)
+                        return True
+        return False
+
     for inputs in buffered_read(cfg.interactive.input, cfg.interactive.buffer_size):
         results = []
         for batch in make_batches(inputs, cfg, task, max_positions, encode_fn):
@@ -222,6 +270,7 @@ def main(cfg: FairseqConfig):
             src_tokens = batch.src_tokens
             src_lengths = batch.src_lengths
             constraints = batch.constraints
+            # print("constraints",constraints)
 
             fanout_1 = batch.fanout_1
             fanout_n = batch.fanout_n
@@ -244,6 +293,7 @@ def main(cfg: FairseqConfig):
                     'fanout_1':fanout_1,
                     'fanout_n':fanout_n,
                 },
+                'alpha': 0.1,
             }
             # if use_cuda:
             #     src_tokens = src_tokens.cuda()
@@ -259,10 +309,57 @@ def main(cfg: FairseqConfig):
             # }
             # print("sample",sample)
             translate_start_time = time.time()
+
+            bad_translate = True
+
             translations = task.inference_step(
                 generator, models, sample, constraints=constraints
             )
-            #print("Translation",translations)
+
+            while bad_translate:
+                translations = task.inference_step(
+                    generator, models, sample, constraints=constraints
+                )
+                src_str = ""
+                intermediate_src_tkns = utils.strip_pad(sample['net_input']['src_tokens'], tgt_dict.pad())
+                src_str = src_dict.string(intermediate_src_tkns, cfg.common_eval.post_process,tgt_dict=tgt_dict)
+                # print(sample['net_input']['src_tokens'])
+                for i, (id, hypos) in enumerate(zip(batch.ids.tolist(), translations)): 
+                    for hypo in hypos[: min(len(hypos), cfg.generation.nbest)]:
+                        hypo_tokens, hypo_str, alignment = utils.post_process_prediction(
+                            hypo_tokens=hypo["tokens"].int().cpu(),
+                            src_str = src_str,
+                            alignment=hypo["alignment"],
+                            align_dict=align_dict,
+                            tgt_dict=tgt_dict,
+                            remove_bpe=cfg.common_eval.post_process,
+                            extra_symbols_to_ignore=get_symbols_to_strip_from_output(generator),
+                        )
+                        detok_hypo_str = decode_fn(hypo_str)
+                        print("source sent",src_str)
+                        print('alpha',sample['alpha'])
+                        print('hypo',detok_hypo_str)
+                        constraint_phrases = re.findall(r'(?:<sep>|<isep>)([^<]+)', src_str)
+                        checker = repeat_check(detok_hypo_str,constraint_phrases)
+                
+                if checker and sample['alpha']>0.025:
+                    bad_translate = True
+                    prev_alpha = sample['alpha']
+                    new_alpha = prev_alpha/2
+
+                    # if new_alpha < 0.6:
+                    #     sample['alpha'] = prev_alpha/2
+                    if new_alpha < 0.025:
+                        sample['alpha'] = 0
+                    else:
+                        sample['alpha'] = new_alpha
+
+                    # print("NHI hO payega")
+                else:
+                    bad_translate = False
+            # print("llalalalal")
+            # exit()
+            # print("Translation",translations)
             translate_time = time.time() - translate_start_time
             total_translate_time += translate_time
             list_constraints = [[] for _ in range(bsz)]

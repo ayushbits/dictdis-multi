@@ -78,10 +78,11 @@ def load_langpair_dataset(
     cons_datas = []
 
     for k in itertools.count():
-        print("KKKKKKKKKKKKKKKKKKKKKK",k)
+        print("data path",data_path)
         split_k = split + (str(k) if k > 0 else "")
 
         # infer langcode
+
         if split_exists(split_k, src, tgt, src, data_path):
             prefix = os.path.join(data_path, "{}.{}-{}.".format(split_k, src, tgt))
         elif split_exists(split_k, tgt, src, src, data_path):

@@ -5,20 +5,23 @@ from collections import OrderedDict
  
 
 dirname = sys.argv[1]
-app = ['google-translate','mbart50','leca-original', 'indic-bi']
-# app = ['indic-bi']
-dicdis = dirname.lower()
-if dirname == 'air-space':
-    dicdis = dirname.replace('-','')
-dicdis += '-leca96ep28'
+app = ['rbi-pred-1','rbi-pred-0', 'rbi-bi-indic'] # For rbi
+# app = ['bob-pred-1','bob-pred-0', 'bob-bi-indic'] # For bob
+# app = ['engg-pred1','engg-pred0', 'engg-indic-bi'] # For engg
 
-app.append(dicdis)
+dicdis = dirname.lower()
+# if dirname == 'air-space':
+#     dicdis = dirname.replace('-','')
+# dicdis += '-leca96ep28'
+
+# app.append(dicdis)
 alldict = {}
 for a in app:
     path = dirname + '/' + a + "-spdi.txt" # | sed -n 15p | cut -d'{' -f2 | cut -d'}' -f1 "
     with open(path, 'r') as f :
         spdi = f.readlines()[-1]
         line = spdi.split('): ')[1][1:-2] # Model Translation Vs GroundTruth i.e (model_trans hit/GroundTruth hit): {1: 0.9938556067588326, 2: 0.6842105263157895, 4: 1.0, 3: 1e-10}
+        # print('SPDI ', spdi)
         vals = line.split(',')
         gtdict = {}
         i=0
@@ -34,7 +37,7 @@ for a in app:
         # {1: 0.9938556067588326, 2: 0.6842105263157895, 4: 1.0, 3: 1e-10}
         deno  = (np.sum(list(map(int,gtdict.keys()))))
         
-        numerator = np.sum([np.log(float(k)+1)*float(gtdict[k]) for k in gtdict.keys()])
+        numerator = np.sum([float(k)*float(gtdict[k]) for k in gtdict.keys()])
         # print('num %s , deno %s ', numerator, deno)
         disacc = numerator/deno
         

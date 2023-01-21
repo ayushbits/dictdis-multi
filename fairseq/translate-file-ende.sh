@@ -1,7 +1,7 @@
-# bash translate_file.sh inference/flores/flores.en inference/flores/flores-pred-1-new.hi  None  en hi 0
+ # bash translate_file.sh inference/flores/flores.en inference/flores/flores-pred-1-new.hi  None  en hi 0
 #!/bin/bash
 echo `date`
-exp_dir='full_data' #Dir containing model final_bin vocab etc.
+exp_dir='data-en-de/newseuro' #Dir containing model final_bin vocab etc.
 #exp_dir='full_data/bobdata' #Dir containing model final_bin vocab etc.
 
 # exp_dir='../LecaDisambiguationExp-2/LecaExp2/Data' #Dir containing model final_bin vocab etc.
@@ -24,7 +24,7 @@ outputDir='.' #name of output Dir inside datasetDir as defined above.
 # mkdir -p $datasetDir/$outputDir
 #glossaryPath=$exp_dir/$glossaryDir #construct full dict path
 #glossaryPath='../improved_leca/Data/lexicalDict' #$glossaryDir
-glossaryPath='full_data/lexicalDict'
+glossaryPath='data-en-de/newseuro/lexicalDict'
 #`dirname $0`/env.sh
 SUBWORD_NMT_DIR='../../../subword-nmt'
 # model_dir=$exp_dir/align_model
@@ -32,11 +32,7 @@ SUBWORD_NMT_DIR='../../../subword-nmt'
 
 # model_dir=$exp_dir/align_model
 # model_dir="/home/souvik/improved_leca/trial_v12/dictdis_multigpu/fairseq/checkpoints/"
-# model_dir="checkpoints-18ep/"
-model_dir="checkpoints_en_hi_4x/"
-#model_dir = "checkpoints_bob_param/"
-# model_dir="checkpoints"
-#-wmt-arch/"
+model_dir="checkpoints_newseuro_en_de"
 #$exp_dir/models
 # data_bin_dir=$exp_dir/align_binarised
 data_bin_dir=$exp_dir/final_bin
@@ -154,8 +150,8 @@ pwd
 echo "Translation Started"
 useptr='--use-ptrnet'
 # CUDA_VISIBLE_DEVICES=0 fairseq-interactive  $data_bin_dir \
-CUDA_VISIBLE_DEVICES=2 python fairseq_cli/interactive.py $data_bin_dir \
-    -s $src_lang -t $tgt_lang  --batch-size 1 --buffer-size 2500 \
+CUDA_VISIBLE_DEVICES=1 python fairseq_cli/interactive.py $data_bin_dir \
+    -s $src_lang -t $tgt_lang --batch-size 1 \
     --path $model_dir/checkpoint_best.pt \
     --beam 5  --remove-bpe --consnmt $useptr \
     --model-overrides "{'beam':5}" \
