@@ -1,5 +1,4 @@
-#python final_eval.py RBI/rbi-source.csv RBI/leca.csv RBI/rbi-target.csv ../improved_leca/Data/lexicalDict/ RBI.csv
-# python final_eval.py aerospace/aero-source.csv aerospace/aero-google-translate.csv  aerospace/aero-target.csv ../improved_leca/Data/lexicalDict/ aerospace_glossary.csv
+# python final_eval.py enfr/pred-1.fr enfr/test.fr enfr/test.en  ../data-en-fr/lexicalDict/ en-fr-final
 import pandas as pd
 import re
 import csv
@@ -46,6 +45,7 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
     kp = KeywordProcessor()
     for key in dictionaries.keys():
         kp.add_keyword(key, (key, dictionaries[key]))
+        
 
     total, pred_hit, gt_hit, sent_count = 0,0,0,0
     spdi_gt, spdi_pred, spdi_tot = {}, {}, {}
@@ -66,7 +66,7 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
         gt = gt.lower()
         src = re.sub(r"\(\'\"[^()]*\)", "", src).strip()
         matchings = kp.extract_keywords(src) # matched with source side ie English
-        # print('matchings are ', matchings)
+        # print('matchings are ', len(matchings))
         if(len(matchings)>0):
             sent_count += 1
             gt_cons = []
@@ -77,12 +77,13 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
                 total += 1
                 pred_found = False
                 gt_found = False
-                cons_cand_trans = matches[1].split(',')
+                cons_cand_trans = matches[1].split(',') # Change this to ';' for enfr and ende and keep ',' for enhi
                 cons = list(set([con for con in [con.strip().lower() for con in cons_cand_trans] if con]))
                 if(len(cons) in spdi_tot.keys()):
                     spdi_tot[len(cons)] +=1
                 else:
                     spdi_tot[len(cons)] =1
+                # print('spdi_tot ', spdi_tot)
                 # print('Cons is ', cons)
                 for tgt_phrase in cons:
                     # if(tgt_phrase in line[tgtCol] and tgt_phrase in line['groundTruth']):
@@ -99,8 +100,8 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
                         break
                     elif tgt_phrase not in pred and tgt_phrase in gt:
                         incorrect_pred = tgt_phrase
-                        print('not ingested constraint ', matchings, pred , gt,src)
-                        print("\n")
+                        # print('not ingested constraint ', matchings, pred , gt,src)
+                        # print("\n")
                         # print(print_gt)
                         # print('sent count ', sent_count)
 
@@ -112,10 +113,16 @@ def Disambiguation_SPDI(dictionaries, src_arr, pred_arr, gt_arr, outfile):
                     #         spdi_gt[len(cons)] += 1
                     #     else:
                     #         spdi_gt[len(cons)] = 1
-
+                    
+                # if ind > 1380 and ind < 1390:
+                #     print('Above ', ind, cons, gt)
                 for tgt_phrase in cons:
                     # if(tgt_phrase in line['groundTruth']):
+                    # if ind > 1380 and ind < 1390:
+                    #         print(ind, tgt_phrase, gt)
                     if(tgt_phrase in gt):
+                        # if ind > 1380 and ind < 1390:
+                        #     print(ind, cons, gt)
                         gt_hit += 1
                         gt_found = True
                         gt_cons_trans = tgt_phrase
@@ -201,8 +208,9 @@ if __name__ == "__main__":
     tgtfile = sys.argv[1]
     gtfile = sys.argv[2]
     srcfile = sys.argv[3]
-    glossPath = '../full_data/lexicalDict' # sys.argv[4]
-    glossary = sys.argv[4]
+    glossPath = '../full_data/lexicalDict' 
+    glossPath = sys.argv[4]
+    glossary = sys.argv[5]
     # directory_storage = sys.argv[6]
     # srcCol = sys.argv[6]
     # tgtCol = sys.argv[7]

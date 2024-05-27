@@ -12,7 +12,7 @@ train_model(){
     #fseq=$workloc/5M_bin
 
 
-    modeldir=$workloc/bob_enhi-trans4x
+    modeldir=$workloc/engg-enhi-trans4x
     #modeldir=$workloc/models_alpha_5M
     #modeldir=$workloc/models_check_samantar_newfinal
     echo "This is model $modeldir"
@@ -42,7 +42,7 @@ train_model(){
         --stop-min-lr '1e-09' --lr-scheduler inverse_sqrt --weight-decay 0.0001 \
         --criterion label_smoothed_cross_entropy --max-update $MaxUpdates --exp-name "${modelname}-${src}-${tgt}" \
         --warmup-updates 4000 --warmup-init-lr '1e-07' --keep-last-epochs 30 \
-        --adam-betas '(0.9, 0.98)'  --save-dir bobdata/bob_enhi-trans4x \
+        --adam-betas '(0.9, 0.98)'  --save-dir enggdata/engg-enhi-trans4x \
         --clip-norm 1.0 \
         --tensorboard-logdir $modeldir/tensorboard --consnmt $useptr \
         --eval-bleu \
@@ -117,7 +117,7 @@ export CUDA_VISIBLE_DEVICES=1,2,3
 export CUDA_LAUNCH_BLOCKING=1
 # export datadir=trial_data
 # export datadir=full_data
-export datadir=bobdata
+export datadir=enggdata
 
 
 ##The processed data locates in $datadir/processed_data 

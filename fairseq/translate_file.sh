@@ -2,7 +2,7 @@
 #!/bin/bash
 echo `date`
 exp_dir='full_data' #Dir containing model final_bin vocab etc.
-#exp_dir='full_data/bobdata' #Dir containing model final_bin vocab etc.
+#exp_dir='bobdata' #Dir containing model final_bin vocab etc.
 
 # exp_dir='../LecaDisambiguationExp-2/LecaExp2/Data' #Dir containing model final_bin vocab etc.
 #exp_dir='../../leca/Data' #Dir containing model final_bin vocab etc.
@@ -30,15 +30,12 @@ SUBWORD_NMT_DIR='../../../subword-nmt'
 # model_dir=$exp_dir/align_model
 # data_bin_dir=$exp_dir/sub_align_binarised
 
-# model_dir=$exp_dir/align_model
-# model_dir="/home/souvik/improved_leca/trial_v12/dictdis_multigpu/fairseq/checkpoints/"
-# model_dir="checkpoints-18ep/"
 model_dir="checkpoints_en_hi_4x/"
-#model_dir = "checkpoints_bob_param/"
+# model_dir="bobdata/bob_enhi-trans4x/"
+# model_dir="bobdata/bob_enhi-trans4x_27jan/"
 # model_dir="checkpoints"
 #-wmt-arch/"
 #$exp_dir/models
-# data_bin_dir=$exp_dir/align_binarised
 data_bin_dir=$exp_dir/final_bin
 
 # Constraints retriever script
@@ -155,10 +152,10 @@ echo "Translation Started"
 useptr='--use-ptrnet'
 # CUDA_VISIBLE_DEVICES=0 fairseq-interactive  $data_bin_dir \
 CUDA_VISIBLE_DEVICES=2 python fairseq_cli/interactive.py $data_bin_dir \
-    -s $src_lang -t $tgt_lang  --batch-size 1 --buffer-size 2500 \
+    -s $src_lang -t $tgt_lang  --batch-size 1 --buffer-size 1 \
     --path $model_dir/checkpoint_best.pt \
-    --beam 5  --remove-bpe --consnmt $useptr \
-    --model-overrides "{'beam':5}" \
+    --beam 10  --remove-bpe --consnmt $useptr \
+    --distributed-world-size 1  \
     --input $src_input_bpe_fname  >  $tgt_output_fname.log 2>&1
 
 #echo "fairseq-interactive $data_bin_dir -s $SRC_PREFIX -t $TGT_PREFIX --distributed-world-size 1  --path $model_dir/checkpoint_best.pt  --batch-size 64  --buffer-size 2500 --beam 5  --remove-bpe --skip-invalid-size-inputs-valid-test  --user-dir model_configs--input $src_input_bpe_fname  >  $tgt_output_fname.log "

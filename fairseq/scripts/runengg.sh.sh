@@ -12,7 +12,7 @@ train_model(){
     #fseq=$workloc/5M_bin
 
 
-    modeldir=$workloc/bob_enhi-trans4x
+    modeldir=$workloc/engg-enhi-trans4x
     #modeldir=$workloc/models_alpha_5M
     #modeldir=$workloc/models_check_samantar_newfinal
     echo "This is model $modeldir"

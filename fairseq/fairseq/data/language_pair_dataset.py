@@ -351,14 +351,10 @@ class LanguagePairDataset(FairseqDataset):
             # cons_token = self.tgt_dict.string(cons_tokens)
             # print('cons target token ', cons_token)
             # BElow 2 lines added for inserting random constraints in 4% sentences
-            wentinside = False
             if(cons_tokens.shape==torch.Size([1])):
                 # print(' before  shape is ', cons_tokens)
                 cons_tokens = self.get_rand_cons(index)
                 # cons_token = self.src_dict.string(cons_tokens)
-                
-                wentinside = True
-                # print('cons target token ', cons_tokens, wentinside)
             if cons_tokens is not None:
                 assert self.src[index][-1].item() == self.src_dict.eos_index, 'No eos added in the src.'
                 # src_items = self.src_dict.string(self.src[index])
@@ -391,9 +387,6 @@ class LanguagePairDataset(FairseqDataset):
             eos = self.src_dict.eos()
             if self.src[index][-1] == eos:
                 src_item = self.src[index][:-1]
-
-        # print('tgt_item ', tgt_item ) #, ' and went inside rand_cons ' , wentinside)
-        # print('src_item ', src_item )
 
         # if torch.isnan(src_item) or torch.isinf(src_item):
         #     print(index, src_item)

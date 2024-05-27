@@ -603,51 +603,52 @@ class TransformerDecoderBase(FairseqIncrementalDecoder):
 
 
         logits = (gate * logits).scatter_add(2, src_tokens[:,:,sep_position:], (1-gate) * dec_enc_attn[:,:,sep_position:]) +1e-10
-        abc = logits
 
      
 
         # print('fanout 1 inside decoder ', sample['fanout']['fanout_1'])
         # print('fanout n inside decoder ', sample['fanout']['fanout_n'])
         ''' Begin Code for alpha and fanout'''
-        fanout_1 = sample['fanout']['fanout_1'].float()
-        fanout_n = sample['fanout']['fanout_n'].float()
+        # fanout_1 = sample['fanout']['fanout_1'].float()
+        # fanout_n = sample['fanout']['fanout_n'].float()
 
         # tgt_dict = task.target_dictionary
         # fanout_1 = fanout_1*alpha.requires_grad_(True)
         # fanout_n = fanout_n*(1-alpha).requires_grad_(True)
        
-        alpha = sample['alpha']
-        fanout_1 = fanout_1*alpha
-        fanout_n = fanout_n*(1-alpha)
+        # alpha = sample['alpha']
+        # fanout_1 = fanout_1*alpha
+        # fanout_n = fanout_n*(1-alpha)
 
         # print('fanout 1 inside decoder ', fanout_1.shape)
         # print('fanout n inside decoder ', fanout_n.shape)
 
-        # torch.nn.functional.relu(w1, inplace=True)
-        # torch.nn.functional.relu(w2, inplace=True)
-        # w1 = torch.nn.functional.relu(torch.mul(fanout_1,dec_enc_attn), inplace = True)
-        # w2 = torch.nn.functional.relu(torch.mul(fanout_n,dec_enc_attn), inplace = True)
-        w1 = (torch.mul(fanout_1,dec_enc_attn))
+        # # torch.nn.functional.relu(w1, inplace=True)
+        # # torch.nn.functional.relu(w2, inplace=True)
+        # # w1 = torch.nn.functional.relu(torch.mul(fanout_1,dec_enc_attn), inplace = True)
+        # # w2 = torch.nn.functional.relu(torch.mul(fanout_n,dec_enc_attn), inplace = True)
+        # w1 = (torch.mul(fanout_1,dec_enc_attn))
         # w2 = (torch.mul(fanout_n,dec_enc_attn))
+
+        # print("var of w",w1.var())
         
         # print('w1 is ', w1.shape)
         # print('dec_enc_attn ', dec_enc_attn.shape)
         # print('dec_enc_attn ', dec_enc_attn)
-        logits = logits.scatter_add(2, src_tokens, w1) 
+        # logits = logits.scatter_add(2, src_tokens, w1) 
         # logits = logits.scatter_add(2, src_tokens,w2) 
 
         
         ''' Ending Code for alpha and fanout '''
 
-        
-
         # sorted_log, idx = torch.sort(logits[0,0,:], descending=True)
         # sorted_log_abc, idx_abc = torch.sort(abc[0,0,:], descending=True)
         # print('Before Printing strings --> ', tgt_dict.string(idx_abc[:10].int().cpu()))
         # print('After Printing strings --> ', tgt_dict.string(idx[:10].int().cpu()))
-        # for i in idx_abc:
+        # for i in idx:
         #     print('string is ', tgt_dict.string(i))
+
+
         # print('after logits' , sorted_log[:10], idx[:10])
         # print('logits are ', logits)
         # print('logits', sorted_log[:10], idx[:10])

@@ -550,8 +550,8 @@ def cli_main(
 
     cfg = convert_namespace_to_omegaconf(args)
 
-    # print("HELLO",cfg)
-    # print('args' , args)
+    print("HELLO",cfg)
+    print('args' , args)
     # print(args.consnmt)
     # exit()
     

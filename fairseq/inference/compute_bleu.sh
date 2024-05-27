@@ -17,7 +17,7 @@ tgt_lang=$4
 # Hence we tokenize both preds and target files with IndicNLP tokenizer and then run: sacrebleu --tokenize none reffile < outputfile
 if [ $tgt_lang == 'en' ] || [ $tgt_lang == 'de' ]; then
     # indic to en models
-    sacrebleu $ref_fname < $pred_fname >  ${pred_fname}.bleu
+    sacrebleu --tokenizer none $ref_fname < $pred_fname >  ${pred_fname}.bleu
 else
     # if input is not detokenized, first detokenize it
     python ../scripts/detokenize.py $pred_fname $pred_fname.detok $tgt_lang

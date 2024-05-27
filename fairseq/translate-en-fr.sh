@@ -1,12 +1,8 @@
-# bash translate_file.sh inference/flores/flores.en inference/flores/flores-pred-1-new.hi  None  en hi 0
+ # bash translate_file.sh inference/flores/flores.en inference/flores/flores-pred-1-new.hi  None  en hi 0
 #!/bin/bash
 echo `date`
-exp_dir='bobdata' #Dir containing model final_bin vocab etc.
-#exp_dir='full_data/bobdata' #Dir containing model final_bin vocab etc.
+exp_dir='data-en-fr' # Data directory
 
-# exp_dir='../LecaDisambiguationExp-2/LecaExp2/Data' #Dir containing model final_bin vocab etc.
-#exp_dir='../../leca/Data' #Dir containing model final_bin vocab etc.
-#exp_dir='../../../udaan-deploy-flask/leca_model' #Dir containing model final_bin vocab etc.
 dataset='.' #Dataset for inference
 infname=$1 #filename inside dataset folder (for eg aerospace dataset folder has aerospace.en as file. Here infname=aerospace and extension en is added using src_lang)
 outfname=$2
@@ -20,23 +16,10 @@ datasetDir=$dataset
 SRC_PREFIX='SRC'
 TGT_PREFIX='TGT'
 outputDir='.' #name of output Dir inside datasetDir as defined above.
-# outputDir='sampleTest'
-# mkdir -p $datasetDir/$outputDir
-#glossaryPath=$exp_dir/$glossaryDir #construct full dict path
-#glossaryPath='../improved_leca/Data/lexicalDict' #$glossaryDir
-glossaryPath='full_data/lexicalDict'
+glossaryPath='data-en-fr/lexicalDict'
 #`dirname $0`/env.sh
 SUBWORD_NMT_DIR='../../../subword-nmt'
-# model_dir=$exp_dir/align_model
-# data_bin_dir=$exp_dir/sub_align_binarised
-
-# model_dir=$exp_dir/align_model
-# model_dir="/home/souvik/improved_leca/trial_v12/dictdis_multigpu/fairseq/checkpoints/"
-# model_dir="checkpoints-18ep/"
-model_dir="bobdata/bob_enhi-trans4x/"
-#model_dir = "checkpoints_bob_param/"
-# model_dir="checkpoints"
-#-wmt-arch/"
+model_dir="models/checkpoints_newseuro_en_fr"
 #$exp_dir/models
 # data_bin_dir=$exp_dir/align_binarised
 data_bin_dir=$exp_dir/final_bin
@@ -154,10 +137,11 @@ pwd
 echo "Translation Started"
 useptr='--use-ptrnet'
 # CUDA_VISIBLE_DEVICES=0 fairseq-interactive  $data_bin_dir \
-CUDA_VISIBLE_DEVICES=2 python fairseq_cli/interactive2.py $data_bin_dir \
-    -s $src_lang -t $tgt_lang  --batch-size 1 --buffer-size 2500 \
+CUDA_VISIBLE_DEVICES=0 python fairseq_cli/interactive.py $data_bin_dir \
+    -s $src_lang -t $tgt_lang --batch-size 1 \
     --path $model_dir/checkpoint_best.pt \
     --beam 5  --remove-bpe --consnmt $useptr \
+    --model-overrides "{'beam':5}" \
     --input $src_input_bpe_fname  >  $tgt_output_fname.log 2>&1
 
 #echo "fairseq-interactive $data_bin_dir -s $SRC_PREFIX -t $TGT_PREFIX --distributed-world-size 1  --path $model_dir/checkpoint_best.pt  --batch-size 64  --buffer-size 2500 --beam 5  --remove-bpe --skip-invalid-size-inputs-valid-test  --user-dir model_configs--input $src_input_bpe_fname  >  $tgt_output_fname.log "

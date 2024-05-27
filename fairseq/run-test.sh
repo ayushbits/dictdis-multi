@@ -16,8 +16,8 @@ python final_eval.py eval_final/wat2021/dictdis-dict-constraints-0.hi eval_final
 
 # BOB Without Constraints 
 cd ..
-bash translate_file.sh inference/eval_final/wat2021/wat2021-wo-constraints.en inference/eval_final/wat2021/dictdis-wo-constraints-1.hi administrative en hi 1
-bash translate_file.sh inference/eval_final/wat2021/wat2021-wo-constraints.en inference/eval_final/wat2021/dictdis-wo-constraints-0.hi administrative en hi 0
+bash translate_file.sh inference/eval_final/bob/bob-dict-constraints.en inference/eval_final/bob/dictdis-dict-constraints-beam10.hi administrative en hi 1
+bash translate_file.sh inference/eval_final/bob/bob-wo-constraints.en inference/eval_final/bob/dictdis-wo-constraints-beam10.hi administrative en hi 0
 
 # Computing BLEU 
 

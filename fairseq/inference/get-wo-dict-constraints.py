@@ -4,9 +4,14 @@ import sys
 
 path = sys.argv[1]
 
-enfile = path +"/"+"wmt14-dict-constraints"+".en"
-hifile = path +"/"+"wmt14-dict-constraints"+".de"
-en_constraints_file = path +"/"+"wmt14-dict-constraints"+".en.constraints"
+# enfile = path +"/"+"wmt14-dict-constraints"+".en"
+# hifile = path +"/"+"wmt14-dict-constraints"+".fr"
+# en_constraints_file = path +"/"+"wmt14-dict-constraints"+".en.constraints"
+
+enfile = path +"/"+"test"+".en"
+hifile = path +"/"+"test"+".fr"
+en_constraints_file = path +"/"+"test"+".en.constraints"
+
 
 en_constraints, en, hi =  [],[],[]
 
@@ -34,23 +39,23 @@ for e,h,c in zip(en, hi, en_constraints):
         dict_constraints_hi.append(h)
 
 write_path ="eval_final"
-path="wmt14"
-filename = write_path +"/" +path +"/"+"wmt14"+"-wo-constraints1.en"
+path="enfr"
+filename = write_path +"/" +path +"/"+"test"+"-wo-constraints1.en"
 with open(filename, 'w') as f:
     for i in wo_constraints_en:
         f.write(i)
 
-filename = write_path +"/" +path +"/"+"wmt14"+"-wo-constraints1.de"
+filename = write_path +"/" +path +"/"+"test"+"-wo-constraints1.fr"
 with open(filename, 'w') as f:
     for i in wo_constraints_hi:
         f.write(i)
 
-filename = write_path +"/" +path +"/"+"wmt14"+"-dict-constraints1.en"
+filename = write_path +"/" +path +"/"+"test"+"-dict-constraints1.en"
 with open(filename, 'w') as f:
     for i in dict_constraints_en:
         f.write(i)
 
-filename = write_path +"/" +path +"/"+"wmt14"+"-dict-constraints1.de"
+filename = write_path +"/" +path +"/"+"test"+"-dict-constraints1.fr"
 with open(filename, 'w') as f:
     for i in dict_constraints_hi:
         f.write(i)

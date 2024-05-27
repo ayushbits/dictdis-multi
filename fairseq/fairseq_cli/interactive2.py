@@ -293,7 +293,7 @@ def main(cfg: FairseqConfig):
                     'fanout_1':fanout_1,
                     'fanout_n':fanout_n,
                 },
-                'alpha': 0.1,
+                'alpha': 0.5,
             }
             # if use_cuda:
             #     src_tokens = src_tokens.cuda()
@@ -322,8 +322,15 @@ def main(cfg: FairseqConfig):
                 )
                 src_str = ""
                 intermediate_src_tkns = utils.strip_pad(sample['net_input']['src_tokens'], tgt_dict.pad())
+                if sample['alpha'] < 0.2:
+                    print('going inside 0.1')
+                    src_tokens = sample['net_input']['src_tokens']
+                    src_str = src_tokens[0][:(src_tokens[0] == 2).nonzero(as_tuple=True)[0]+1]
+                    # print('src str is ', src_str)
                 src_str = src_dict.string(intermediate_src_tkns, cfg.common_eval.post_process,tgt_dict=tgt_dict)
-                # print(sample['net_input']['src_tokens'])
+                
+                
+
                 for i, (id, hypos) in enumerate(zip(batch.ids.tolist(), translations)): 
                     for hypo in hypos[: min(len(hypos), cfg.generation.nbest)]:
                         hypo_tokens, hypo_str, alignment = utils.post_process_prediction(
@@ -339,13 +346,14 @@ def main(cfg: FairseqConfig):
                         print("source sent",src_str)
                         print('alpha',sample['alpha'])
                         print('hypo',detok_hypo_str)
+                        
                         constraint_phrases = re.findall(r'(?:<sep>|<isep>)([^<]+)', src_str)
                         checker = repeat_check(detok_hypo_str,constraint_phrases)
                 
                 if checker and sample['alpha']>0.025:
                     bad_translate = True
                     prev_alpha = sample['alpha']
-                    new_alpha = prev_alpha/2
+                    new_alpha = prev_alpha/4
 
                     # if new_alpha < 0.6:
                     #     sample['alpha'] = prev_alpha/2
