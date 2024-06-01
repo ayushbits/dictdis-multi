@@ -21,7 +21,7 @@ git clone https://github.com/anoopkunchukuttan/indic_nlp_library.git
 - bash script/run.sh
 - Check datadir (#109) and model variable
 - trained model will be stored in checkpoints/
-- English-Hindi trained translation model trained can be download from [this link](https://iitbacin-my.sharepoint.com/:u:/g/personal/ayusham_iitb_ac_in/EUOsQoDaa9JGgPtTdKtPM5QB1DPtRAIZ4DNgCxjU94s3Xw?e=SCwYMR) 
+- English-Hindi trained translation model can be downloaded from [this link](https://iitbacin-my.sharepoint.com/:u:/g/personal/ayusham_iitb_ac_in/EUOsQoDaa9JGgPtTdKtPM5QB1DPtRAIZ4DNgCxjU94s3Xw?e=SCwYMR) 
 
 ## Inference
 
